@@ -31,7 +31,7 @@ USER root
 
 WORKDIR /app
 
-CMD ["tail", "-f", "/dev/null"]
+CMD ["bundle", "exec", "rackup", "-p", "4567", "--host", "0.0.0.0"]
 
 ################################################################################
 # DEVELOPMENT                                           								       # 
