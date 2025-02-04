@@ -1,5 +1,9 @@
 source "https://rubygems.org"
 
+gem "sinatra"
+gem "puma"
+gem "rackup"
+
 group :development, :test do
   gem "debug"
 end
