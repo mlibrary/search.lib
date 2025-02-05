@@ -22,5 +22,5 @@ jobs:
     uses: mlibrary/platform-engineering-workflows/.github/workflows/deploy.yml@v1
     with:
       image: ${{ needs.build-unstable.outputs.image }}
-      file: environments/search/workshop/web-image.txt
+      file: environments/application/workshop/web-image.txt
     secrets: inherit
