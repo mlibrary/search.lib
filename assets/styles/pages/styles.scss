@@ -1,0 +1,20 @@
+// --------------------------------------------------
+//
+// # Page
+//   Styles to apply directly to `views/pages/layout.erb`.
+//
+// ## Table of Contents
+//   1. Page
+//
+// --------------------------------------------------
+
+// *************** //
+// *** 1. PAGE *** //
+// *************** //
+
+.page {
+  padding: 2rem;
+  @media print {
+    padding: 0;
+  }
+}
