@@ -23,5 +23,5 @@ jobs:
     uses: mlibrary/platform-engineering-workflows/.github/workflows/deploy.yml@v1
     with:
       image: ghcr.io/mlibrary/${{ vars.IMAGE_NAME }}:${{ github.event.inputs.tag }}
-      file: environments/search/production/web-image.txt
+      file: environments/application/production/web-image.txt
     secrets: inherit
