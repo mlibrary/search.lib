@@ -13,4 +13,5 @@
 .dotnet
 
 .env
+node_modules/
 vendor/
