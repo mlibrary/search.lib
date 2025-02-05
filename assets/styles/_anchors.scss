@@ -1,0 +1,33 @@
+@use 'colors';
+
+// --------------------------------------------------
+//
+// # Anchors
+//   Default styling for links.
+//
+// ## Table of Contents
+//   1. Anchors
+//     1.1 No underline
+//
+// --------------------------------------------------
+
+
+
+// ****************** //
+// *** 1. ANCHORS *** //
+// ****************** //
+
+a {
+  color: colors.$color-anchor;
+}
+
+// *                  * //
+// * 1.1 NO UNDERLINE * //
+// *                  * //
+
+a.underline__none {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,49 @@
+// --------------------------------------------------
+//
+// # Colors
+//   Root variables of the colors used throughout the website.
+//
+// ## Table of Contents
+//   1. Colors
+//   2. Variables
+//
+// --------------------------------------------------
+
+// ***************** //
+// *** 1. COLORS *** //
+// ***************** //
+
+:root {
+  --search-color-blue-100: #f2f9ff;
+  --search-color-blue-200: #e6f3ff;
+  --search-color-blue-300: #cce6ff;
+  --search-color-blue-400: #126dc1;
+  --search-color-blue-500: #0c5292;
+  --search-color-green-100: #e2f4eb;
+  --search-color-green-200: #05a657;
+  --search-color-green-300: #057c42;
+  --search-color-grey-100: #fafafa;
+  --search-color-grey-200: #f2f2f2;
+  --search-color-grey-300: #e5e5e5;
+  --search-color-grey-400: #ccc;
+  --search-color-grey-500: #6e6e6e;
+  --search-color-grey-600: #4e4e4e;
+  --search-color-grey-700: #262626;
+  --search-color-orange-100: #ffeedd;
+  --search-color-orange-200: #e77504;
+  --search-color-orange-300: #aa5600;
+  --search-color-red-100: #ffeae7;
+  --search-color-red-200: #ed5d47;
+  --search-color-red-300: #c53b26;
+}
+
+
+
+
+
+// ******************** //
+// *** 2. VARIABLES *** //
+// ******************** //
+
+$color-anchor: var(--search-color-blue-400);
+$color-text: var(--search-color-grey-700);

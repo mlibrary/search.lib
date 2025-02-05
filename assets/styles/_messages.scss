@@ -1,0 +1,51 @@
+@use 'sass:map';
+
+// --------------------------------------------------
+//
+// # Messages
+//   Messages are used for applying to `@function` and `@mixin` at-rules to check for quality assurance.
+// 
+// ## Examples
+//   Import the file into another sibling `.scss` file with `@use './messages';`.
+//   ### Includes
+//     #### Missing Key
+//       ```
+//       $example = {
+//         'one': 1,
+//         'two': 2
+//       }
+//       @include messages.missing-key($example, 'three');
+//       ```
+//       translates to `Error: "No value could be retrieved from: 'three'. Available options are: [one, two]."`
+//     #### Deprecated
+//       `@include messages.deprecated('old()', 'new()')` translates to `Warning: old() has been deprecated. Use new() instead.`
+//
+// ## Table of Contents
+//   1. Mixins
+//     1.1 Missing Key
+//     1.2 Deprecated
+//
+// --------------------------------------------------
+
+
+
+// ***************** //
+// *** 1. MIXINS *** //
+// ***************** //
+
+// *                 * //
+// * 1.1 MISSING KEY * //
+// *                 * //
+@mixin missing-key($map, $key) {
+  @if not (map.has-key($map, $key)) {
+    @error "No value could be retrieved from: '#{$key}'. "
+         + "Available options are: [#{map.keys($map)}].";
+  }
+}
+
+// *                 * //
+// * 1.2 DEPRECATED * //
+// *                 * //
+@mixin deprecated($old, $new) {
+  @warn "#{$old} has been deprecated. Use #{$new} instead.";
+}

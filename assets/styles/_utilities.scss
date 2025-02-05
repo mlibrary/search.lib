@@ -1,0 +1,30 @@
+@use './media';
+
+// --------------------------------------------------
+//
+// # Utilities
+//   Utilities contains mixins with naming conventions that are self-descriptive, single-purpose CSS.
+//
+// ## Table of Contents
+//   1. Flex
+//
+// --------------------------------------------------
+
+// *************** //
+// *** 1. FLEX *** //
+// *************** //
+
+@mixin flex($wrap: false, $align: center, $responsive: false) {
+  align-items: $align;
+  display: flex;
+  gap: 0.5rem 1rem;
+  @if $wrap {
+    flex-wrap: wrap;
+  }
+  @if $responsive != false {
+    flex-direction: column;
+    @include media.breakpoint(if($responsive == true, 'xs', $responsive)) {
+      flex-direction: row;
+    }
+  }
+}

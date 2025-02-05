@@ -1,0 +1,94 @@
+@use './forms';
+@use 'partials/header';
+@use 'partials/footer';
+
+// --------------------------------------------------
+//
+// # Layout
+//   Common building blocks for Search.
+//
+// ## Table of Contents
+//   1. Variables and Mixins
+//     1.1. Variables
+//     1.2. Mixins
+//   2. Containers
+//     2.1. Rounded containers
+//       2.1.1. No shadow
+//   3. Content
+//
+// --------------------------------------------------
+
+// ******************************* //
+// *** 1. VARIABLES AND MIXINS *** //
+// ******************************* //
+
+// *               * //
+// * 1.1 VARIABLES * //
+// *               * //
+
+$class: "container";
+
+
+
+// *            * //
+// * 1.2 MIXINS * //
+// *            * //
+
+@mixin no-shadow {
+  box-shadow: none;
+}
+
+
+
+
+
+// ********************* //
+// *** 2. CONTAINERS *** //
+// ********************* //
+
+.#{$class} {
+  margin: 0 auto;
+  max-width: 54rem;
+  padding: 0 .75rem;
+  @media print {
+    padding: 0;
+  }
+}
+
+// *                        * //
+// * 2.1 ROUNDED CONTAINERS * //
+// *                        * //
+
+.#{$class}__rounded {
+  background: white;
+  border-radius: forms.$radius;
+  box-shadow: 
+    0 2px 2px 0 var(--search-color-grey-400),
+    0 2px 4px 0 var(--search-color-grey-400);
+  @media print {
+    @include no-shadow;
+  }
+}
+
+// * 2.1.1 NO SHADOW * //
+.#{$class}__rounded--no-shadow {
+  @extend .#{$class}__rounded;
+  @include no-shadow;
+}
+
+
+
+
+
+// ****************** //
+// *** 3. CONTENT *** //
+// ****************** //
+
+.content {
+  & > *:first-child {
+    margin-top: 0;
+  }
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,90 @@
+// --------------------------------------------------
+//
+// # Typography
+//   Styling for common text elements and classes.
+//
+// ## Table of Contents
+//   1. Headings
+//   2. Sizes
+//   3. Weight
+//   4. Material Icons
+//     4.1 Filled
+//
+// --------------------------------------------------
+
+
+
+// ******************* //
+// *** 1. HEADINGS *** //
+// ******************* //
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.875rem;
+}
+
+
+
+
+
+// **************** //
+// *** 2. SIZES *** //
+// **************** //
+
+.text__large {
+  font-size: 1.125rem;
+}
+
+
+
+
+
+// ****************** //
+// *** 3. WEIGHTS *** //
+// ****************** //
+
+.strong {
+  font-weight: 700;
+}
+
+
+
+
+
+// ************************* //
+// *** 4. MATERIAL ICONS *** //
+// ************************* //
+
+[class^="material-symbols-"] {
+  font-size: 1em;
+  vertical-align: middle;
+}
+
+
+
+// *            * //
+// * 4.1 FILLED * //
+// *            * //
+
+.material-symbols-filled {
+  font-variation-settings: "FILL" 1;
+}

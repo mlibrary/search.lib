@@ -1,0 +1,37 @@
+@use '../utilities';
+@use './header/choose-affiliation';
+
+// --------------------------------------------------
+//
+// # Header
+//   Styles to apply directly to `views/partials/_header.erb`.
+//
+// ## Table of Contents
+//   1. m-website-header
+//   2. Print Styles
+//
+// --------------------------------------------------
+
+// *************************** //
+// *** 1. M-WEBSITE-HEADER *** //
+// *************************** //
+
+m-website-header > nav ul {
+  @include utilities.flex('true');
+}
+
+
+
+
+
+// *********************** //
+// *** 2. PRINT STYLES *** //
+// *********************** //
+
+.skip-links,
+m-universal-header,
+m-website-header {
+  @media print {
+    display: none;
+  }
+}

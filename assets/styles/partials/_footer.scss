@@ -1,0 +1,91 @@
+@use '../utilities';
+
+// --------------------------------------------------
+//
+// # Footer
+//   Styles to apply directly to `views/partials/_footer.erb`.
+//
+// ## Table of Contents
+//   1. Variables
+//   2. Footer
+//     2.1 Feedback
+//     2.2 Information
+//       2.2.1 Navigation
+//
+// --------------------------------------------------
+
+// ******************** //
+// *** 1. VARIABLES *** //
+// ******************** //
+
+$class: "footer";
+
+
+
+
+
+// ***************** //
+// *** 2. FOOTER *** //
+// ***************** //
+
+// *              * //
+// * 2.1 FEEDBACK * //
+// *              * //
+
+#{$class} .#{$class}__feedback {
+  @media print {
+    display: none;
+  }
+  .material-symbols-rounded {
+    margin-left: 0.25rem;
+  }
+}
+
+// *                 * //
+// * 2.2 INFORMATION * //
+// *                 * //
+
+#{$class} .#{$class}__information {
+  background: white;
+  border-top: 2px solid var(--search-color-grey-300);
+  padding-bottom: 3.5rem;
+  padding-top: 1.5rem;
+  text-align: center;
+  @media print {
+    padding-bottom: 0.25in;
+    padding-top: 0.25in;
+  }
+  &,
+  & a {
+    color: var(--search-color-grey-600);
+  }
+}
+
+// * 2.1.1 NAVIGATION * //
+
+#{$class} .#{$class}__information nav {
+  @media print {
+    display: none;
+  }
+  ul {
+    @include utilities.flex($wrap: true, $responsive: 'md');
+    & {
+      justify-content: center;
+      row-gap: 1.25rem;
+    }
+  }
+}
+
+
+
+
+
+// ***************** //
+// *** 3. M-CHAT *** //
+// ***************** //
+
+m-chat {
+  @media print {
+    display: none;
+  }
+}

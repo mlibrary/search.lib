@@ -1,0 +1,73 @@
+@use 'colors';
+
+// --------------------------------------------------
+//
+// # Base
+//   Foundational styles to help start the website.
+//
+// ## Table of Contents
+//   1. Body
+//   2. Main
+//   3. Focus
+//   4. Images
+//
+// --------------------------------------------------
+
+
+
+// *************** //
+// *** 1. BODY *** //
+// *************** //
+
+body {
+  background: var(--search-color-grey-200);
+  color: colors.$color-text;
+  font: 1rem/1.4 'Noto Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  @media print {
+    background: none;
+  }
+}
+
+
+
+
+
+// *************** //
+// *** 2. MAIN *** //
+// *************** //
+
+main {
+  flex-grow: 1;
+  padding-top: 1rem;
+  @media print {
+    padding: 0.5in
+  }
+}
+
+
+
+
+
+// **************** //
+// *** 3. FOCUS *** //
+// **************** //
+
+:focus {
+  border-radius: 2px;
+  box-shadow: 0 0 0 2px var(--color-maize-400), 0 0 0 3px var(--color-neutral-400) !important;
+  outline: 0;
+}
+
+
+
+
+
+// ***************** //
+// *** 4. IMAGES *** //
+// ***************** //
+
+img {
+  max-width: 100%;
+}
