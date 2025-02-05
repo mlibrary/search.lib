@@ -12,6 +12,9 @@
 .local
 .dotnet
 
+.gnupg
+.npm
+
 .env
 node_modules/
 vendor/
