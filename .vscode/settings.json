@@ -1,3 +1,4 @@
 {
-  "standardRuby.autofix": true
+    "standardRuby.autofix": true,
+    "editor.tabSize": 2
 }

@@ -9,7 +9,7 @@ export default [
         ...globals.browser,
         ...globals.node
       }
-    }
+    },
   },
   pluginJs.configs.all,
   stylistic.configs['recommended-flat'],

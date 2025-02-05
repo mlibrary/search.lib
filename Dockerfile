@@ -9,11 +9,11 @@ ARG NODE_MAJOR=20
 
 
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-    build-essential \
-    libtool \ 
-    libyaml-dev \
-    curl \
-    gpg
+  build-essential \
+  libtool \ 
+  libyaml-dev \
+  curl \
+  gpg
 
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
@@ -48,7 +48,7 @@ CMD ["bundle", "exec", "rackup", "-p", "4567", "--host", "0.0.0.0"]
 FROM base AS development
 
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-    vim-tiny
+  vim-tiny
 
 USER app
 
@@ -65,4 +65,7 @@ COPY --chown=${UID}:${GID} . /app
 USER app
 
 RUN bundle install
+
+RUN npm ci
+RUN npm run build
 
