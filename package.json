@@ -7,9 +7,11 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "npm run build:css",
+    "build": "npm run build:css && npm run build:js",
     "build:css": "sass $* assets/styles:public/styles --style=compressed",
-    "build:js": "npx esbuild \"assets/scripts/**/scripts.js\" \"assets/scripts/scripts.js\" --entry-names=[dir]/[name] --outbase=assets/scripts --bundle --minify --outdir=public/scripts $*",
+    "build:js": "npm run lint && npx esbuild \"assets/scripts/**/scripts.js\" \"assets/scripts/scripts.js\" --entry-names=[dir]/[name] --outbase=assets/scripts --bundle --minify --outdir=public/scripts $*",
+    "lint": "npx eslint . --ignore-pattern 'public/' $*",
+    "lint:fix": "npm run lint -- --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch:css": "npm run build:css -- --watch",
     "watch:js": "npm run build:js -- --watch=forever"
@@ -26,6 +28,7 @@
   "homepage": "https://github.com/mlibrary/search.application#readme",
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@stylistic/eslint-plugin": "^3.0.1",
     "chai": "^5.1.2",
     "esbuild": "^0.24.2",
     "eslint": "^9.19.0",
