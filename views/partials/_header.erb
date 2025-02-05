@@ -1,0 +1,28 @@
+<nav class="skip-links" aria-label="Skip links">
+  <ul class="viewport-container">
+    <li>
+      <a href="#maincontent">Skip to main content</a>
+    </li>
+    <li>
+      <a href="#chat">Skip to Ask a Librarian chat</a>
+    </li>
+  </ul>
+</nav>
+<m-universal-header></m-universal-header>
+<m-website-header name="Search" variant="dark">
+  <nav aria-label="Utility">
+    <ul>
+      <li>
+        <a href="https://account.lib.umich.edu/?utm_source=library-search" class="underline__none">
+          Account
+        </a>
+      </li>
+      <li>
+        <%#= erb :'partials/header/_login' %>
+      </li>
+      <li>
+        <%#= erb :'partials/header/_choose-affiliation', locals: { affiliations: settings.affiliations } %>
+      </li>
+    </ul>
+  </nav>
+</m-website-header>
