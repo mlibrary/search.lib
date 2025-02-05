@@ -5,13 +5,22 @@ FROM ruby:3.3-slim AS base
 
 ARG UID=1000
 ARG GID=1000
+ARG NODE_MAJOR=20
 
 
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-  build-essential \
-  libtool \ 
-  libyaml-dev
+    build-essential \
+    libtool \ 
+    libyaml-dev \
+    curl \
+    gpg
 
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+RUN echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR}.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends nodejs
+
+RUN npm install -g npm
 
 RUN groupadd -g ${GID} -o app
 RUN useradd -m -d /app -u ${UID} -g ${GID} -o -s /bin/bash app
@@ -23,7 +32,7 @@ RUN mkdir -p /gems && chown ${UID}:${GID} /gems
 
 ENV BUNDLE_PATH /app/vendor/bundle
 
-# Change to app and back so that bundler created files in /gmes are owned by the
+# Change to app and back so that bundler created files in /gems are owned by the
 # app user
 USER app
 RUN gem install bundler
@@ -39,7 +48,7 @@ CMD ["bundle", "exec", "rackup", "-p", "4567", "--host", "0.0.0.0"]
 FROM base AS development
 
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-  vim-tiny
+    vim-tiny
 
 USER app
 
