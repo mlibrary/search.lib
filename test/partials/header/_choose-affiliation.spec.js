@@ -2,7 +2,7 @@ import chooseAffiliation from '../../../assets/scripts/partials/header/_choose-a
 import { expect } from 'chai';
 import { JSDOM } from 'jsdom';
 
-describe('chooseAffiliation', () => {
+describe('chooseAffiliation', function () {
   const html = `
     <m-website-header>
       <nav>
@@ -41,13 +41,13 @@ describe('chooseAffiliation', () => {
     </m-website-header>
   `;
 
-  let window;
-  let document;
+  let window = null;
+  let document = null;
 
-  beforeEach(() => {
+  beforeEach(function () {
     const { window: jsdomWindow } = new JSDOM(html, { url: 'http://localhost/' });
     window = jsdomWindow;
-    document = window.document;
+    ({ document } = window);
     global.window = window;
     global.document = document;
 
@@ -77,51 +77,51 @@ describe('chooseAffiliation', () => {
     });
   });
 
-  afterEach(() => {
+  afterEach(function () {
     document.body.innerHTML = '';
     delete global.window;
     delete global.document;
     delete global.HTMLDialogElement;
   });
 
-  describe('anchor', () => {
-    it('replaces the anchor with a button', () => {
+  describe('anchor', function () {
+    it('should replace the anchor with a button', function () {
       // Check if the initial element is an anchor
       const initialElement = document.querySelector('.affiliation__change');
       expect(initialElement, 'anchor element should exist before modification').to.not.be.null;
       expect(initialElement.tagName, 'initial element should be an anchor tag').to.equal('A');
-  
+
       chooseAffiliation();
-  
+
       // Check if the anchor has been replaced by a button
       const modifiedElement = document.querySelector('.affiliation__change');
       expect(modifiedElement, 'button element should exist after modification').to.not.be.null;
       expect(modifiedElement.tagName, 'modified element should be a button tag').to.equal('BUTTON');
     });
-  
-    it('adds the same class and content to the button', () => {
+
+    it('should add the same class and content to the button', function () {
       // Get the classList and innerHTML of the initial anchor element
       const initialElement = document.querySelector('a.affiliation__change');
       const initialClassList = [...initialElement.classList];
       const initialInnerHTML = initialElement.innerHTML;
-  
+
       chooseAffiliation();
-  
+
       // Get the classList and innerHTML of the modified button element
       const modifiedElement = document.querySelector('button.affiliation__change');
       const modifiedClassList = [...modifiedElement.classList];
       const modifiedInnerHTML = initialElement.innerHTML;
-  
+
       expect(modifiedClassList, 'button element classList should match the anchor element classList').to.deep.equal(initialClassList);
       expect(modifiedInnerHTML, 'button element innerHTML should match the anchor element innerHTML').to.equal(initialInnerHTML);
     });
   });
 
-  describe('dialog', () => {
-    let buttonChangeAffiliation;
-    let dialog;
+  describe('dialog', function () {
+    let buttonChangeAffiliation = null;
+    let dialog = null;
 
-    beforeEach(() => {
+    beforeEach(function () {
       // Run the function before each test
       chooseAffiliation();
 
@@ -130,12 +130,12 @@ describe('chooseAffiliation', () => {
       dialog = document.querySelector('.affiliation__dialog');
     });
 
-    it('opens the dialog when the new button is clicked', () => {
+    it('should open the dialog when the new button is clicked', function () {
       buttonChangeAffiliation.click();
       expect(dialog.hasAttribute('open'), 'dialog element should have an `open` attribute').to.be.true;
     });
-  
-    it('closes the dialog when any dismiss button is clicked', () => {
+
+    it('should close the dialog when any dismiss button is clicked', function () {
       // Get all dismiss buttons
       const dismissButtons = document.querySelectorAll('.affiliation__dialog--dismiss');
 

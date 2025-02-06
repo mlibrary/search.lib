@@ -1,17 +1,21 @@
 import globals from 'globals';
+import mochaPlugin from 'eslint-plugin-mocha';
 import pluginJs from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 
 export default [
+  pluginJs.configs.all,
+  mochaPlugin.configs.flat.recommended,
   {
     languageOptions: {
       globals: {
         ...globals.browser,
+        ...globals.chai,
+        ...globals.mocha,
         ...globals.node
       }
-    },
+    }
   },
-  pluginJs.configs.all,
   stylistic.configs['recommended-flat'],
   {
     plugins: {
@@ -26,9 +30,18 @@ export default [
       '@stylistic/space-before-function-paren': ['error', 'always'],
       '@stylistic/spaced-comment': ['error', 'always', { block: { balanced: true } }],
       'arrow-body-style': ['error', 'always'],
+      'max-lines-per-function': 'off',
       'no-ternary': 'off',
       'one-var': ['error', { initialized: 'never' }],
       'sort-imports': ['error', { ignoreCase: true }]
+    }
+  },
+  {
+    files: ['test/**/*.spec.js'],
+    rules: {
+      'func-names': 'off',
+      'no-unused-expressions': 'off',
+      'prefer-arrow-callback': 'off'
     }
   }
 ];
