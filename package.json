@@ -14,7 +14,7 @@
     "lint": "npx eslint eslint.config.js ./assets/scripts/**/*.js ./test/**/*.js $*",
     "lint:fix": "npm run lint -- --fix",
     "test": "npm run test:mocha && npm run test:rspec",
-    "test:mocha": "npm run lint && npx mocha --recursive",
+    "test:mocha": "npm run lint && npx mocha --require ./test/setup.js --recursive",
     "test:rspec": "bundle exec rspec",
     "watch:css": "npm run build:css -- --watch",
     "watch:js": "npm run build:js -- --watch=forever"
