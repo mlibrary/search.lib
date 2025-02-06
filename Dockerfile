@@ -48,7 +48,9 @@ CMD ["bundle", "exec", "rackup", "-p", "4567", "--host", "0.0.0.0"]
 FROM base AS development
 
 RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
-  vim-tiny
+  vim-tiny\
+  git
+
 
 USER app
 

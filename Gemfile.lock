@@ -3,6 +3,7 @@ GEM
   specs:
     ast (2.4.2)
     base64 (0.2.0)
+    canister (0.9.2)
     date (3.4.1)
     debug (1.9.2)
       irb (~> 1.10)
@@ -122,6 +123,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  canister
   debug
   puma
   rackup

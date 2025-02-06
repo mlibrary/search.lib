@@ -1,5 +1,6 @@
 require "sinatra"
 require "puma"
+require_relative "lib/services"
 
 get "/" do
   redirect to("/everything")
