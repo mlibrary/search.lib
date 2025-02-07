@@ -2,6 +2,7 @@ require "sinatra"
 require "puma"
 require "ostruct"
 require_relative "lib/services"
+require_relative "lib/search"
 
 datastores = [
   {slug: "everything", title: "Everything"},
