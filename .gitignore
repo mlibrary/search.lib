@@ -5,6 +5,7 @@
 .cache
 .bundle
 .DS_Store
+coverage/
 
 .ruby-lsp
 .vscode-server
