@@ -1,4 +1,3 @@
-require "spec_helper"
 RSpec.describe "requests" do
   context "/" do
     it "redirects to /everything" do
