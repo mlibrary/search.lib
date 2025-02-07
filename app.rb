@@ -28,6 +28,11 @@ get "/" do
   redirect to("/everything")
 end
 
+get "/everything" do
+  @presenter = Search::Presenters.everything
+  erb :"datastores/everything"
+end
+
 datastores.each do |datastore|
   get "/#{datastore[:slug]}" do
     @presenter.title = datastore[:title]
@@ -38,7 +43,6 @@ datastores.each do |datastore|
       erb :"datastores/#{datastore[:slug]}"
     end
   end
-end
 
 [
   {slug: "about-library-search", title: "About Library Search"},
