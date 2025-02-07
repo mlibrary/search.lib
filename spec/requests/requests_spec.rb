@@ -9,9 +9,10 @@ RSpec.describe "requests" do
     end
   end
   context "/everything" do
-    it "has a title" do
+    it "has a title and icons" do
       get "/everything"
-      expect(last_response.body).to include("PLACEHOLDER TITLE")
+      expect(last_response.body).to include("PLACEHOLDER_TITLE")
+      expect(last_response.body).to include("open_in_new")
     end
   end
 end

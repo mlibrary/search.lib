@@ -3,13 +3,22 @@ require "puma"
 require "ostruct"
 require_relative "lib/services"
 
+before do
+end
+
+helpers do
+  def add_to_icons(icon)
+    @icons << icon
+  end
+end
+
 get "/" do
   redirect to("/everything")
 end
 
 get "/everything" do
-  presenter = OpenStruct.new(title: "PLACEHOLDER_TITLE", icons: ["dashboard", "open_in_new", "search"])
-  erb :"datastores/everything", locals: {presenter: presenter}
+  @presenter = OpenStruct.new(title: "PLACEHOLDER_TITLE", icons: "dashboard,open_in_new,search")
+  erb :"datastores/everything"
 end
 
 # Read all files in views/pages to automatically create routes
