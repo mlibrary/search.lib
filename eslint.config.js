@@ -31,6 +31,7 @@ export default [
       '@stylistic/spaced-comment': ['error', 'always', { block: { balanced: true } }],
       'arrow-body-style': ['error', 'always'],
       'max-lines-per-function': 'off',
+      'max-statements': 'off',
       'no-ternary': 'off',
       'one-var': ['error', { initialized: 'never' }],
       'sort-imports': ['error', { ignoreCase: true }]

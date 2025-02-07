@@ -56,16 +56,110 @@ describe('chooseAffiliation', function () {
   });
 
   describe('anchor', function () {
+    it('should remain unchanged if `websiteHeader` is `null`', function () {
+      // Get the unordered list element
+      const websiteHeader = 'm-website-header > nav > ul';
+      const unorderedList = document.querySelector(websiteHeader);
+      const unorderedListHTML = unorderedList.innerHTML;
+
+      // Change to an ordered list element
+      unorderedList.replaceWith(document.createElement('ol'));
+      const orderedList = document.querySelector('m-website-header > nav > ol');
+      orderedList.innerHTML = unorderedListHTML;
+
+      // Retrieve anchor
+      const getAnchor = () => {
+        return document.querySelector('.affiliation__change');
+      };
+
+      // Check if `.affiliation__change` is an anchor
+      const initialElement = getAnchor();
+      expect(initialElement, 'anchor element should exist before modification').to.not.be.null;
+      expect(initialElement.tagName, 'initial element should be an anchor tag').to.equal('A');
+
+      chooseAffiliation();
+
+      // Check if `.affiliation__change` is still an anchor
+      const modifiedElement = getAnchor();
+      expect(modifiedElement, 'anchor element should still exist after modification').to.not.be.null;
+      expect(modifiedElement.tagName, 'modified element should still be an anchor tag').to.equal('A');
+    });
+
+    it('should remain unchanged if `dialog` element does not exist', function () {
+      // Retrieve the dialog
+      const getDialog = () => {
+        return document.querySelector('.affiliation__dialog');
+      };
+      expect(getDialog(), 'dialog should exist before modification').to.not.be.null;
+
+      // Remove the dialog class, and retrieve again
+      getDialog().classList.remove('affiliation__dialog');
+      expect(getDialog(), 'dialog should no longer be found').to.be.null;
+
+      // Retrieve anchor
+      const getAnchor = () => {
+        return document.querySelector('.affiliation__change');
+      };
+
+      // Check if `.affiliation__change` is an anchor
+      const initialElement = getAnchor();
+      expect(initialElement, 'anchor element should exist before modification').to.not.be.null;
+      expect(initialElement.tagName, 'initial element should be an anchor tag').to.equal('A');
+
+      chooseAffiliation();
+
+      // Check if `.affiliation__change` is still an anchor
+      const modifiedElement = getAnchor();
+      expect(modifiedElement, 'anchor element should still exist after modification').to.not.be.null;
+      expect(modifiedElement.tagName, 'modified element should still be an anchor tag').to.equal('A');
+    });
+
+    it('should remain unchanged if a dismiss button does not exist', function () {
+      // Retrieve the dismiss buttons
+      const getDismissButtons = () => {
+        return document.querySelectorAll('.affiliation__dialog--dismiss');
+      };
+      expect(getDismissButtons(), 'at least one dismiss button should exist in order to close the dialog element').to.not.be.empty;
+
+      // Remove the dismiss class, and retrieve again
+      getDismissButtons().forEach((dismissButton) => {
+        dismissButton.classList.remove('affiliation__dialog--dismiss');
+      });
+      expect(getDismissButtons(), 'no dismiss buttons should be found').to.be.empty;
+
+      // Retrieve anchor
+      const getAnchor = () => {
+        return document.querySelector('.affiliation__change');
+      };
+
+      // Check if `.affiliation__change` is an anchor
+      const initialElement = getAnchor();
+      expect(initialElement, 'anchor element should exist before modification').to.not.be.null;
+      expect(initialElement.tagName, 'initial element should be an anchor tag').to.equal('A');
+
+      chooseAffiliation();
+
+      // Check if `.affiliation__change` is still an anchor
+      const modifiedElement = getAnchor();
+      expect(modifiedElement, 'anchor element should still exist after modification').to.not.be.null;
+      expect(modifiedElement.tagName, 'modified element should still be an anchor tag').to.equal('A');
+    });
+
     it('should replace the anchor with a button', function () {
+      // Retrieve anchor
+      const getAnchor = () => {
+        return document.querySelector('.affiliation__change');
+      };
+
       // Check if the initial element is an anchor
-      const initialElement = document.querySelector('.affiliation__change');
+      const initialElement = getAnchor();
       expect(initialElement, 'anchor element should exist before modification').to.not.be.null;
       expect(initialElement.tagName, 'initial element should be an anchor tag').to.equal('A');
 
       chooseAffiliation();
 
       // Check if the anchor has been replaced by a button
-      const modifiedElement = document.querySelector('.affiliation__change');
+      const modifiedElement = getAnchor();
       expect(modifiedElement, 'button element should exist after modification').to.not.be.null;
       expect(modifiedElement.tagName, 'modified element should be a button tag').to.equal('BUTTON');
     });
