@@ -1,5 +1,6 @@
 require "sinatra"
 require "puma"
+require "ostruct"
 require_relative "lib/services"
 
 get "/" do
@@ -7,7 +8,8 @@ get "/" do
 end
 
 get "/everything" do
-  erb "Hello World"
+  presenter = OpenStruct.new(title: "PLACEHOLDER_TITLE", icons: ["dashboard", "open_in_new", "search"])
+  erb :"datastores/everything", locals: {presenter: presenter}
 end
 
 # Read all files in views/pages to automatically create routes
