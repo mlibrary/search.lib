@@ -8,9 +8,19 @@
 //   Styling for common form elements and classes.
 //
 // ## Table of Contents
-//   1. Variables
-//   2. Navigation
-//   3. Anchors
+//   1. Variables and Mixins
+//     1.1. Variables
+//     1.2. Mixins
+//   2. Inputs
+//     2.1. Checkboxes
+//     2.2. Radio Buttons
+//   3. Select
+//   4. Textarea
+//   5. Buttons
+//     5.1. Primary
+//     5.2. Ghost
+//       5.2.1 Active
+//     5.3. Link
 //
 // --------------------------------------------------
 
@@ -103,7 +113,7 @@ input:not([type="checkbox"], [type="radio"]) {
 
 
 // *                * //
-// * 4.1 CHECKBOXES * //
+// * 2.1 CHECKBOXES * //
 // *                * //
 
 input[type="checkbox"] {
@@ -130,7 +140,7 @@ input[type="checkbox"] {
 
 
 // *                   * //
-// * 4.1 RADIO BUTTONS * //
+// * 2.2 RADIO BUTTONS * //
 // *                   * //
 
 input[type="radio"] {
@@ -170,7 +180,7 @@ select {
 
 
 // ******************* //
-// *** 3. TEXTAREA *** //
+// *** 4. TEXTAREA *** //
 // ******************* //
 
 textarea {
@@ -183,11 +193,11 @@ textarea {
 
 
 // ****************** //
-// *** 3. BUTTONS *** //
+// *** 5. BUTTONS *** //
 // ****************** //
 
 // *             * //
-// * 4.1 PRIMARY * //
+// * 5.1 PRIMARY * //
 // *             * //
 
 button,
@@ -211,11 +221,12 @@ input[type="submit"],
 
 
 // *           * //
-// * 4.1 GHOST * //
+// * 5.2 GHOST * //
 // *           * //
 
 .button__ghost {
   @include button;
+  background: $background;
   border: 1px solid currentColor;
   color: var(--search-color-grey-600);
   font-size: 0.875rem;
@@ -227,14 +238,25 @@ input[type="submit"],
   }
 }
 
+// * 5.2.1 ACTIVE * //
+
+.button__ghost--active {
+  background: var(--search-color-blue-200);
+  color: var(--search-color-blue-500);
+  &:not(:disabled):hover {
+    background: var(--search-color-blue-200);
+  }
+}
+
 
 
 // *          * //
-// * 4.1 LINK * //
+// * 5.3 LINK * //
 // *          * //
 
 .button__link {
   @extend .button__ghost;
+  background: transparent;
   border: 0;
   text-decoration: underline;
 }
