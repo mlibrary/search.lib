@@ -70,7 +70,9 @@
   <!-- End Google Tag Manager (noscript) -->
   <%= erb :'partials/_header' %>
   <main>
-    <%= yield %>
+    <div class="container">
+      <%= yield %>
+    </div>
   </main>
   <%= erb :'partials/_footer' %>
   <script defer src="/scripts/partials/scripts.js"></script>
