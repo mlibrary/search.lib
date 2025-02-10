@@ -71,6 +71,7 @@
   </noscript>
   <!-- End Google Tag Manager (noscript) -->
   <%= erb :'partials/_header' %>
+  <%= erb :'datastores/partials/_navigation', locals: { datastores: @datastores } %>
   <main>
     <div class="container">
       <%= yield %>

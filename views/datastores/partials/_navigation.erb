@@ -1,0 +1,11 @@
+<nav aria-label="Primary" class="primary-navigation">
+  <ul>
+    <% datastores.each do |datastore| %>
+      <li>
+        <a href="/<%= datastore[:slug] %>" class="underline__none" aria-current="<%= request.path.split('/')[1] == datastore[:slug] ? "page" : nil %>">
+          <% if datastore[:slug] == "everything" %><span class="material-symbols-rounded material-symbols-filled" aria-hidden="true">dashboard</span><% end %><span><%= datastore[:title] %></span>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</nav>

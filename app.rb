@@ -3,22 +3,25 @@ require "puma"
 require "ostruct"
 require_relative "lib/services"
 
-before do
-  @presenter = OpenStruct.new(title: "PLACEHOLDER_TITLE", icons: "dashboard,open_in_new,search")
-end
-
-get "/" do
-  redirect to("/everything")
-end
-
-[
+datastores = [
   {slug: "everything", title: "Everything"},
   {slug: "catalog", title: "Catalog"},
   {slug: "articles", title: "Articles"},
   {slug: "databases", title: "Databases"},
   {slug: "onlinejournals", title: "Online Journals"},
   {slug: "guidesandmore", title: "Guides and More"}
-].each do |datastore|
+]
+
+before do
+  @presenter = OpenStruct.new(title: "PLACEHOLDER_TITLE", icons: "dashboard,open_in_new,search")
+  @datastores = datastores
+end
+
+get "/" do
+  redirect to("/everything")
+end
+
+datastores.each do |datastore|
   get "/#{datastore[:slug]}" do
     @presenter.title = datastore[:title]
     erb :"datastores/layout", layout: :layout do

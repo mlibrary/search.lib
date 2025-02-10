@@ -1,0 +1,82 @@
+@use '../../colors';
+@use '../../media';
+@use '../../utilities';
+
+// --------------------------------------------------
+//
+// # Navigation
+//   Styles to apply directly to `views/datastore/partials/_navigation.erb`.
+//
+// ## Table of Contents
+//   1. Variables
+//   2. Navigation
+//     2.1 Anchors
+//
+// --------------------------------------------------
+
+// ******************** //
+// *** 1. VARIABLES *** //
+// ******************** //
+
+$breakpoint: 'sm';
+$class: 'primary-navigation';
+
+
+
+
+
+// ********************* //
+// *** 2. NAVIGATION *** //
+// ********************* //
+
+.#{$class} {
+  background: var(--search-color-grey-100);
+  border-bottom: 2px solid var(--search-color-grey-300);
+  @media print {
+    display: none;
+  }
+  ul {
+    @include utilities.flex($align: stretch, $wrap: true, $responsive: $breakpoint);
+    & {
+      gap: 0;
+    }
+    @include media.breakpoint($breakpoint) {
+      justify-content: center;
+    }
+    li + li {
+      border-top: 1px solid var(--search-color-grey-300);
+      @include media.breakpoint($breakpoint) {
+        border-top: 0;
+      }
+    }
+  }
+}
+
+
+
+// *               * //
+// * 2.1. ANCHORS  * //
+// *               * //
+
+.#{$class} a {
+  border: 0 solid transparent;
+  border-width: 0 0 0 3px;
+  display: block;
+  padding: .5rem 1rem;
+  @include media.breakpoint($breakpoint) {
+    border-width: 0 0 3px 0;
+  }
+  &[aria-current="page"] {
+    border-color: currentColor;
+  }
+  &:not([aria-current="page"]) {
+    color: colors.$color-text;
+    .material-symbols-rounded {
+      color: var(--search-color-grey-400);
+    }
+  }
+  .material-symbols-rounded {
+    font-size: 1.25rem;
+    margin-right: 0.25rem;
+  }
+}
