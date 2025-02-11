@@ -13,8 +13,14 @@ datastores = [
 ]
 
 before do
-  @presenter = OpenStruct.new(title: "PLACEHOLDER_TITLE", icons: "dashboard,open_in_new,search")
+  @current_datastore = datastores.find { |datastore| datastore[:slug] == request.path_info.split("/")[1] }
   @datastores = datastores
+  @presenter = OpenStruct.new(
+    title: "PLACEHOLDER_TITLE",
+    icons: ["open_in_new"],
+    styles: ["styles.css"],
+    scripts: ["partials/scripts.js"]
+  )
 end
 
 get "/" do
@@ -24,6 +30,9 @@ end
 datastores.each do |datastore|
   get "/#{datastore[:slug]}" do
     @presenter.title = datastore[:title]
+    @presenter.icons << ["dashboard", "info", "search"]
+    @presenter.styles << "datastores/styles.css"
+    @presenter.scripts << "datastores/partials/scripts.js"
     erb :"datastores/layout", layout: :layout do
       erb :"datastores/#{datastore[:slug]}"
     end
@@ -36,6 +45,7 @@ end
 ].each do |page|
   get "/#{page[:slug]}" do
     @presenter.title = page[:title]
+    @presenter.styles << "pages/styles.css"
     erb :"pages/layout", layout: :layout do
       erb :"pages/#{page[:slug]}"
     end

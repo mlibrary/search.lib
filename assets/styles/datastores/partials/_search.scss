@@ -1,0 +1,148 @@
+@use '../../colors';
+@use '../../media';
+@use '../../utilities';
+
+// --------------------------------------------------
+//
+// # Navigation
+//   Styles to apply directly to `views/datastore/partials/_navigation.erb`.
+//
+// ## Table of Contents
+//   1. Variables
+//   2. Search Form
+//   3. Inputs
+//     3.1 Select
+//     3.2 Input
+//     3.3 Button
+//     3.4 Advanced
+//   4. Tip
+//
+// --------------------------------------------------
+
+// ******************** //
+// *** 1. VARIABLES *** //
+// ******************** //
+
+$class: 'search-form';
+
+
+
+
+
+// ********************** //
+// *** 2. SEARCH FORM *** //
+// ********************** //
+
+.#{$class} {
+  background: var(--search-color-blue-200);
+  border-bottom: 2px solid var(--search-color-blue-300);
+  padding: 1rem 0;
+  @media print {
+    display: none;
+  }
+}
+
+
+
+
+
+// ***************** //
+// *** 3. INPUTS *** //
+// ***************** //
+
+.#{$class}__inputs {
+  display: grid;
+  gap: .75rem;
+  grid-template-areas:
+    "dropdown dropdown"
+    "input button"
+    "advanced advanced";
+  grid-template-columns: 1fr auto;
+  @include media.breakpoint('xs') {
+    gap: 0.75rem 0;
+    grid-template-areas:
+      "dropdown input button"
+      "advanced advanced advanced";
+    grid-template-columns: 250px 1fr auto;
+  }
+  @include media.breakpoint('md') {
+    grid-template-areas: "dropdown input button advanced";
+    grid-template-columns: 300px 1fr auto auto;
+  }
+}
+
+
+
+// *            * //
+// * 3.1 SELECT * //
+// *            * //
+
+.#{$class}__inputs select {
+  border-color: var(--search-color-blue-400);
+  grid-area: dropdown;
+  @include media.breakpoint('xs') {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+
+
+// *           * //
+// * 3.2 INPUT * //
+// *           * //
+
+.#{$class}__inputs input {
+  border-color: var(--search-color-blue-400);
+  grid-area: input;
+  @include media.breakpoint('xs') {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+
+
+// *            * //
+// * 3.3 BUTTON * //
+// *            * //
+
+.#{$class}__inputs button {
+  grid-area: button;
+  font-size: 1.5rem;
+  @include media.breakpoint('xs') {
+    margin: 0 0.75rem;
+  }  
+}
+
+
+
+// *              * //
+// * 3.4 ADVANCED * //
+// *              * //
+
+.#{$class}__inputs a {
+  align-self: center;
+  grid-area: advanced;
+  text-align: center;
+}
+
+
+
+
+
+// ************** //
+// *** 4. TIP *** //
+// ************** //
+
+.#{$class}__tip {
+  @include utilities.flex();
+  align-items: baseline;
+  display: none;
+  margin-top: 1rem;
+  p {
+    display: none;
+    margin: 0;
+  }
+}

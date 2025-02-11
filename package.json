@@ -10,7 +10,7 @@
   "scripts": {
     "build": "npm run build:css && npm run build:js",
     "build:css": "sass $* assets/styles:public/styles --style=compressed",
-    "build:js": "npm run lint && npx esbuild \"assets/scripts/**/scripts.js\" \"assets/scripts/scripts.js\" --entry-names=[dir]/[name] --outbase=assets/scripts --bundle --minify --outdir=public/scripts $*",
+    "build:js": "npm run lint && npx esbuild \"assets/scripts/**/scripts.js\" --entry-names=[dir]/[name] --outbase=assets/scripts --bundle --minify --outdir=public/scripts $*",
     "lint": "npx eslint eslint.config.js assets/scripts/ test/ $*",
     "lint:fix": "npm run lint -- --fix",
     "test": "npm run test:mocha && npm run test:rspec",

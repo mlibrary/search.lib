@@ -24,15 +24,13 @@
   <link href="https://cdn.jsdelivr.net/npm/@umich-lib/design-system/dist/umich-lib.min.css" rel="stylesheet" />
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,300..700;1,62.5..100,300..700&display=swap" as="style" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,300..700;1,62.5..100,300..700&display=swap" rel="stylesheet" />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=<%=@presenter.icons%>" as="style" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=<%=@presenter.icons%>" rel="stylesheet" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=<%= @presenter.icons.flatten.uniq.sort.join(",") %>" as="style" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0&icon_names=<%= @presenter.icons.flatten.uniq.sort.join(",") %>" rel="stylesheet" />
   <script async type="module" src="https://cdn.jsdelivr.net/npm/@umich-lib/design-system/dist/umich-lib-components.min.js"></script>
-  <link rel="preload" href="/styles/styles.css" as="style" />
-  <link href="/styles/styles.css" rel="stylesheet">
-  <link rel="preload" href="/styles/pages/styles.css" as="style" />
-  <link href="/styles/pages/styles.css" rel="stylesheet">
-  <link rel="preload" href="/styles/datastores/styles.css" as="style" />
-  <link href="/styles/datastores/styles.css" rel="stylesheet">
+  <% @presenter.styles.flatten.each do |stylesheet| %>
+    <link rel="preload" href="/styles/<%= stylesheet %>" as="style" />
+    <link href="/styles/<%= stylesheet %>" rel="stylesheet">
+  <% end %>
   <!-- Google Tag Manager -->
   <script>
     (function (w, d, s, l, i) {
@@ -71,13 +69,18 @@
   </noscript>
   <!-- End Google Tag Manager (noscript) -->
   <%= erb :'partials/_header' %>
-  <%= erb :'datastores/partials/_navigation', locals: { datastores: @datastores } %>
+  <% if @current_datastore %>
+    <%= erb :'datastores/partials/_search', locals: { current_datastore: @current_datastore[:slug] } %>
+    <%= erb :'datastores/partials/_navigation', locals: { current_datastore: @current_datastore[:slug], datastores: @datastores } %>
+  <% end %>
   <main>
     <div class="container">
       <%= yield %>
     </div>
   </main>
   <%= erb :'partials/_footer' %>
-  <script defer src="/scripts/partials/scripts.js"></script>
+  <% @presenter.scripts.flatten.each do |script| %>
+    <script defer src="/scripts/<%= script %>"></script>
+  <% end %>
 </body>
 </html>
