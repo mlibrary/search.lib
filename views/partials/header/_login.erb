@@ -1,4 +1,4 @@
-<% session[:uniqname] = nil %>
-<a href="/login?dest=%2Feverything" class="underline__none">
-  Log <%= session[:uniqname] ? 'out' : 'in' %>
+<% logging = logged_in ? 'out' : 'in' %>
+<a href="/log<%= logging %>" class="underline__none">
+  Log <%= logging %>
 </a>

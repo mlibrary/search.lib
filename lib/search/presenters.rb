@@ -41,7 +41,7 @@ module Search::Presenters
       title: page[:title],
       icons: Icons.new,
       styles: ["styles.css", "pages/styles.css"],
-      scripts: ["scripts.js"]
+      scripts: ["scripts.js", "partials/scripts.js"]
     )
   end
 end

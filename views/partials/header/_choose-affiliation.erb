@@ -1,7 +1,7 @@
 <%
   affiliations = [
-    {active: true, name: "Ann Arbor", uid: "aa"},
-    {active: false, name: "Flint", uid: "flint"}
+    {active: current_affiliation == "aa", name: "Ann Arbor", uid: "aa"},
+    {active: current_affiliation == "flint", name: "Flint", uid: "flint"}
   ]
   inactive_affiliation = affiliations.find { |affiliation| !affiliation[:active] }
   request.params["affiliation"] = inactive_affiliation[:uid]
