@@ -1,5 +1,7 @@
+@use '../colors';
 @use '../utilities';
 @use './header/choose-affiliation';
+@use './header/logo';
 
 // --------------------------------------------------
 //
@@ -7,31 +9,63 @@
 //   Styles to apply directly to `views/partials/_header.erb`.
 //
 // ## Table of Contents
-//   1. m-website-header
-//   2. Print Styles
+//   1. Skip Links
+//   2. m-website-header
+//   3. Print Logo
 //
 // --------------------------------------------------
 
-// *************************** //
-// *** 1. M-WEBSITE-HEADER *** //
-// *************************** //
+// *********************** //
+// *** 1. PRINT STYLES *** //
+// *********************** //
 
-m-website-header > nav ul {
-  @include utilities.flex('true');
+@media print {
+  .skip-links,
+  m-universal-header,
+  m-website-header {
+    display: none;
+  }
 }
 
 
 
 
 
-// *********************** //
-// *** 2. PRINT STYLES *** //
-// *********************** //
+// *************************** //
+// *** 2. M-WEBSITE-HEADER *** //
+// *************************** //
 
-.skip-links,
-m-universal-header,
 m-website-header {
-  @media print {
+  font-family: var(--font-base-family);
+  nav,
+  nav ul {
+    @include utilities.flex($wrap: true);
+  }
+  nav {
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    body:not([class]) & {
+      all: unset;
+      .logo {
+        display: none;
+      }
+    }
+  }
+}
+
+
+
+
+
+// ********************* //
+// *** 3. PRINT LOGO *** //
+// ********************* //
+
+.logo__print {
+  padding: 0.5in;
+  padding-bottom: 0;
+  @media screen {
     display: none;
   }
 }

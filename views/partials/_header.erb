@@ -10,7 +10,8 @@
 </nav>
 <m-universal-header></m-universal-header>
 <m-website-header name="Search" variant="dark">
-  <nav aria-label="Utility">
+  <nav aria-label="Utility" class="viewport-container">
+    <%= erb :'partials/header/_logo' %>
     <ul>
       <li>
         <a href="https://account.lib.umich.edu/?utm_source=library-search" class="underline__none">
@@ -26,3 +27,6 @@
     </ul>
   </nav>
 </m-website-header>
+<div class="logo__print">
+  <%= erb :'partials/header/_logo' %>
+</div>

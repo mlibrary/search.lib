@@ -1,0 +1,41 @@
+@use '../../colors';
+@use '../../utilities';
+
+// --------------------------------------------------
+//
+// # Logo
+//   Styles to apply directly to `views/partials/header/_logo.erb`.
+//
+// ## Table of Contents
+//   1. Logo
+//
+// --------------------------------------------------
+
+
+
+// *************** //
+// *** 1. LOGO *** //
+// *************** //
+
+.logo {
+  @include utilities.flex($wrap: true);
+  & {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+  svg {
+    margin-top: 0.25rem;
+    max-width: 100%;
+    .logo__fill {
+      fill: white;
+      @media print {
+        fill: var(--color-blue-400);
+      }
+    }
+  }
+  a {
+    @media print {
+      color: colors.$color-text;
+    }
+  }
+}
