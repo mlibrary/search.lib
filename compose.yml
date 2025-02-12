@@ -27,11 +27,9 @@ services:
         command:
             - bundle
             - exec
-            - rackup
-            - -p
-            - "4567"
-            - --host
-            - 0.0.0.0
+            - puma
+            - -b
+            - "tcp://0.0.0.0:4567"
 
     js:
         build:

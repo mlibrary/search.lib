@@ -5,6 +5,13 @@ gem "puma"
 gem "rackup"
 gem "canister"
 
+group :metrics do
+  gem "yabeda-puma-plugin"
+  gem "yabeda-prometheus"
+  gem "prometheus-client",
+    require: File.expand_path(File.join("lib", "metrics"), __dir__)
+end
+
 group :development, :test do
   gem "debug"
 end
