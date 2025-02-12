@@ -19,7 +19,7 @@ before do
     title: "PLACEHOLDER_TITLE",
     icons: ["open_in_new"],
     styles: ["styles.css"],
-    scripts: ["partials/scripts.js"]
+    scripts: ["scripts.js", "partials/scripts.js"]
   )
 end
 
