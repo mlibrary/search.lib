@@ -9,7 +9,7 @@ datastores = Search::Presenters.datastores
 before do
   @current_datastore = datastores.find { |datastore| datastore[:slug] == request.path_info.split("/")[1] }
   @datastores = datastores
-  @patron = Openstruct(
+  @patron = OpenStruct.new(
     email: "",
     sms: "",
     affiliation: "aa", # flint || aa
