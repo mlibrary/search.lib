@@ -21,6 +21,8 @@
   @include utilities.flex($wrap: true);
   & {
     font-size: 1.5rem;
+    letter-spacing: 0.5px;
+    line-height: 1.25;
     text-transform: uppercase;
   }
   svg {
@@ -37,5 +39,29 @@
     @media print {
       color: colors.$color-text;
     }
+  }
+}
+
+/*                */
+/* 1.1. ANIMATION */
+/*                */
+
+@keyframes adjustHeight {
+  from { height: 0; }
+  to { height: auto; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 100; }
+}
+
+@media screen {
+  body:not([class]) .logo {
+    animation:
+      adjustHeight 0.5s 0s forwards,
+      fadeIn 1s 0.5s forwards;
+    height: 0;
+    opacity: 0;
   }
 }

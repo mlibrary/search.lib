@@ -10,8 +10,9 @@
 //
 // ## Table of Contents
 //   1. Skip Links
-//   2. m-website-header
-//   3. Print Logo
+//   2. m-universal-header
+//   3. m-website-header
+//   4. Print Logo
 //
 // --------------------------------------------------
 
@@ -31,8 +32,20 @@
 
 
 
+// ***************************** //
+// *** 2. M-UNIVERSAL-HEADER *** //
+// ***************************** //
+
+body:not([class]) m-universal-header {
+  min-height: 35px;
+}
+
+
+
+
+
 // *************************** //
-// *** 2. M-WEBSITE-HEADER *** //
+// *** 3. M-WEBSITE-HEADER *** //
 // *************************** //
 
 m-website-header {
@@ -59,7 +72,7 @@ m-website-header {
 
 
 // ********************* //
-// *** 3. PRINT LOGO *** //
+// *** 4. PRINT LOGO *** //
 // ********************* //
 
 .logo__print {
