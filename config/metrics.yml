@@ -33,4 +33,4 @@ metrics:
 puma:
   control_app_url: <%= ENV.fetch("PUMA_CONTROL_APP", "tcp://0.0.0.0:9293") %>
   control_app_token: <%= ENV.fetch("PUMA_CONTROL_TOKEN", false) %>
-  prometheus_exporter_url: <%= ENV.fetch("PROMETHEUS_EXPORTER_URL", "tcp://0.0.0.0:9100") %>
+  prometheus_exporter_url: <%= ENV.fetch("PROMETHEUS_EXPORTER_URL", "tcp://0.0.0.0:9100/metrics") %>
