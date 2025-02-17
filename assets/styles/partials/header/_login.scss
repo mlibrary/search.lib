@@ -1,0 +1,26 @@
+@use '../../colors';
+@use '../../utilities';
+
+// --------------------------------------------------
+//
+// # Login
+//   Styles to apply directly to `views/partials/header/_login.erb`.
+//
+// ## Table of Contents
+//   1. Button
+//
+// --------------------------------------------------
+
+
+
+// ***************** //
+// *** 1. BUTTON *** //
+// ***************** //
+
+#login_form button {
+  all: unset;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,4 +1,10 @@
-<% logging = logged_in ? 'out' : 'in' %>
-<a href="/log<%= logging %>" class="underline__none">
-  Log <%= logging %>
-</a>
+<% if logged_in %>
+  <a href="/logout" class="underline__none">
+    Log out
+  </a>
+<% else %>
+  <form id="login_form" method="post" action="/key-change">
+    <input type="hidden" name="authenticity_token" value="<%#= request.env["rack.session"]["csrf"] %>">
+    <button type="submit">Log in</button>
+  </form>
+<% end %>
