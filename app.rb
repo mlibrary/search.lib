@@ -30,14 +30,16 @@ helpers do
       uri.query = URI.encode_www_form(params)
     end
 
-    classes_attribute = classes ? "class=\"#{classes.join(" ")}\"" : nil
-    open_in_new_attributes = open_in_new ? "target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"#{body} - opens in new window\"" : nil
+    class_attribute = classes ? "class=\"#{classes.join(" ")}\"" : nil
     attributes = [
       "href=\"#{uri}\"",
-      classes_attribute,
-      open_in_new_attributes
+      class_attribute
     ].compact
-    anchor_content = open_in_new ? "#{body}<span class=\"material-symbols-rounded\" aria-hidden=\"true\">open_in_new</span>" : body
+    anchor_content = body
+    if open_in_new
+      attributes << "target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"#{body} - opens in new window\""
+      anchor_content += "<span class=\"material-symbols-rounded\" aria-hidden=\"true\">open_in_new</span>"
+    end
 
     "<a #{attributes.join(" ")}>#{anchor_content}</a>"
   end
