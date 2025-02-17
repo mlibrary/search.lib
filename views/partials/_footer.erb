@@ -1,7 +1,9 @@
 <footer>
   <section class="footer__feedback">
     <div class="container">
-      <p><a href="https://umich.qualtrics.com/jfe/form/SV_bCwYIKueEXs8wBf?utm_source=library-search" target="_blank" rel="noopener noreferrer" aria-label="Give feedback about this page - Opens in new window">Give feedback about this page<span class="material-symbols-rounded" aria-hidden="true">open_in_new</span></a></p>
+      <p>
+        <%= link_to(body: "Give feedback about this page", url: "https://umich.qualtrics.com/jfe/form/SV_bCwYIKueEXs8wBf", open_in_new: true) %>
+      </p>
     </div>
   </section>
   <section class="footer__information">
@@ -9,26 +11,26 @@
       <nav aria-label="Footer">
         <ul>
           <li>
-            <%= link_to(body:"Home", url: "/everything", open_in_new: true) %>
+            <%= link_to(body: "Home", url: "/everything") %>
           </li>
           <li>
-            <a href="/accessibility">Accessibility</a>
+            <%= link_to(body: "Accessibility", url: "/accessibility") %>
           </li>
           <li>
-            <%= link_to(body: "Tips for Using Library Search", url:"https://guides.lib.umich.edu/c.php?g=914690")%>
+            <%= link_to(body: "Tips for Using Library Search", url:"https://guides.lib.umich.edu/c.php?g=914690") %>
           </li>
           <li>
-            <a href="https://lib.umich.edu/research-and-scholarship/help-research/how-we-can-help?utm_source=library-search">Get research help</a>
+            <%= link_to(body: "Get research help", url: "https://lib.umich.edu/research-and-scholarship/help-research/how-we-can-help") %>
           </li>
           <li>
-            <a href="/about-library-search">About Library Search</a>
+            <%= link_to(body: "About Library Search", url: "/about-library-search") %>
           </li>
           <li>
-            <a href="https://ill.lib.umich.edu/?utm_source=library-search">Make an <abbr title="Interlibrary Loan">I.L.L.</abbr> Request</a>
+            <%= link_to(body: "Make an <abbr title=\"Interlibrary Loan\">I.L.L.</abbr> Request", url: "https://ill.lib.umich.edu/") %>
           </li>
         </ul>
       </nav>
-      <p>&copy;<%= Time.now.year %> Regents of the University of Michigan. For details and exceptions, see the <a href="https://lib.umich.edu/about-us/policies/copyright-policy?utm_source=library-search">Copyright Policy</a>.</p>
+      <p>&copy;<%= Time.now.year %> Regents of the University of Michigan. For details and exceptions, see the <%= link_to(body: "Copyright Policy", url: "https://lib.umich.edu/about-us/policies/copyright-policy") %>.</p>
     </div>
   </section>
   <m-chat id="chat" tabindex="-1"></m-chat>
