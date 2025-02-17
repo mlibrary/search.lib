@@ -141,7 +141,7 @@ $class: 'search-form';
   align-items: baseline;
   display: none;
   margin-top: 1rem;
-  p {
+  .search-form__tip--content {
     display: none;
     margin: 0;
   }

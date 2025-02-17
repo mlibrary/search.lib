@@ -62,6 +62,7 @@ $class: 'primary-navigation';
   border: 0 solid transparent;
   border-width: 0 0 0 3px;
   display: block;
+  height: 100%;
   padding: .5rem 1rem;
   @include media.breakpoint($breakpoint) {
     border-width: 0 0 3px 0;

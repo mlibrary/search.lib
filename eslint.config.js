@@ -41,6 +41,7 @@ export default [
     files: ['test/**/*.spec.js'],
     rules: {
       'func-names': 'off',
+      'no-magic-numbers': 'off',
       'no-unused-expressions': 'off',
       'prefer-arrow-callback': 'off'
     }
