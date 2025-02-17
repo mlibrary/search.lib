@@ -21,6 +21,34 @@ get "/" do
   redirect to("/everything")
 end
 
+helpers do
+  def link_to(body:, url:, classes: nil, open_in_new: false, utm_source: "library-search")
+    uri = URI.parse(url)
+    if ["http", "https"].include?(uri.scheme) && !uri.host.nil?
+      params = URI.decode_www_form(uri.query || "") + {utm_source: utm_source}.to_a
+      uri.query = URI.encode_www_form(params)
+    end
+    class_string = nil
+    if classes
+      class_string = "class=\"#{classes.join(" ")}\""
+    end
+    elements = [
+      "href=\"#{uri}\"",
+      class_string
+    ].compact
+
+    if open_in_new
+      <<~HTML
+          <a #{elements.join(" ")} target="_blank" rel="noopener noreferrer" aria-label="#{body} - opens in new window">
+          #{body}<span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
+        </a>
+      HTML
+    else
+      "<a #{elements.join(" ")}>#{body}</a>"
+    end
+  end
+end
+
 datastores.each do |datastore|
   get "/#{datastore[:slug]}" do
     @presenter = Search::Presenters.for_datastore(datastore[:slug])

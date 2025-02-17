@@ -9,13 +9,13 @@
       <nav aria-label="Footer">
         <ul>
           <li>
-            <a href="/everything">Home</a>
+            <%= link_to(body:"Home", url: "/everything", open_in_new: true) %>
           </li>
           <li>
             <a href="/accessibility">Accessibility</a>
           </li>
           <li>
-            <a href="https://guides.lib.umich.edu/c.php?g=914690&amp;utm_source=library-search">Tips for Using Library Search</a>
+            <%= link_to(body: "Tips for Using Library Search", url:"https://guides.lib.umich.edu/c.php?g=914690")%>
           </li>
           <li>
             <a href="https://lib.umich.edu/research-and-scholarship/help-research/how-we-can-help?utm_source=library-search">Get research help</a>
