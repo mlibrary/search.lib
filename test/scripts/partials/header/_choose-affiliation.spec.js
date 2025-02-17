@@ -1,4 +1,4 @@
-import chooseAffiliation from '../../../assets/scripts/partials/header/_choose-affiliation.js';
+import chooseAffiliation from '../../../../assets/scripts/partials/header/_choose-affiliation.js';
 import { expect } from 'chai';
 
 describe('chooseAffiliation', function () {
