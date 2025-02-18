@@ -22,6 +22,16 @@ get "/" do
 end
 
 helpers do
+  def h1(body:, classes: nil)
+    class_attribute = classes ? "class=\"#{classes.compact.join(" ")}\"" : nil
+    attributes = [
+      "id=\"maincontent\"",
+      "tabindex=\"-1\"",
+      class_attribute
+    ].compact
+    "<h1 #{attributes.join(" ")}>#{body}</h1>"
+  end
+
   def link_to(body:, url:, classes: nil, open_in_new: false, utm_source: "library-search", rest: nil)
     uri = URI.parse(url)
 
