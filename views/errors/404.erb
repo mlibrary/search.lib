@@ -6,15 +6,15 @@
 
 <ul>
   <li>
-    Start over from <a href="/everything">the homepage</a>.
+    Start over from <%= link_to(body: "the homepage", url: "/everything") %>.
   </li>
   <li>
     The link to the resource you're looking for may have changed, please search for the title or related keyword to check for current access.
   </li>
   <li>
-    <a href="/databases/browse">Browse all Databases</a> or <a href="/onlinejournals/browse">Browse all Online Journals</a> to view comprehensive lists of current library resources.
+    <%= link_to(body: "Browse all Databases", url: "/databases/browse") %> or <%= link_to(body: "Browse all Online Journals", url: "/onlinejournals/browse") %> to view comprehensive lists of current library resources.
   </li>
   <li>
-    <a href="https://www.lib.umich.edu/ask-librarian?utm_source=library-search">Ask a librarian</a> and we'll help you find what you're looking for!
+    <%= link_to(body: "Ask a librarian", url: "https://www.lib.umich.edu/ask-librarian") %> and we'll help you find what you're looking for!
   </li>
 </ul>

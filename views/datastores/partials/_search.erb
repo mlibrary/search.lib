@@ -42,7 +42,7 @@
       <span class="material-symbols-rounded" aria-hidden="true">search</span>
       <span class="visually-hidden">Search</span>
     </button>
-    <a href="/<%= current_datastore %>/advanced" class="underline__none strong">Advanced</a>
+    <%= link_to(body: "Advanced", url: "/#{current_datastore}/advanced", classes: ["underline__none", "strong"]) %>
   </div>
   <div class="search-form__tip viewport-container">
     <span class="material-symbols-rounded" aria-hidden="true">info</span>

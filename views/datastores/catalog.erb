@@ -17,14 +17,14 @@
         "Bentley Historical Library",
         "William L. Clements Library"
       ].each do |library|
+      is_active = params[:library] == library ? "button__ghost--active" : nil
     %>
       <li>
-        <%# NO CONDITIONALS %>
-        <a class="button__ghost <%= params[:library] == library ? "button__ghost--active" : "" %>" href="?library=<%= library.tr(" ", "+") %>"><%= library %></a>
+        <%= link_to(body: library, url: "?library=#{library.tr(" ", "+")}", classes: ["button__ghost", is_active]) %>
       </li>
     <% end %>
   </ul>
   <p>
-    <a href="https://lib.umich.edu/find-borrow-request/find-materials/using-other-catalogs?utm_source=library-search">About our other Library Catalogs</a>
+    <%= link_to(body: "About our other Library Catalogs", url: "https://lib.umich.edu/find-borrow-request/find-materials/using-other-catalogs") %>
   </p>
 </div>

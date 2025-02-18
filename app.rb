@@ -22,7 +22,7 @@ get "/" do
 end
 
 helpers do
-  def link_to(body:, url:, classes: nil, open_in_new: false, utm_source: "library-search")
+  def link_to(body:, url:, classes: nil, open_in_new: false, utm_source: "library-search", rest: nil)
     uri = URI.parse(url)
 
     if ["http", "https"].include?(uri.scheme) && !uri.host.nil? && uri.host != request.host
@@ -30,10 +30,11 @@ helpers do
       uri.query = URI.encode_www_form(params)
     end
 
-    class_attribute = classes ? "class=\"#{classes.join(" ")}\"" : nil
+    class_attribute = classes ? "class=\"#{classes.compact.join(" ")}\"" : nil
     attributes = [
       "href=\"#{uri}\"",
-      class_attribute
+      class_attribute,
+      rest
     ].compact
     anchor_content = body
     if open_in_new

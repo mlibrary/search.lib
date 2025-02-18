@@ -2,9 +2,12 @@
   <ul>
     <% datastores.each do |datastore| %>
       <li>
-        <a href="/<%= datastore[:slug] %>" class="underline__none" aria-current="<%= current_datastore == datastore[:slug] ? "page" : nil %>">
-          <% if datastore[:slug] == "everything" %><span class="material-symbols-rounded material-symbols-filled" aria-hidden="true">dashboard</span><% end %><span><%= datastore[:title] %></span>
-        </a>
+        <%= link_to(
+          body: (datastore[:slug] == "everything" ? "<span class=\"material-symbols-rounded material-symbols-filled\" aria-hidden=\"true\">dashboard</span>" : "") + "<span>#{datastore[:title]}</span>",
+          url: "/#{datastore[:slug]}",
+          classes: ["underline__none"],
+          rest: datastore[:slug] == current_datastore ? "aria-current=\"page\"" : nil
+        ) %>
       </li>
     <% end %>
   </ul>

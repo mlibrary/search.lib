@@ -1,7 +1,5 @@
 <% if logged_in %>
-  <a href="/logout" class="underline__none">
-    Log out
-  </a>
+  <%= link_to(body: "Log out", url: "/logout", classes: ["underline__none"]) %>
 <% else %>
   <form id="login_form" method="post" action="/key-change">
     <input type="hidden" name="authenticity_token" value="<%#= request.env["rack.session"]["csrf"] %>">
