@@ -75,7 +75,7 @@ Search::Presenters.static_pages.each do |page|
 end
 
 not_found do
-  @presenter.title = "404 - Page not found"
+  @presenter = Search::Presenters.for_404_page
   status 404
   erb :"errors/404"
 end
