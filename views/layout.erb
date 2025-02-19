@@ -69,10 +69,6 @@
   </noscript>
   <!-- End Google Tag Manager (noscript) -->
   <%= erb :'partials/_header' %>
-  <% if @current_datastore %>
-    <%= erb :'datastores/partials/_search', locals: { current_datastore: @current_datastore[:slug] } %>
-    <%= erb :'datastores/partials/_navigation', locals: { current_datastore: @current_datastore[:slug], datastores: @datastores } %>
-  <% end %>
   <main>
     <div class="container">
       <%= yield %>

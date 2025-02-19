@@ -25,6 +25,8 @@
     </ul>
   </nav>
 </m-website-header>
+<%= erb :'partials/header/_search', locals: { current_datastore: @current_datastore[:slug] } %>
+<%= erb :'partials/header/_navigation', locals: { current_datastore: @current_datastore[:slug], datastores: @datastores } %>
 <div class="logo__print">
   <%= erb :'partials/header/_logo' %>
 </div>
