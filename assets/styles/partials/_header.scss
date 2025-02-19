@@ -1,7 +1,6 @@
 @use '../colors';
 @use '../utilities';
 @use './header/choose-affiliation';
-@use './header/login';
 @use './header/logo';
 
 // --------------------------------------------------
@@ -13,6 +12,9 @@
 //   1. Skip Links
 //   2. m-universal-header
 //   3. m-website-header
+//     3.1 Navigation
+//     3.2 Login
+//     3.3 JavaScript Enabled
 //   4. Print Logo
 //
 // --------------------------------------------------
@@ -49,8 +51,19 @@ body:not([class]) m-universal-header {
 // *** 3. M-WEBSITE-HEADER *** //
 // *************************** //
 
-m-website-header {
+$component: "m-website-header";
+
+#{$component} {
   font-family: var(--font-base-family);
+}
+
+
+
+// *                * //
+// * 3.1 NAVIGATION * //
+// *                * //
+
+#{$component} {
   nav,
   nav ul {
     @include utilities.flex($wrap: true);
@@ -59,12 +72,34 @@ m-website-header {
     justify-content: space-between;
     padding-bottom: 1rem;
     padding-top: 1rem;
-    body:not([class]) & {
-      all: unset;
-      .logo {
-        display: none;
-      }
-    }
+  }
+}
+
+
+
+// *           * //
+// * 3.2 LOGIN * //
+// *           * //
+
+#{$component} #login_form button {
+  all: unset;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+
+// *                        * //
+// * 3.3 JAVASCRIPT ENABLED * //
+// *                        * //
+
+body:not([class]) #{$component} nav {
+  all: unset;
+  .logo {
+    display: none;
   }
 }
 
