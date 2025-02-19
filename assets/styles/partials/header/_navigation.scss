@@ -81,16 +81,15 @@ $class: 'primary-navigation';
 // * 2.1.1 EVERYTHING  * //
 
 .#{$class} a.#{$class}__everything {
-  @include utilities.flex();
-  & {
-    gap: 0.25rem;
-    line-height: 1;
-  }
   &:before {
     @include typography.icon($fill: true);
     & {
       content: "\e871"; // dashboard
+      display: inline-block;
       font-size: 1.25rem;
+      line-height: 1;
+      margin-right: 0.25rem;
+      vertical-align: bottom;
     }
   }
   &:not([aria-current="page"]):before {
