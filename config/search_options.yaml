@@ -9,24 +9,25 @@
     - guidesandmore
     text: Keyword
     tip: Enter one or more keywords. Use quotes to search for a phrase (e.g., solar
-      power; polar bears; “systems of oppression”). See tips about <a href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011">Basic
-      Keyword Searching</a>.
+      power; polar bears; “systems of oppression”). See tips about
+      <a href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011?utm_source=library-search" class="open-in-new" target="_blank" rel="noopener noreferrer" aria-label="Basic Keyword Searching - opens in new window">
+      Basic Keyword Searching</a>.
     value: keyword
   - datastores:
     - articles
     text: Keyword (contains)
     tip: Enter one or more keywords to search broadly (e.g., Black Women Scientists).
       Use quotes to search for a specific phrase (e.g., “systems of oppression”).
-      See tips about <a href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011">Basic
-      Keyword Searching</a>.
+      See tips about <a href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011?utm_source=library-search" class="open-in-new" target="_blank" rel="noopener noreferrer" aria-label="Basic Keyword Searching - opens in new window">
+      Basic Keyword Searching</a>.
     value: keyword
   - datastores:
     - articles
     text: Keyword (is exact)
     tip: Enter an exact phrase to search (e.g., solar power). Use AND to separate
       concepts or phrases (e.g., Black Women Scientists AND Chanda Prescod). See tips
-      about <a href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011">Basic
-      Keyword Searching</a>.
+      about <a href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011?utm_source=library-search" class="open-in-new" target="_blank" rel="noopener noreferrer" aria-label="Basic Keyword Searching - opens in new window">
+      Basic Keyword Searching</a>.
     value: exact
   - datastores:
     - everything
@@ -95,9 +96,8 @@
     - onlinejournals
     text: Call Number starts with
     tip: Search the first few letters and numbers of a call number (e.g., RC662.4
-      .H38 2016; QH 105). <a href="https://www.loc.gov/catdir/cpso/lcco/">Learn about
-      the meaning of call numbers<span className="visually-hidden"> (link points to
-      external site)</span></a>.
+      .H38 2016; QH 105). <a href="https://www.loc.gov/catdir/cpso/lcco/?utm_source=library-search" class="open-in-new" target="_blank" rel="noopener noreferrer" aria-label="Learn about the meaning of call numbers - opens in new window">
+      Learn about the meaning of call numbers</a>.
     value: call_number_starts_with
   - datastores:
     - catalog
@@ -134,9 +134,9 @@
     - catalog
     text: Browse by call number (LC and Dewey)
     tip: Browse by Library of Congress (LC) or Dewey call number, sorted alphanumerically
-      (e.g., RC662.4 .H38 2016; QH 105, 880 J375re). <a href="https://www.loc.gov/catdir/cpso/lcco/">Learn
-      about the meaning of call numbers<span className="visually-hidden"> (link points
-      to external site)</span></a>.
+      (e.g., RC662.4 .H38 2016; QH 105, 880 J375re).
+      <a href="https://www.loc.gov/catdir/cpso/lcco/?utm_source=library-search" class="open-in-new" target="_blank" rel="noopener noreferrer" aria-label="Learn about the meaning of call numbers - opens in new window">
+      Learn about the meaning of call numbers</a>.
     value: browse_by_callnumber
   - datastores:
     - catalog

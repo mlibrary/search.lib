@@ -8,6 +8,7 @@
 // ## Table of Contents
 //   1. Anchors
 //     1.1 No underline
+//     1.2 Open in new
 //
 // --------------------------------------------------
 
@@ -21,6 +22,8 @@ a {
   color: colors.$color-anchor;
 }
 
+
+
 // *                  * //
 // * 1.1 NO UNDERLINE * //
 // *                  * //
@@ -30,4 +33,18 @@ a.underline__none {
   &:hover {
     text-decoration: underline;
   }
+}
+
+
+
+// *                 * //
+// * 1.2 OPEN IN NEW * //
+// *                 * //
+
+a.open-in-new:after {
+  content: "\e89e";
+  display: inline-block;
+  font-family: 'Material Symbols Rounded';
+  margin-left: 0.25rem;
+  vertical-align: bottom;
 }

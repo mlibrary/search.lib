@@ -32,7 +32,7 @@ helpers do
     "<h1 #{attributes.join(" ")}>#{body}</h1>"
   end
 
-  def link_to(body:, url:, classes: nil, open_in_new: false, utm_source: "library-search", rest: nil)
+  def link_to(body:, url:, classes: [], open_in_new: false, utm_source: "library-search", rest: nil)
     uri = URI.parse(url)
 
     if ["http", "https"].include?(uri.scheme) && !uri.host.nil? && uri.host != request.host
@@ -40,19 +40,20 @@ helpers do
       uri.query = URI.encode_www_form(params)
     end
 
-    class_attribute = classes ? "class=\"#{classes.compact.join(" ")}\"" : nil
     attributes = [
       "href=\"#{uri}\"",
-      class_attribute,
       rest
     ].compact
-    anchor_content = body
+
     if open_in_new
       attributes << "target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"#{body} - opens in new window\""
-      anchor_content += "<span class=\"material-symbols-rounded\" aria-hidden=\"true\">open_in_new</span>"
+      classes << "open-in-new"
+    end
+    if !classes.empty?
+      attributes << "class=\"#{classes.compact.join(" ")}\""
     end
 
-    "<a #{attributes.join(" ")}>#{anchor_content}</a>"
+    "<a #{attributes.join(" ")}>#{body}</a>"
   end
 end
 
