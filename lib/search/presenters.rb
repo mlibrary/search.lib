@@ -63,7 +63,7 @@ module Search::Presenters
       description: datastore[:description],
       icons: Icons.new,
       styles: ["styles.css", "datastores/styles.css"],
-      scripts: ["scripts.js", "partials/scripts.js", "datastores/partials/scripts.js"]
+      scripts: ["scripts.js", "partials/scripts.js"]
     )
   end
 

@@ -7,7 +7,7 @@ require_relative "lib/search"
 datastores = Search::Presenters.datastores
 
 before do
-  @current_datastore = datastores.find { |datastore| datastore[:slug] == request.path_info.split("/")[1] }
+  @current_datastore = (datastores.find { |datastore| datastore[:slug] == request.path_info.split("/")[1] } || datastores.first)[:slug]
   @datastores = datastores
   @patron = OpenStruct.new(
     email: "",
