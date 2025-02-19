@@ -1,4 +1,4 @@
-import displaySearchTip from '../../../../assets/scripts/datastores/partials/_search.js';
+import displaySearchTip from '../../../../assets/scripts/partials/header/_search.js';
 import { expect } from 'chai';
 
 // Mock data for tips
