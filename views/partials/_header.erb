@@ -17,7 +17,7 @@
         <%= link_to(body: "Account", url: "https://account.lib.umich.edu/", classes: ["underline__none"]) %>
       </li>
       <li>
-        <%= erb :'partials/header/_login', locals: { logged_in: @patron[:logged_in?] } %>
+        <%= login %>
       </li>
       <li>
         <%= erb :'partials/header/_choose-affiliation', locals: { current_affiliation: request.params["affiliation"] || @patron[:affiliation] } %>

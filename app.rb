@@ -22,13 +22,17 @@ get "/" do
 end
 
 helpers do
-  def h1(body:, classes: nil)
-    class_attribute = classes ? "class=\"#{classes.compact.join(" ")}\"" : nil
+  def h1(body:, classes: [], rest: nil)
     attributes = [
       "id=\"maincontent\"",
       "tabindex=\"-1\"",
-      class_attribute
+      rest
     ].compact
+
+    if !classes.empty?
+      attributes << "class=\"#{classes.compact.join(" ")}\""
+    end
+
     "<h1 #{attributes.join(" ")}>#{body}</h1>"
   end
 
@@ -54,6 +58,20 @@ helpers do
     end
 
     "<a #{attributes.join(" ")}>#{body}</a>"
+  end
+
+  def login
+    if @patron.logged_in?
+      link_to(body: "Log out", url: "/logout", classes: ["underline__none"])
+    else
+      # Update value of authenticity_token
+      "
+        <form id=\"login_form\" method=\"post\" action=\"/key-change\">
+          <input type=\"hidden\" name=\"authenticity_token\" value=\"\#{request.env[\"rack.session\"][\"csrf\"]}\">
+          <button type=\"submit\">Log in</button>
+        </form>
+      "
+    end
   end
 end
 
