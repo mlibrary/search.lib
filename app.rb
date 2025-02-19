@@ -93,10 +93,9 @@ helpers do
     if @patron.logged_in?
       link_to(body: "Log out", url: "/logout", classes: ["underline__none"])
     else
-      # Update `[VALUE]` of `authenticity_token` -> `#{request.env["rack.session"]["csrf"]}`
       <<-HTML
-        <form id="login_form" method="post" action="/key-change">
-          <input type="hidden" name="authenticity_token" value="[VALUE]">
+        <form id="login_form" method="post" action="/auth/openid_connect">
+          <input type="hidden" name="authenticity_token" value="#{request.env["rack.session"]["csrf"]}">
           <button type="submit">Log in</button>
         </form>
       HTML

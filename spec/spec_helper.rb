@@ -8,6 +8,7 @@ SimpleCov.start
 
 ENV["APP_ENV"] = "test"
 require_relative "../app"
+OmniAuth.config.test_mode = true
 
 module RSpecMixin
   include Rack::Test::Methods
