@@ -4,18 +4,35 @@
 //   Styling for common text elements and classes.
 //
 // ## Table of Contents
-//   1. Headings
-//   2. Sizes
-//   3. Weight
-//   4. Material Icons
-//     4.1 Filled
+//   1. Mixins
+//   2. Headings
+//   3. Sizes
+//   4. Weight
+//   5. Material Icons
 //
 // --------------------------------------------------
 
 
 
+
+
+// ***************** //
+// *** 1. MIXINS *** //
+// ***************** //
+
+@mixin icon($fill: false) {
+  font-family: "Material Symbols Rounded";
+  @if $fill {
+    font-variation-settings: "FILL" 1;
+  }
+}
+
+
+
+
+
 // ******************* //
-// *** 1. HEADINGS *** //
+// *** 2. HEADINGS *** //
 // ******************* //
 
 h1 {
@@ -47,7 +64,7 @@ h6 {
 
 
 // **************** //
-// *** 2. SIZES *** //
+// *** 3. SIZES *** //
 // **************** //
 
 .text__large {
@@ -59,7 +76,7 @@ h6 {
 
 
 // ****************** //
-// *** 3. WEIGHTS *** //
+// *** 4. WEIGHTS *** //
 // ****************** //
 
 .strong {
@@ -71,20 +88,10 @@ h6 {
 
 
 // ************************* //
-// *** 4. MATERIAL ICONS *** //
+// *** 5. MATERIAL ICONS *** //
 // ************************* //
 
 [class^="material-symbols-"] {
   font-size: 1em;
   vertical-align: middle;
-}
-
-
-
-// *            * //
-// * 4.1 FILLED * //
-// *            * //
-
-.material-symbols-filled {
-  font-variation-settings: "FILL" 1;
 }

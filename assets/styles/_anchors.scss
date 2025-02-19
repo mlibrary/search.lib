@@ -1,4 +1,5 @@
 @use 'colors';
+@use 'typography';
 
 // --------------------------------------------------
 //
@@ -42,9 +43,11 @@ a.underline__none {
 // *                 * //
 
 a.open-in-new:after {
-  content: "\e89e";
-  display: inline-block;
-  font-family: 'Material Symbols Rounded';
-  margin-left: 0.25rem;
-  vertical-align: bottom;
+  @include typography.icon();
+  & {
+    content: "\e89e"; // open_in_new
+    display: inline-block;
+    margin-left: 0.25rem;
+    vertical-align: bottom;
+  }
 }
