@@ -12,13 +12,14 @@ RSpec.describe "requests" do
     end
     let(:get_static_page) {
       env "rack.session", @session
-      get "/accessibility"
+      get "/accessibility?something=other"
     }
     it "sets the session to NotLoggedIn user when it's a new user" do
       @session = {}
       get_static_page
       expect(last_request.session[:logged_in]).to eq(false)
       expect(last_request.session[:expires_at]).to be_nil
+      expect(last_request.session[:path_before_login]).to include("/accessibility?something=other")
     end
     it "does not touch the session of unexpired logged in user" do
       get_static_page
