@@ -76,7 +76,11 @@
   <main>
     <div class="container">
       <%= yield %>
+      <% if S.dev_login? %>
+        <%= erb :'partials/_development_users' %>
+      <% end %>
     </div>
+
   </main>
   <%= erb :'partials/_footer' %>
   <% @presenter.scripts.flatten.each do |script| %>
