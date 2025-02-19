@@ -6,13 +6,15 @@ require_relative "lib/search"
 
 enable :sessions
 set :session_secret, S.session_secret
+S.logger.info("App Environment: #{settings.environment}")
+S.logger.info("Log level: #{S.log_level}")
 
 datastores = Search::Presenters.datastores
-S.logger.info("log level: #{S.log_level}")
 before do
   subdirectory = request.path_info.split("/")[1]
 
-  pass if ["auth", "session_switcher", "logout", "login", "-"].include?(subdirectory)
+  pass if ["auth", "logout", "login", "-"].include?(subdirectory)
+  pass if subdirectory == "session_switcher" && S.dev_login?
 
   if new_user? || expired_user_session?
     patron = Search::Patron.not_logged_in
@@ -26,6 +28,15 @@ before do
   S.logger.debug("here's the session", session.to_h)
   @current_datastore = datastores.find { |datastore| datastore[:slug] == subdirectory }
   @datastores = datastores
+end
+
+if S.dev_login?
+  get "/session_switcher" do
+    patron = Search::Patron.for(params[:uniqname])
+    patron.to_h.each { |k, v| session[k] = v }
+    session[:expires_at] = (Time.now + 1.day).to_i
+    redirect back
+  end
 end
 
 helpers do
