@@ -140,7 +140,7 @@ module Search
 
       #
       # What the current status of the user's affiliation is. Nil means we don't
-      # know. aa or Flint means the user has selected Ann Arbor or Flint or we
+      # know. aa or flint means the user has selected Ann Arbor or Flint or we
       # have set their affiliation on login.
       #
       # @return [Nil or String] Options are [Nil || aa || flint ]
