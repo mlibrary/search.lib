@@ -1,14 +1,18 @@
 require "rack/test"
 require "rspec"
 require "debug"
+require "webmock/rspec"
+require "httpx/adapters/webmock"
 require "simplecov"
 SimpleCov.start
 
 ENV["APP_ENV"] = "test"
 require_relative "../app"
+OmniAuth.config.test_mode = true
 
 module RSpecMixin
   include Rack::Test::Methods
+  include AlmaRestClient::Test::Helpers
   def app = Sinatra::Application
 end
 
@@ -52,4 +56,8 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
+end
+
+def fixture(path)
+  File.read("./spec/fixtures/#{path}")
 end
