@@ -13,7 +13,9 @@ RUN apt-get update -yqq && apt-get install -yqq --no-install-recommends \
   libtool \ 
   libyaml-dev \
   curl \
-  gpg
+  gpg \
+  git
+  
 
 RUN mkdir -p /etc/apt/keyrings
 RUN curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
