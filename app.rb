@@ -26,7 +26,7 @@ before do
   session[:path_before_login] = request.url
 
   S.logger.debug("here's the session", session.to_h)
-  @current_datastore = datastores.find { |datastore| datastore[:slug] == subdirectory } || datastores.first)[:slug]
+  @current_datastore = (datastores.find { |datastore| datastore[:slug] == subdirectory } || datastores.first)[:slug]
   @datastores = datastores
 end
 
