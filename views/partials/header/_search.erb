@@ -1,19 +1,31 @@
 <%
   require 'yaml'
-  data = YAML.load_file("config/search_options.yaml")
-  # Filter the data
-  search_options = data.map do |group|
-    filtered_options = group['options'].select do |option|
-      option['datastores'].include?(current_datastore)
-    end
-    { 'group' => group['group'], 'options' => filtered_options } unless filtered_options.empty?
+  # Get all options data
+  search_options_data = YAML.load_file("config/search_options.yaml")
+  # Filter the data according to the current datastore's options matching the option's id or value
+  search_options = current_datastore[:search_options].map do |search_option|
+    search_options_data.find { |search_option_data| search_option_data["id"] == search_option || search_option_data["value"] == search_option }
   end.compact
-  optgroups = search_options.length > 1
-  tips = []
+  groups = search_options.map do |search_option|
+    search_option["group"]
+  end.compact.uniq
+  optgroups = groups.map do |group|
+    {
+      optgroup: group,
+      options: search_options.select { |option| option["group"] == group }
+    }
+  end
+  tips = search_options.select { |search_option| search_option["tip"] != nil }.map do |search_option|
+    {
+      group: search_option["group"] || groups.first,
+      id: search_option["id"] || search_option["value"],
+      tip: search_option["tip"]
+    }
+  end
   # Set selected option on load
   query_param = params[:query]
   # Default option
-  query = search_options.first['options'].first['value']
+  query = search_options.first['value']
   # Check if the query param is not nil, does not contain the operators ` AND `, ` OR `, ` NOT `, and contains `:(`
   if query_param && ['AND', 'OR', 'NOT'].none? { |operator| query_param.include?(' ' + operator + ' ') } && query_param.include?(":(")
     query = query_param.split(":(").first
@@ -22,18 +34,21 @@
 <form class="search-form" role="search" method="post" action="/search">
   <div class="search-form__inputs viewport-container">
     <select aria-label="Select an option" class="search-form__inputs--select" autocomplete="off">
-      <% search_options.each do |group| %>
-        <% if optgroups %>
-          <optgroup label="<%= group['group'] %>">
-        <% end %>
-        <% group['options'].each do |option| %>
-          <% tips << { tip: option['tip'], value: option['value'] } %>
-          <option value="<%= option['value'] %>" <%= query == option['value'] ? "selected" : nil %>>
-            <%= option['text'] %>
-          </option>
-        <% end %>
-        <% if optgroups %>
+      <% if optgroups.length > 1 %>
+        <% optgroups.each do |optgroup|%>
+          <optgroup label="<%= optgroup[:optgroup].capitalize %> by">
+            <% optgroup[:options].each do |option| %>
+              <option value="<%= option['value'] %>" <%= query == option['value'] ? "selected" : nil %>>
+                <%= option['text'] %>
+              </option>
+            <% end %>
           </optgroup>
+        <% end %>
+      <% else %>
+        <% search_options.each do |search_option| %>
+          <option value="<%= search_option['value'] %>" <%= query == search_option['value'] ? "selected" : nil %>>
+            <%= search_option['text'] %>
+          </option>
         <% end %>
       <% end %>
     </select>
@@ -42,13 +57,13 @@
       <span class="material-symbols-rounded" aria-hidden="true">search</span>
       <span class="visually-hidden">Search</span>
     </button>
-    <%= link_to(body: "Advanced", url: "/#{current_datastore}/advanced", classes: ["underline__none", "strong"]) %>
+    <%= link_to(body: "Advanced", url: "/#{current_datastore[:slug]}/advanced", classes: ["underline__none", "strong"]) %>
   </div>
   <div class="search-form__tip viewport-container">
     <span class="material-symbols-rounded" aria-hidden="true">info</span>
     <% tips.each do |tip| %>
-      <p class="search-form__tip--content" data-value="<%= tip[:value] %>">
-        <span class="strong"><%= tip[:value].start_with?("browse_") ? "Browse" : "Search" %> Tip:</span> <%= tip[:tip] %>
+      <p class="search-form__tip--content" data-value="<%= tip[:id] %>">
+        <span class="strong"><%= tip[:group].capitalize %> Tip:</span> <%= tip[:tip] %>
       </p>
     <% end %>
   </div>
