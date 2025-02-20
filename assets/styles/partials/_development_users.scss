@@ -1,0 +1,55 @@
+@use '../utilities';
+
+// --------------------------------------------------
+//
+// # Development Users
+//   Styles to apply directly to `views/partials/_development_users.erb`.
+//
+// ## Table of Contents
+//   1. Variables
+//   2. Container
+//   3. Form
+//
+// --------------------------------------------------
+
+// ******************** //
+// *** 1. VARIABLES *** //
+// ******************** //
+
+$class: "development-users";
+
+
+
+
+
+// ******************** //
+// *** 2. CONTAINER *** //
+// ******************** //
+
+.#{$class} {
+  margin-top: 1rem;
+  padding: 1rem;
+  @media print {
+    display: none;
+  }
+  & > *:first-child {
+    margin-top: 0;
+  }
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+
+
+
+
+// *************** //
+// *** 3. FORM *** //
+// *************** //
+
+.#{$class} form {
+  .development-users__inputs {
+    @include utilities.flex();
+  }
+}

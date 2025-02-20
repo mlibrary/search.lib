@@ -1,23 +1,26 @@
-<% test_users=[ { label: "Ann Arbor User" , value: 'mlibrary.acct.testing1@gmail.com' }, { label: 'Flint User' ,
-  value: 'mlibrary.acct.testing2@gmail.com' }, { label: "Dearborn User" , value: 'mlibrary.acct.testing3@gmail.com' }, ]
-  %>
+<% test_users=[
+  { label: "Ann Arbor User" , value: "mlibrary.acct.testing1@gmail.com" },
+  { label: "Flint User" , value: "mlibrary.acct.testing2@gmail.com" },
+  { label: "Dearborn User" , value: "mlibrary.acct.testing3@gmail.com" }
+] %>
 
-  <m-callout subtle>
-    <h2>Design &amp; Development Options</h2>
-    <form method="get" action="/session_switcher" class="prose owl">
-      <label for="test-user">
-        Active user account:
-      </label>
-      <input type="text" list="users" id="test-user" name="uniqname" autocomplete="on"
-        value="<%=session[:uniqname] || "" %>">
-      <datalist id="users">
-        <% test_users.each do |user| %>
-          <option value="<%=user[:value]%>">
-            <%=user[:label]%>
-          </option>
-          <% end %>
-      </datalist>
-      <button>Save</button>
-    </form>
-  </m-callout>
+<div class="container__rounded development-users">
+  <h2>Design &amp; Development Options</h2>
+  <form method="get" action="/session_switcher">
+    <label for="test-user">
+      Active user account:
+    </label>
+    <div class="development-users__inputs">
+      <input type="text" list="users" id="test-user" name="uniqname" autocomplete="on" value="<%=session[:uniqname] || "" %>">
+      <button type="submit">Save</button>
+    </div>
+    <datalist id="users">
+      <% test_users.each do |user| %>
+        <option value="<%=user[:value]%>">
+          <%=user[:label]%>
+        </option>
+      <% end %>
+    </datalist>
+  </form>
+</div>
   
