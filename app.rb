@@ -4,17 +4,59 @@ require "ostruct"
 require_relative "lib/services"
 require_relative "lib/search"
 
-datastores = Search::Presenters.datastores
+enable :sessions
+set :session_secret, S.session_secret
+S.logger.info("App Environment: #{settings.environment}")
+S.logger.info("Log level: #{S.log_level}")
 
+datastores = Search::Presenters.datastores
 before do
-  @current_datastore = datastores.find { |datastore| datastore[:slug] == request.path_info.split("/")[1] }
+  subdirectory = request.path_info.split("/")[1]
+
+  pass if ["auth", "logout", "login", "-"].include?(subdirectory)
+  pass if subdirectory == "session_switcher" && S.dev_login?
+
+  if new_user? || expired_user_session?
+    patron = Search::Patron.not_logged_in
+    patron.to_h.each { |k, v| session[k] = v }
+    session.delete(:expires_at)
+  end
+  @patron = Search::Patron.from_session(session)
+
+  session[:path_before_login] = request.url
+
+  S.logger.debug("here's the session", session.to_h)
+  @current_datastore = datastores.find { |datastore| datastore[:slug] == subdirectory }
   @datastores = datastores
-  @patron = OpenStruct.new(
-    email: "",
-    sms: "",
-    affiliation: "aa", # flint || aa
-    logged_in?: false
-  )
+end
+
+if S.dev_login?
+  get "/session_switcher" do
+    patron = Search::Patron.for(params[:uniqname])
+    patron.to_h.each { |k, v| session[k] = v }
+    session[:expires_at] = (Time.now + 1.day).to_i
+    redirect back
+  end
+end
+
+helpers do
+  #
+  # A new user is someone who doesn't have any session variables set.
+  #
+  # @return [Boolean]
+  #
+  def new_user?
+    session[:logged_in].nil?
+  end
+
+  #
+  # A session state where logged_in is true and expires_at is in the past
+  #
+  # @return [Boolean] <description>
+  #
+  def expired_user_session?
+    session[:logged_in] && session[:expires_at] < Time.now.to_i
+  end
 end
 
 get "/" do
@@ -64,10 +106,9 @@ helpers do
     if @patron.logged_in?
       link_to(body: "Log out", url: "/logout", classes: ["underline__none"])
     else
-      # Update `[VALUE]` of `authenticity_token` -> `#{request.env["rack.session"]["csrf"]}`
       <<-HTML
-        <form id="login_form" method="post" action="/key-change">
-          <input type="hidden" name="authenticity_token" value="[VALUE]">
+        <form id="login_form" method="post" action="/auth/openid_connect">
+          <input type="hidden" name="authenticity_token" value="#{request.env["rack.session"]["csrf"]}">
           <button type="submit">Log in</button>
         </form>
       HTML
