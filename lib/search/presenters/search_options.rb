@@ -29,28 +29,32 @@ module Search
     end
 
     class SearchOption
-      def initialize
-        #
+      def initialize(option)
+        @option = option
       end
 
       def value
-        #
+        @option["value"]
       end
 
-      def tip
-        #
-      end
-
-      def tip_label
-        #
+      def id
+        @option["id"] || value
       end
 
       def text
-        #
+        @option["text"]
       end
 
-      def optgroup
-        #
+      def group
+        @option["group"]
+      end
+
+      def tip
+        @option["tip"]
+      end
+
+      def tip_label
+        group.capitalize + " Tip:"
       end
     end
   end

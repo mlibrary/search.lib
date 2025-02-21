@@ -3,6 +3,7 @@ module Search
   end
 end
 require "search/presenters/icons"
+require "search/presenters/search_options"
 
 module Search::Presenters
   def self.datastores
