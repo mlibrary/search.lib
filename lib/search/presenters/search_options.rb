@@ -60,6 +60,7 @@ module Search
 
       def show_optgroups?
         # check if more than one group
+        options.count > 1
       end
 
       def default_option

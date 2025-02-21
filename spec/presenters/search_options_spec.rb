@@ -27,6 +27,16 @@ RSpec.describe Search::Presenters::SearchOptions do
     end
   end
 
+  context "#show_optgroups?" do
+    it "is true when there is more than one opt group" do
+      @slug = "catalog"
+      expect(subject.show_optgroups?).to eq(true)
+    end
+    it "is false when there is only one opt group" do
+      expect(subject.show_optgroups?).to eq(false)
+    end
+  end
+
   #   context "#datastore_search_options" do
   #     it "lists search options specific to the datastore" do
   #       expect(described_class.new.datastore_search_options).to include("...")
