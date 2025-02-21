@@ -115,6 +115,7 @@ module Search::Presenters
       icons: Icons.new,
       styles: ["styles.css", "datastores/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"]
+      # search_options: SearchOptions.for(slug)
     )
   end
 

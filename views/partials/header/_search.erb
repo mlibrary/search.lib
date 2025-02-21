@@ -31,7 +31,8 @@
     query = query_param.split(":(").first
   end
 %>
-<form class="search-form" role="search" method="post" action="/search">
+
+<form class="search-form" role="search" method="get" action="">
   <div class="search-form__inputs viewport-container">
     <select aria-label="Select an option" class="search-form__inputs--select" autocomplete="off">
       <% if optgroups.length > 1 %>
