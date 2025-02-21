@@ -30,7 +30,7 @@ module Search
       end
     end
 
-    class SearchOptions
+    class BaseSearchOptions
       SEARCH_OPTIONS = YAML.load_file(File.join(S.config_path, "search_options.yaml")).map do |data|
         SearchOption.new(data)
       end
@@ -38,6 +38,10 @@ module Search
 
       def initialize(slug)
         @datastore = DATASTORES.find { |x| x["slug"] == slug }
+      end
+
+      def datastore
+        @datastore["slug"]
       end
 
       def options
@@ -68,12 +72,54 @@ module Search
         base_options.first
       end
 
-      def selected_option
-        # select option on load
+      # def selected_option
+      #   # select option on load
+      # end
+
+      # def search_only
+      #   # grab only `search` group options (used in advanced search)
+      # end
+    end
+
+    class SearchOptions
+      ALL_BASE_SEARCH_OPTIONS = YAML.load_file(File.join(S.config_path, "datastores.yaml")).map do |datastore|
+        BaseSearchOptions.new(datastore["slug"])
       end
 
-      def search_only
-        # grab only `search` group options (used in advanced search)
+      def initialize(datastore_slug:, uri:)
+        @uri = uri
+        @datastore_slug = datastore_slug
+      end
+
+      def base_search_options
+        ALL_BASE_SEARCH_OPTIONS.find { |x| x.datastore == @datastore_slug }
+      end
+
+      # select option on load
+      def selected_option
+        base_options = base_search_options.base_options
+        my_option = base_options.first
+
+        full_option_value_from_query = params["query"]
+        option_value_from_query = full_option_value_from_query&.split(":(")&.first
+
+        if !option_value_from_query.nil?
+          found_option = base_options.find { |option| option.value == option_value_from_query }
+          my_option = found_option unless found_option.nil?
+        end
+        my_option.value
+      end
+
+      def search_only?
+        @uri.path.split("/").last == "advanced"
+      end
+
+      def params
+        if !@uri.query.nil?
+          URI.decode_www_form(@uri.query)&.to_h || {}
+        else
+          {}
+        end
       end
     end
   end

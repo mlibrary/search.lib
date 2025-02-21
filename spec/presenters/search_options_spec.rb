@@ -1,5 +1,38 @@
 RSpec.describe Search::Presenters::SearchOptions do
   before(:each) do
+    @uri = URI.parse("/everything")
+    @datastore_slug = "everything"
+  end
+  subject do
+    described_class.new(uri: @uri, datastore_slug: @datastore_slug)
+  end
+
+  context "selected_option" do
+    it "chooses the value of the default option if nothing is specified" do
+      expect(subject.selected_option).to eq("keyword")
+    end
+    it "chooses the appropriate option based on the query parameters" do
+      @uri = URI.parse("/catalog?query=lc_subject_starts_with%3A(whatever)")
+      @datastore_slug = "catalog"
+      expect(subject.selected_option).to eq("lc_subject_starts_with")
+    end
+    it "choose the default option if the datastore does not have a matching option" do
+      @uri = URI.parse("/something_else?query=lc_subject_starts_with%3A(whatever)")
+      expect(subject.selected_option).to eq("keyword")
+    end
+  end
+  context "search_only?" do
+    it "is false when the path is not advanced search" do
+      expect(subject.search_only?).to eq(false)
+    end
+    it "is true when that path has a subdirectory of advanced search" do
+      @uri = URI.parse("/catalog/advanced")
+      expect(subject.search_only?).to eq(true)
+    end
+  end
+end
+RSpec.describe Search::Presenters::BaseSearchOptions do
+  before(:each) do
     @slug = "everything"
   end
   subject do
