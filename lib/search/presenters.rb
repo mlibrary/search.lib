@@ -2,6 +2,7 @@ module Search
   module Presenters
   end
 end
+require "search/presenters/datastores"
 require "search/presenters/icons"
 require "search/presenters/search_options"
 
