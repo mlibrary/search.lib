@@ -1,49 +1,71 @@
-# RSpec.describe Search::Presenters::SearchOptions do
-#   context "#search_options" do
-#     it "lists search options in the config file" do
-#       expect(described_class.new.search_options).to include("...")
-#     end
-#   end
+RSpec.describe Search::Presenters::SearchOptions do
+  before(:each) do
+    @slug = "everything"
+  end
+  subject do
+    described_class.new(@slug)
+  end
+  context "#default_option" do
+    it "returns the first option in the list" do
+      expect(subject.default_option.text).to eq("Keyword")
+    end
+  end
 
-#   context "#datastore_search_options" do
-#     it "lists search options specific to the datastore" do
-#       expect(described_class.new.datastore_search_options).to include("...")
-#     end
-#     it "defaults to the first datastore if datastore is nil" do
-#       expect(described_class.new.datastore_search_options).to include("...")
-#     end
-#   end
+  context "#options" do
+    it "returns an array with one object when there is one group" do
+      options = subject.options
+      expect(options.count).to eq(1)
+      expect(options.first.optgroup).to eq("search")
+      expect(options.first.options.first.text).to eq("Keyword")
+    end
+    it "returns an array of arrays when there are multiple groups" do
+      @slug = "catalog"
+      options = subject.options
+      expect(options.count).to eq(2)
+      expect(options[1].optgroup).to eq("browse")
+      expect(options[1].options.first.text).to include("Browse")
+    end
+  end
 
-#   context "#datastore_search_tips" do
-#     it "lists search tips specific to the datastore search options" do
-#       expect(described_class.new.datastore_search_options).to include("...")
-#     end
-#   end
+  #   context "#datastore_search_options" do
+  #     it "lists search options specific to the datastore" do
+  #       expect(described_class.new.datastore_search_options).to include("...")
+  #     end
+  #     it "defaults to the first datastore if datastore is nil" do
+  #       expect(described_class.new.datastore_search_options).to include("...")
+  #     end
+  #   end
 
-#   context "#show_optgroups?" do
-#     it "checks if there is more than one group of search options" do
-#       expect(described_class.new.datastore_search_options).to include("...")
-#     end
-#   end
+  #   context "#datastore_search_tips" do
+  #     it "lists search tips specific to the datastore search options" do
+  #       expect(described_class.new.datastore_search_options).to include("...")
+  #     end
+  #   end
 
-#   context "#default_option" do
-#     it "gives the first search option specific to the datastore" do
-#       expect(described_class.new.datastore_search_options).to include("...")
-#     end
-#   end
+  #   context "#show_optgroups?" do
+  #     it "checks if there is more than one group of search options" do
+  #       expect(described_class.new.datastore_search_options).to include("...")
+  #     end
+  #   end
 
-#   context "#queried_option" do
-#     it "lists search options specific to the datastore" do
-#       expect(described_class.new.datastore_search_options).to include("...")
-#     end
-#     it "defaults to the first option if queried option does not exist" do
-#       expect(described_class.new.datastore_search_options).to include("...")
-#     end
-#     it "defaults to the first option if the query contains operators" do
-#       expect(described_class.new.datastore_search_options).to include("...")
-#     end
-#   end
-# end
+  #   context "#default_option" do
+  #     it "gives the first search option specific to the datastore" do
+  #       expect(described_class.new.datastore_search_options).to include("...")
+  #     end
+  #   end
+
+  #   context "#queried_option" do
+  #     it "lists search options specific to the datastore" do
+  #       expect(described_class.new.datastore_search_options).to include("...")
+  #     end
+  #     it "defaults to the first option if queried option does not exist" do
+  #       expect(described_class.new.datastore_search_options).to include("...")
+  #     end
+  #     it "defaults to the first option if the query contains operators" do
+  #       expect(described_class.new.datastore_search_options).to include("...")
+  #     end
+  #   end
+end
 
 RSpec.describe Search::Presenters::SearchOption do
   before(:each) do
