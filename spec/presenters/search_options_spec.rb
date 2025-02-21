@@ -30,6 +30,39 @@ RSpec.describe Search::Presenters::SearchOptions do
       expect(subject.search_only?).to eq(true)
     end
   end
+  context "options" do
+    it "returns multiple opt groups when not search only" do
+      @datastore_slug = "catalog"
+      expect(subject.options.count).to eq(2)
+    end
+    it "returns only one opt group when search only" do
+      @uri = URI.parse("/catalog/advanced")
+      @datastore_slug = "catalog"
+      expect(subject.options.count).to eq(1)
+    end
+  end
+  context "#show_optgroups?" do
+    it "is true when there is more than one opt group" do
+      @datastore_slug = "catalog"
+      expect(subject.show_optgroups?).to eq(true)
+    end
+    it "is false when there is only one opt group" do
+      @uri = URI.parse("/catalog/advanced")
+      @datastore_slug = "catalog"
+      expect(subject.show_optgroups?).to eq(false)
+    end
+  end
+
+  context "#each" do
+    it "iterates over the options" do
+      output = nil
+      subject.each do |group|
+        output = group.optgroup
+      end
+
+      expect(output).to eq("search")
+    end
+  end
 end
 RSpec.describe Search::Presenters::BaseSearchOptions do
   before(:each) do
@@ -57,16 +90,6 @@ RSpec.describe Search::Presenters::BaseSearchOptions do
       expect(options.count).to eq(2)
       expect(options[1].optgroup).to eq("browse")
       expect(options[1].options.first.text).to include("Browse")
-    end
-  end
-
-  context "#show_optgroups?" do
-    it "is true when there is more than one opt group" do
-      @slug = "catalog"
-      expect(subject.show_optgroups?).to eq(true)
-    end
-    it "is false when there is only one opt group" do
-      expect(subject.show_optgroups?).to eq(false)
     end
   end
 

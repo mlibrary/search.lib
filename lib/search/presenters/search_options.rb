@@ -62,23 +62,10 @@ module Search
         end
       end
 
-      def show_optgroups?
-        # check if more than one group
-        options.count > 1
-      end
-
       def default_option
         # get first option
         base_options.first
       end
-
-      # def selected_option
-      #   # select option on load
-      # end
-
-      # def search_only
-      #   # grab only `search` group options (used in advanced search)
-      # end
     end
 
     class SearchOptions
@@ -95,10 +82,29 @@ module Search
         ALL_BASE_SEARCH_OPTIONS.find { |x| x.datastore == @datastore_slug }
       end
 
+      def options
+        if search_only?
+          [base_search_options.options.first]
+        else
+          base_search_options.options
+        end
+      end
+
+      def each(&block)
+        options.each do |group|
+          block.call(group)
+        end
+      end
+
+      def show_optgroups?
+        # check if more than one group
+        options.count > 1
+      end
+
       # select option on load
       def selected_option
+        my_option = base_search_options.default_option
         base_options = base_search_options.base_options
-        my_option = base_options.first
 
         full_option_value_from_query = params["query"]
         option_value_from_query = full_option_value_from_query&.split(":(")&.first
