@@ -1,0 +1,53 @@
+@use './messages';
+@use 'sass:map';
+
+// --------------------------------------------------
+//
+// # Icons
+//   Styling for elements using Material Icons.
+//   https://fonts.google.com/icons
+//
+// ## Table of Contents
+//   1. Variables and Mixins
+//     1.1 Variables
+//     1.2 Mixins
+//
+// --------------------------------------------------
+
+
+
+
+
+// ******************************* //
+// *** 1. VARIABLES AND MIXINS *** //
+// ******************************* //
+
+// *               * //
+// * 1.1 VARIABLES * //
+// *               * //
+$icons: (
+  'dashboard': '\e871',
+  'info': '\e88e',
+  'open_in_new': '\e89e'
+);
+
+
+
+// *            * //
+// * 1.2 MIXINS * //
+// *            * //
+
+@mixin icon($fill: false, $icon) {
+  font-family: "Material Symbols Rounded";
+  @if $fill {
+    font-variation-settings: "FILL" 1;
+  }
+  @if $icon {
+    @include messages.missing-key($icons, $icon);
+    & {
+      content: map.get($icons, $icon);
+      display: inline-block;
+      vertical-align: bottom;
+    }
+  }
+}

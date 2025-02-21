@@ -1,5 +1,5 @@
 @use 'colors';
-@use 'typography';
+@use 'icons';
 
 // --------------------------------------------------
 //
@@ -43,11 +43,8 @@ a.underline__none {
 // *                 * //
 
 a.open-in-new:after {
-  @include typography.icon();
+  @include icons.icon($icon: 'open_in_new');
   & {
-    content: "\e89e"; // open_in_new
-    display: inline-block;
     margin-left: 0.25rem;
-    vertical-align: bottom;
   }
 }

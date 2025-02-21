@@ -1,5 +1,6 @@
 @use '../../colors';
 @use '../../media';
+@use '../../icons';
 @use '../../utilities';
 
 // --------------------------------------------------
@@ -138,11 +139,16 @@ $class: 'search-form';
 
 .#{$class}__tip {
   @include utilities.flex();
-  align-items: baseline;
+  align-items: start;
   display: none;
-  margin-top: 1rem;
+  margin-bottom: 0;
+  &:before {
+    @include icons.icon($icon: 'info');
+    & {
+      flex: none;
+    }
+  }
   .search-form__tip--content {
-    display: none;
-    margin: 0;
+    flex-grow: 1;
   }
 }

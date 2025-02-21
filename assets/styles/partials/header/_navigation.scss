@@ -1,6 +1,6 @@
 @use '../../colors';
 @use '../../media';
-@use '../../typography';
+@use '../../icons';
 @use '../../utilities';
 
 // --------------------------------------------------
@@ -82,14 +82,11 @@ $class: 'primary-navigation';
 
 .#{$class} a.#{$class}__everything {
   &:before {
-    @include typography.icon($fill: true);
+    @include icons.icon($fill: true, $icon: 'dashboard');
     & {
-      content: "\e871"; // dashboard
-      display: inline-block;
       font-size: 1.25rem;
       line-height: 1;
       margin-right: 0.25rem;
-      vertical-align: bottom;
     }
   }
   &:not([aria-current="page"]):before {
