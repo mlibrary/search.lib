@@ -28,6 +28,19 @@ const options = [
   }
 ];
 
+const tips = options
+  .filter((option) => {
+    return 'tip' in option;
+  })
+  .map((option) => {
+    return `
+          <p class="search-form__tip" data-value="${option.value}" style="display: none;">
+            ${option.tip}
+          </p>
+        `;
+  })
+  .join('');
+
 const htmlSnippet = () => {
   return `
     <form class="search-form">
@@ -42,24 +55,13 @@ const htmlSnippet = () => {
           }).join('')}
         </select>
       </div>
-      <div class="search-form__tip viewport-container" style="display: none;">
-        ${options.map((option) => {
-          return option.tip
-            ? `
-            <p class="search-form__tip--content" data-value="${option.value}" style="display: none;">
-              This is a tip for '${option.value}'
-            </p>
-          `
-            : '';
-        }).join('')}
-      </div>
+      ${tips}
     </form>
   `;
 };
 
 describe('displaySearchTip', function () {
   let getSearchOption = null;
-  let getSearchTipSection = null;
   let getSearchTips = null;
   let allTipsAreHidden = null;
 
@@ -70,14 +72,11 @@ describe('displaySearchTip', function () {
     getSearchOption = () => {
       return document.querySelector('.search-form__inputs--select');
     };
-    getSearchTipSection = () => {
-      return document.querySelector('.search-form__tip');
-    };
     getSearchTips = (dataValue) => {
       if (dataValue) {
-        return document.querySelector(`.search-form__tip--content[data-value="${dataValue}"]`);
+        return document.querySelector(`.search-form__tip[data-value="${dataValue}"]`);
       }
-      return document.querySelectorAll('.search-form__tip--content');
+      return document.querySelectorAll('.search-form__tip');
     };
     allTipsAreHidden = () => {
       return [...getSearchTips()].every((tip) => {
@@ -88,7 +87,6 @@ describe('displaySearchTip', function () {
 
   afterEach(function () {
     getSearchOption = null;
-    getSearchTipSection = null;
     getSearchTips = null;
     allTipsAreHidden = null;
 
@@ -97,24 +95,21 @@ describe('displaySearchTip', function () {
   });
 
   describe('on load', function () {
-    it('should display the tip section, along with the tip, for the selected value', function () {
+    it('should display the tip for the selected value', function () {
       // Check if the select element has an option selected
       const selectedValue = getSearchOption().value;
       expect(selectedValue, '`.search-form__inputs--select` should have a selected option').to.not.be.null;
       // Check if all tips are hidden before load
-      expect(allTipsAreHidden(), 'all `.search-form__tip--content` elements should not be displayed before load').to.be.true;
-      // Check if the tip section is hidden before load
-      expect(getSearchTipSection().style.display, '`.search-form__tip` should not be displayed before load').to.equal('none');
+      expect(allTipsAreHidden(), 'all `.search-form__tip` elements should not be displayed before load').to.be.true;
 
+      // Invoke function
       displaySearchTip();
 
       // Check if the tip that matches the selected value is displayed after load
-      expect(getSearchTips(selectedValue).style.display, `\`.search-form__tip--content[data-value="${selectedValue}"]\` should be displayed after load`).to.not.equal('none');
-      // Check if the tip section is displayed after load
-      expect(getSearchTipSection().style.display, '`.search-form__tip` should be displayed after load').to.not.equal('none');
+      expect(getSearchTips(selectedValue).style.display, `\`.search-form__tip[data-value="${selectedValue}"]\` should be displayed after load`).to.not.equal('none');
     });
 
-    it('should not display the tip section if a tip does not exist for the selected value', function () {
+    it('should not display a tip if a tip does not exist for the selected value', function () {
       // Change selected option to `no_tip`, and reset the body's innerHTML
       const noTip = options.find((option) => {
         return option.value === 'no_tip';
@@ -125,18 +120,15 @@ describe('displaySearchTip', function () {
       // Check if the select element has an option selected
       expect(getSearchOption().value, '`.search-form__inputs--select` should have a selected option').to.not.be.null;
       // Check if all tips are hidden before load
-      expect(allTipsAreHidden(), 'all `.search-form__tip--content` elements should not be displayed before load').to.be.true;
-      // Check if the tip section is hidden before load
-      expect(getSearchTipSection().style.display, '`.search-form__tip` should not be displayed before load').to.equal('none');
+      expect(allTipsAreHidden(), 'all `.search-form__tip` elements should not be displayed before load').to.be.true;
 
+      // Invoke function
       displaySearchTip();
 
       // Check if a tip exists for the value
-      expect(getSearchTips(getSearchOption().value), `\`.search-form__tip--content[data-value="${getSearchOption().value}"]\` should not exist`).to.be.null;
-      // Check if all tips are hidden after load
-      expect(allTipsAreHidden(), 'all `.search-form__tip--content` elements should not be displayed after load').to.be.true;
-      // Check if the tip section is displayed after load
-      expect(getSearchTipSection().style.display, '`.search-form__tip` should not be displayed after load').to.equal('none');
+      expect(getSearchTips(getSearchOption().value), `\`.search-form__tip[data-value="${getSearchOption().value}"]\` should not exist`).to.be.null;
+      // Check if all tips remain hidden after load
+      expect(allTipsAreHidden(), 'all `.search-form__tip` elements should not be displayed after load').to.be.true;
 
       // Reset the selected option to `no_tip`
       noTip.selected = false;
@@ -158,10 +150,9 @@ describe('displaySearchTip', function () {
       // Check if the select element has an option selected
       expect(currentValue, '`.search-form__inputs--select` should have a selected option').to.not.be.null;
       // Check if the tip that matches the current selected value is displayed after load
-      expect(getSearchTips(currentValue).style.display, `\`.search-form__tip--content[data-value="${currentValue}"]\` should be displayed after load`).to.not.equal('none');
-      expect(getSearchTips(newValue).style.display, `\`.search-form__tip--content[data-value="${newValue}"]\` should not be displayed after load`).to.equal('none');
-      // Check if the tip section is displayed after load
-      expect(getSearchTipSection().style.display, '`.search-form__tip` should be displayed after load').to.not.equal('none');
+      expect(getSearchTips(currentValue).style.display, `\`.search-form__tip[data-value="${currentValue}"]\` should be displayed after load`).to.not.equal('none');
+      // Check if the tip of the future selected value is not displayed after load
+      expect(getSearchTips(newValue).style.display, `\`.search-form__tip[data-value="${newValue}"]\` should not be displayed after load`).to.equal('none');
 
       // Simulate changing the selection
       getSearchOption().value = newValue;
@@ -169,21 +160,19 @@ describe('displaySearchTip', function () {
       getSearchOption().dispatchEvent(event);
 
       // Check if the previous tip is no longer displaying after change
-      expect(getSearchTips(currentValue).style.display, `\`.search-form__tip--content[data-value="${currentValue}"]\` should not be displayed after change`).to.equal('none');
+      expect(getSearchTips(currentValue).style.display, `\`.search-form__tip[data-value="${currentValue}"]\` should not be displayed after change`).to.equal('none');
       // Check if the tip that matches the new selected value is displayed after change
-      expect(getSearchTips(newValue).style.display, `\`.search-form__tip--content[data-value="${newValue}"]\` should be displayed after change`).to.not.equal('none');
+      expect(getSearchTips(newValue).style.display, `\`.search-form__tip[data-value="${newValue}"]\` should be displayed after change`).to.not.equal('none');
     });
 
-    it('should hide the tip section when the search option changes to a value that does not have a tip', function () {
+    it('should not show a tip when the search option changes to a value that does not have a tip', function () {
       // Define current and new values
       const currentValue = getSearchOption().value;
       const newValue = 'no_tip';
       // Check if the select element has an option selected
       expect(currentValue, '`.search-form__inputs--select` should have a selected option').to.not.be.null;
       // Check if the tip that matches the current selected value is displayed after load
-      expect(getSearchTips(currentValue).style.display, `\`.search-form__tip--content[data-value="${currentValue}"]\` should be displayed after load`).to.not.equal('none');
-      // Check if the tip section is displayed after load
-      expect(getSearchTipSection().style.display, '`.search-form__tip` should be displayed after load').to.not.equal('none');
+      expect(getSearchTips(currentValue).style.display, `\`.search-form__tip[data-value="${currentValue}"]\` should be displayed after load`).to.not.equal('none');
 
       // Simulate changing the selection
       getSearchOption().value = newValue;
@@ -191,11 +180,9 @@ describe('displaySearchTip', function () {
       getSearchOption().dispatchEvent(event);
 
       // Check if the previous tip is no longer displaying after change
-      expect(getSearchTips(currentValue).style.display, `\`.search-form__tip--content[data-value="${currentValue}"]\` should not be displayed after change`).to.equal('none');
+      expect(getSearchTips(currentValue).style.display, `\`.search-form__tip[data-value="${currentValue}"]\` should not be displayed after change`).to.equal('none');
       // Check if the tip for the new value does not exist
-      expect(getSearchTips(newValue), `\`.search-form__tip--content[data-value="${newValue}"]\` should not exist`).to.be.null;
-      // Check if the tip section is no longer displaying after change
-      expect(getSearchTipSection().style.display, '`.search-form__tip` should be displayed after load').to.equal('none');
+      expect(getSearchTips(newValue), `\`.search-form__tip[data-value="${newValue}"]\` should not exist`).to.be.null;
     });
   });
 });

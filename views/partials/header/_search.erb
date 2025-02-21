@@ -59,12 +59,11 @@
     </button>
     <%= link_to(body: "Advanced", url: "/#{current_datastore[:slug]}/advanced", classes: ["underline__none", "strong"]) %>
   </div>
-  <div class="search-form__tip viewport-container">
-    <span class="material-symbols-rounded" aria-hidden="true">info</span>
-    <% tips.each do |tip| %>
-      <p class="search-form__tip--content" data-value="<%= tip[:id] %>">
+  <% tips.each do |tip| %>
+    <p class="viewport-container search-form__tip" data-value="<%= tip[:id] %>">
+      <span class="search-form__tip--content">
         <span class="strong"><%= tip[:group].capitalize %> Tip:</span> <%= tip[:tip] %>
-      </p>
-    <% end %>
-  </div>
+      </span>
+    </p>
+  <% end %>
 </form>
