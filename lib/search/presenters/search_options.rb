@@ -66,6 +66,10 @@ module Search
         # get first option
         flat_list.first
       end
+
+      def optgroups?
+        options.count > 1
+      end
     end
 
     class SearchOptions
@@ -104,7 +108,7 @@ module Search
 
       def show_optgroups?
         # check if more than one group
-        base_search_options.options.count > 1 && !search_only?
+        base_search_options.optgroups? && !search_only?
       end
 
       def selected_attribute(value)
