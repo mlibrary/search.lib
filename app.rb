@@ -118,7 +118,7 @@ end
 
 datastores.each do |datastore|
   get "/#{datastore[:slug]}" do
-    @presenter = Search::Presenters.for_datastore(datastore[:slug])
+    @presenter = Search::Presenters.for_datastore(slug: datastore[:slug], uri: URI.parse(request.fullpath))
     erb :"datastores/layout", layout: :layout do
       erb :"datastores/#{datastore[:slug]}"
     end
@@ -127,7 +127,7 @@ end
 
 Search::Presenters.static_pages.each do |page|
   get "/#{page[:slug]}" do
-    @presenter = Search::Presenters.for_static_page(page[:slug])
+    @presenter = Search::Presenters.for_static_page(slug: page[:slug], uri: URI.parse(request.fullpath))
     erb :"pages/layout", layout: :layout do
       erb :"pages/#{page[:slug]}"
     end

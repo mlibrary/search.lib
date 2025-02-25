@@ -101,12 +101,15 @@ module Search
         options.count > 1
       end
 
+      # TODO: Needs to account for Booleans and return default when there's a boolean
       # select option on load
       def selected_option
         my_option = base_search_options.default_option
         base_options = base_search_options.base_options
 
         full_option_value_from_query = params["query"]
+        return my_option.value if ["AND", "OR", "NOT"].any? { |x| full_option_value_from_query&.match?(x) }
+
         option_value_from_query = full_option_value_from_query&.split(":(")&.first
 
         if !option_value_from_query.nil?
