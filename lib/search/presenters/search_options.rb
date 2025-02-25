@@ -73,6 +73,8 @@ module Search
         BaseSearchOptions.new(datastore["slug"])
       end
 
+      include Enumerable
+
       def initialize(datastore_slug:, uri:)
         @uri = uri
         @datastore_slug = datastore_slug
@@ -82,9 +84,13 @@ module Search
         ALL_BASE_SEARCH_OPTIONS.find { |x| x.datastore == @datastore_slug }
       end
 
+      def flat_list
+        base_search_options.base_options
+      end
+
       def options
-        if search_only?
-          [base_search_options.options.first]
+        if search_only? || !show_optgroups?
+          base_search_options.options.first.options
         else
           base_search_options.options
         end
@@ -98,7 +104,11 @@ module Search
 
       def show_optgroups?
         # check if more than one group
-        options.count > 1
+        base_search_options.options.count > 1 && !search_only?
+      end
+
+      def selected_attribute(value)
+        (value == selected_option) ? "selected" : ""
       end
 
       # TODO: Needs to account for Booleans and return default when there's a boolean

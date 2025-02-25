@@ -49,10 +49,10 @@ RSpec.describe Search::Presenters::SearchOptions do
       @datastore_slug = "catalog"
       expect(subject.options.count).to eq(2)
     end
-    it "returns only one opt group when search only" do
+    it "returns a flat list of options when search only" do
       @uri = URI.parse("/catalog/advanced")
       @datastore_slug = "catalog"
-      expect(subject.options.count).to eq(1)
+      expect(subject.options.first.group).to eq("search")
     end
   end
   context "#show_optgroups?" do
@@ -68,13 +68,19 @@ RSpec.describe Search::Presenters::SearchOptions do
   end
 
   context "#each" do
-    it "iterates over the options" do
-      output = nil
-      subject.each do |group|
-        output = group.optgroup
+    it "iterates over the options with optgroups" do
+      @datastore_slug = "catalog"
+      output = subject.map do |group|
+        group.optgroup
       end
 
-      expect(output).to eq("search")
+      expect(output).to contain_exactly("search", "browse")
+    end
+    it "iterates over the options without optgroups" do
+      output = subject.map do |option|
+        option.value
+      end
+      expect(output).to contain_exactly("keyword", "title", "author")
     end
   end
 end
