@@ -67,6 +67,10 @@ module Search
         flat_list.first
       end
 
+      def no_optgroups?
+        options.count == 1
+      end
+
       def optgroups?
         options.count > 1
       end
@@ -78,22 +82,20 @@ module Search
       end
 
       include Enumerable
+      extend Forwardable
+
+      def_delegators :@base_search_options, :flat_list, :default_option
+
+      attr_reader :base_search_options
 
       def initialize(datastore_slug:, uri:)
         @uri = uri
         @datastore_slug = datastore_slug
-      end
-
-      def base_search_options
-        ALL_BASE_SEARCH_OPTIONS.find { |x| x.datastore == @datastore_slug }
-      end
-
-      def flat_list
-        base_search_options.flat_list
+        @base_search_options = ALL_BASE_SEARCH_OPTIONS.find { |x| x.datastore == @datastore_slug }
       end
 
       def options
-        if search_only? || !show_optgroups?
+        if no_optgroups?
           base_search_options.options.first.options
         else
           base_search_options.options
@@ -106,28 +108,33 @@ module Search
         end
       end
 
+      def no_optgroups?
+        base_search_options.no_optgroups? || search_only?
+      end
+
       def show_optgroups?
         # check if more than one group
         base_search_options.optgroups? && !search_only?
       end
 
       def selected_attribute(value)
-        (value == selected_option) ? "selected" : ""
+        (value == selected_option_value) ? "selected" : ""
       end
 
       # TODO: Needs to account for Booleans and return default when there's a boolean
       # select option on load
-      def selected_option
-        my_option = base_search_options.default_option
+      def selected_option_value
+        my_option = default_option
 
-        full_option_value_from_query = params["query"]
-        return my_option.value if ["AND", "OR", "NOT"].any? { |x| full_option_value_from_query&.match?(x) }
+        query_string = params["query"]
 
-        option_value_from_query = full_option_value_from_query&.split(":(")&.first
+        return my_option.value if ["AND", "OR", "NOT"].any? { |x| query_string&.match?(x) }
 
-        if !option_value_from_query.nil?
+        option_value_from_query = query_string&.split(":(")&.first
+
+        if option_value_from_query
           found_option = flat_list.find { |option| option.value == option_value_from_query }
-          my_option = found_option unless found_option.nil?
+          my_option = found_option if found_option
         end
         my_option.value
       end
