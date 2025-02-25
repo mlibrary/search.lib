@@ -20,6 +20,20 @@ RSpec.describe Search::Presenters::SearchOptions do
       @uri = URI.parse("/something_else?query=lc_subject_starts_with%3A(whatever)")
       expect(subject.selected_option).to eq("keyword")
     end
+    context "choose the default for a boolean" do
+      it "AND" do
+        @uri = URI.parse("/catalog?query=title%3A(test)+AND+author%3A(test)")
+        expect(subject.selected_option).to eq("keyword")
+      end
+      it "OR" do
+        @uri = URI.parse("/catalog?query=title%3A(test)+OR+author%3A(test)")
+        expect(subject.selected_option).to eq("keyword")
+      end
+      it "NOT" do
+        @uri = URI.parse("/catalog?query=title%3A(test)+NOT+author%3A(test)")
+        expect(subject.selected_option).to eq("keyword")
+      end
+    end
   end
   context "search_only?" do
     it "is false when the path is not advanced search" do

@@ -127,7 +127,7 @@ end
 
 Search::Presenters.static_pages.each do |page|
   get "/#{page[:slug]}" do
-    @presenter = Search::Presenters.for_static_page(slug: page[:slug])
+    @presenter = Search::Presenters.for_static_page(slug: page[:slug], uri: URI.parse(request.fullpath))
     erb :"pages/layout", layout: :layout do
       erb :"pages/#{page[:slug]}"
     end

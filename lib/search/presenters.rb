@@ -121,7 +121,7 @@ module Search::Presenters
     )
   end
 
-  def self.for_static_page(slug:)
+  def self.for_static_page(slug:, uri:)
     page = static_pages.find { |x| x[:slug] == slug }
 
     OpenStruct.new(
@@ -129,7 +129,8 @@ module Search::Presenters
       description: page[:description],
       icons: Icons.new,
       styles: ["styles.css", "pages/styles.css"],
-      scripts: ["scripts.js", "partials/scripts.js"]
+      scripts: ["scripts.js", "partials/scripts.js"],
+      search_options: SearchOptions.new(datastore_slug: "everything", uri: uri)
     )
   end
 

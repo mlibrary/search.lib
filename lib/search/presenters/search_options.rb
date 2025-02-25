@@ -108,6 +108,8 @@ module Search
         base_options = base_search_options.base_options
 
         full_option_value_from_query = params["query"]
+        return my_option.value if ["AND", "OR", "NOT"].any? { |x| full_option_value_from_query&.match?(x) }
+
         option_value_from_query = full_option_value_from_query&.split(":(")&.first
 
         if !option_value_from_query.nil?
