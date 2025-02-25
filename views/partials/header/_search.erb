@@ -35,20 +35,21 @@
 <form class="search-form" role="search" method="get" action="">
   <div class="search-form__inputs viewport-container">
     <select aria-label="Select an option" class="search-form__inputs--select" autocomplete="off">
-      <% if optgroups.length > 1 %>
-        <% optgroups.each do |optgroup|%>
-          <optgroup label="<%= optgroup[:optgroup].capitalize %> by">
-            <% optgroup[:options].each do |option| %>
-              <option value="<%= option['value'] %>" <%= query == option['value'] ? "selected" : nil %>>
-                <%= option['text'] %>
+      <% if @presenter.search_options.show_optgroups? %>
+        <% @presenter.search_options.options.each do |optgroup|%>
+          <optgroup label="<%= optgroup.optgroup.capitalize %> by">
+            <% optgroup.options.each do |option| %>
+              <option value="<%= option.value %>" <%=  option.value == @presenter.search_options.selected_option ? "selected" : nil %>>
+                <%= option.text %>
               </option>
             <% end %>
           </optgroup>
         <% end %>
       <% else %>
-        <% search_options.each do |search_option| %>
-          <option value="<%= search_option['value'] %>" <%= query == search_option['value'] ? "selected" : nil %>>
-            <%= search_option['text'] %>
+        <% S.logger.info @presenter.search_options.options.first.options %>
+        <% @presenter.search_options.options.first.options.each do |search_option| %>
+          <option value="<%= search_option.value %>" <%= search_option.value == @presenter.search_options.selected_option ? "selected" : nil %>>
+            <%= search_option.text %>
           </option>
         <% end %>
       <% end %>
@@ -60,10 +61,10 @@
     </button>
     <%= link_to(body: "Advanced", url: "/#{current_datastore[:slug]}/advanced", classes: ["underline__none", "strong"]) %>
   </div>
-  <% tips.each do |tip| %>
-    <p class="viewport-container search-form__tip" data-value="<%= tip[:id] %>">
+  <% @presenter.search_options.base_search_options.base_options.each do |option| %>
+    <p class="viewport-container search-form__tip" data-value="<%= option.value %>">
       <span class="search-form__tip--content">
-        <span class="strong"><%= tip[:group].capitalize %> Tip:</span> <%= tip[:tip] %>
+        <span class="strong"><%= option.group.capitalize %> Tip:</span> <%= option.tip %>
       </span>
     </p>
   <% end %>

@@ -101,6 +101,7 @@ module Search
         options.count > 1
       end
 
+      # TODO: Needs to account for Booleans and return default when there's a boolean
       # select option on load
       def selected_option
         my_option = base_search_options.default_option
