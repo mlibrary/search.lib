@@ -45,7 +45,7 @@ module Search
       end
 
       def options
-        base_options.chunk_while do |elt_before, elt_after|
+        flat_list.chunk_while do |elt_before, elt_after|
           elt_before.group == elt_after.group
         end.to_a.map do |group|
           OpenStruct.new(
@@ -55,7 +55,7 @@ module Search
         end
       end
 
-      def base_options
+      def flat_list
         # filtered options
         @datastore["search_options"].map do |id|
           SEARCH_OPTIONS.find { |x| x.id == id }
@@ -64,7 +64,7 @@ module Search
 
       def default_option
         # get first option
-        base_options.first
+        flat_list.first
       end
     end
 
@@ -85,7 +85,7 @@ module Search
       end
 
       def flat_list
-        base_search_options.base_options
+        base_search_options.flat_list
       end
 
       def options
@@ -115,7 +115,6 @@ module Search
       # select option on load
       def selected_option
         my_option = base_search_options.default_option
-        base_options = base_search_options.base_options
 
         full_option_value_from_query = params["query"]
         return my_option.value if ["AND", "OR", "NOT"].any? { |x| full_option_value_from_query&.match?(x) }
@@ -123,7 +122,7 @@ module Search
         option_value_from_query = full_option_value_from_query&.split(":(")&.first
 
         if !option_value_from_query.nil?
-          found_option = base_options.find { |option| option.value == option_value_from_query }
+          found_option = flat_list.find { |option| option.value == option_value_from_query }
           my_option = found_option unless found_option.nil?
         end
         my_option.value
