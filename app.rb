@@ -26,6 +26,7 @@ before do
 
   S.logger.debug("here's the session", session.to_h)
   @datastores = Search::Datastores.all
+  @libraries = Search::Libraries
 end
 
 if S.dev_login?

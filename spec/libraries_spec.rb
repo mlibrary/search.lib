@@ -1,0 +1,55 @@
+RSpec.describe Search::Library do
+  before(:each) do
+    @library = "Flint Thompson Library"
+  end
+
+  subject do
+    described_class.new(@library)
+  end
+
+  context "#active_class" do
+    it "will return a class if the `library` query params matches the library" do
+      expect(subject.active_class(@library)).to eq("button__ghost--active")
+    end
+    it "will not return a class if the `library` query params does not match the library" do
+      expect(subject.active_class("library")).to be_nil
+    end
+    context "when param is nil" do
+      it "will return a class for the default library" do
+        @library = "All libraries"
+        expect(subject.active_class(nil)).to eq("button__ghost--active")
+      end
+      it "will return nil for anything else" do
+        expect(subject.active_class(nil)).to be_nil
+      end
+    end
+  end
+
+  context "#slug" do
+    it "has a slug" do
+      expect(subject.slug).to eq("Flint+Thompson+Library")
+    end
+  end
+
+  context "#to_s" do
+    it "returns as a string" do
+      expect(subject.to_s).to eq(@library)
+    end
+  end
+end
+
+RSpec.describe Search::Libraries do
+  let(:library) {"All libraries"}
+
+  context "#all" do
+    it "lists all libraries in the config file" do
+      expect(described_class.all.first.to_s).to eq(library)
+    end
+  end
+
+  context "#default" do
+    it "returns the default library" do
+      expect(described_class.default.to_s).to eq(library)
+    end
+  end
+end
