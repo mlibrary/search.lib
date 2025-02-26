@@ -36,17 +36,17 @@ module Search
       def all
         DATASTORES
       end
-  
+
       def each(&block)
         all.each do |datastore|
           block.call(datastore)
         end
       end
-  
+
       def find(slug)
         all.find { |x| x.slug == slug }
       end
-  
+
       def default
         find("everything")
       end
