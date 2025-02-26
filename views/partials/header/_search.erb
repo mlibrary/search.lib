@@ -1,56 +1,23 @@
-<%
-  require 'yaml'
-  # Get all options data
-  search_options_data = YAML.load_file("config/search_options.yaml")
-  # Filter the data according to the current datastore's options matching the option's id or value
-  search_options = current_datastore[:search_options].map do |search_option|
-    search_options_data.find { |search_option_data| search_option_data["id"] == search_option || search_option_data["value"] == search_option }
-  end.compact
-  groups = search_options.map do |search_option|
-    search_option["group"]
-  end.compact.uniq
-  optgroups = groups.map do |group|
-    {
-      optgroup: group,
-      options: search_options.select { |option| option["group"] == group }
-    }
-  end
-  tips = search_options.select { |search_option| search_option["tip"] != nil }.map do |search_option|
-    {
-      group: search_option["group"] || groups.first,
-      id: search_option["id"] || search_option["value"],
-      tip: search_option["tip"]
-    }
-  end
-  # Set selected option on load
-  query_param = params[:query]
-  # Default option
-  query = search_options.first['value']
-  # Check if the query param is not nil, does not contain the operators ` AND `, ` OR `, ` NOT `, and contains `:(`
-  if query_param && ['AND', 'OR', 'NOT'].none? { |operator| query_param.include?(' ' + operator + ' ') } && query_param.include?(":(")
-    query = query_param.split(":(").first
-  end
-%>
+<% search_options = @presenter.search_options %>
 
 <form class="search-form" role="search" method="get" action="">
   <div class="search-form__inputs viewport-container">
     <select aria-label="Select an option" class="search-form__inputs--select" autocomplete="off">
-      <% if @presenter.search_options.show_optgroups? %>
-        <% @presenter.search_options.options.each do |optgroup|%>
+      <% if search_options.no_optgroups? %>
+        <% search_options.each do |search_option| %>
+          <option value="<%= search_option.value %>" <%= search_options.selected_attribute(search_option.value) %>>
+            <%= search_option.text %>
+          </option>
+        <% end %>
+      <% else %>
+        <% search_options.each do |optgroup|%>
           <optgroup label="<%= optgroup.optgroup.capitalize %> by">
             <% optgroup.options.each do |option| %>
-              <option value="<%= option.value %>" <%=  option.value == @presenter.search_options.selected_option ? "selected" : nil %>>
+              <option value="<%= option.value %>" <%=  search_options.selected_attribute(option) %>>
                 <%= option.text %>
               </option>
             <% end %>
           </optgroup>
-        <% end %>
-      <% else %>
-        <% S.logger.info @presenter.search_options.options.first.options %>
-        <% @presenter.search_options.options.first.options.each do |search_option| %>
-          <option value="<%= search_option.value %>" <%= search_option.value == @presenter.search_options.selected_option ? "selected" : nil %>>
-            <%= search_option.text %>
-          </option>
         <% end %>
       <% end %>
     </select>
@@ -59,9 +26,9 @@
       <span class="material-symbols-rounded" aria-hidden="true">search</span>
       <span class="visually-hidden">Search</span>
     </button>
-    <%= link_to(body: "Advanced", url: "/#{current_datastore[:slug]}/advanced", classes: ["underline__none", "strong"]) %>
+    <%= link_to(body: "Advanced", url: "/#{@presenter.current_datastore}/advanced", classes: ["underline__none", "strong"]) %>
   </div>
-  <% @presenter.search_options.base_search_options.base_options.each do |option| %>
+  <% search_options.flat_list.each do |option| %>
     <p class="viewport-container search-form__tip" data-value="<%= option.value %>">
       <span class="search-form__tip--content">
         <span class="strong"><%= option.group.capitalize %> Tip:</span> <%= option.tip %>

@@ -7,31 +7,31 @@ RSpec.describe Search::Presenters::SearchOptions do
     described_class.new(uri: @uri, datastore_slug: @datastore_slug)
   end
 
-  context "selected_option" do
-    it "chooses the value of the default option if nothing is specified" do
-      expect(subject.selected_option).to eq("keyword")
+  context "selected_option_value" do
+    it "chooses the value of the default option_value if nothing is specified" do
+      expect(subject.selected_option_value).to eq("keyword")
     end
-    it "chooses the appropriate option based on the query parameters" do
+    it "chooses the appropriate option value based on the query parameters" do
       @uri = URI.parse("/catalog?query=lc_subject_starts_with%3A(whatever)")
       @datastore_slug = "catalog"
-      expect(subject.selected_option).to eq("lc_subject_starts_with")
+      expect(subject.selected_option_value).to eq("lc_subject_starts_with")
     end
-    it "choose the default option if the datastore does not have a matching option" do
+    it "choose the default option_value if the datastore does not have a matching option" do
       @uri = URI.parse("/something_else?query=lc_subject_starts_with%3A(whatever)")
-      expect(subject.selected_option).to eq("keyword")
+      expect(subject.selected_option_value).to eq("keyword")
     end
     context "choose the default for a boolean" do
       it "AND" do
         @uri = URI.parse("/catalog?query=title%3A(test)+AND+author%3A(test)")
-        expect(subject.selected_option).to eq("keyword")
+        expect(subject.selected_option_value).to eq("keyword")
       end
       it "OR" do
         @uri = URI.parse("/catalog?query=title%3A(test)+OR+author%3A(test)")
-        expect(subject.selected_option).to eq("keyword")
+        expect(subject.selected_option_value).to eq("keyword")
       end
       it "NOT" do
         @uri = URI.parse("/catalog?query=title%3A(test)+NOT+author%3A(test)")
-        expect(subject.selected_option).to eq("keyword")
+        expect(subject.selected_option_value).to eq("keyword")
       end
     end
   end
@@ -49,10 +49,10 @@ RSpec.describe Search::Presenters::SearchOptions do
       @datastore_slug = "catalog"
       expect(subject.options.count).to eq(2)
     end
-    it "returns only one opt group when search only" do
+    it "returns a flat list of options when search only" do
       @uri = URI.parse("/catalog/advanced")
       @datastore_slug = "catalog"
-      expect(subject.options.count).to eq(1)
+      expect(subject.options.first.group).to eq("search")
     end
   end
   context "#show_optgroups?" do
@@ -68,13 +68,19 @@ RSpec.describe Search::Presenters::SearchOptions do
   end
 
   context "#each" do
-    it "iterates over the options" do
-      output = nil
-      subject.each do |group|
-        output = group.optgroup
+    it "iterates over the options with optgroups" do
+      @datastore_slug = "catalog"
+      output = subject.map do |group|
+        group.optgroup
       end
 
-      expect(output).to eq("search")
+      expect(output).to contain_exactly("search", "browse")
+    end
+    it "iterates over the options without optgroups" do
+      output = subject.map do |option|
+        option.value
+      end
+      expect(output).to contain_exactly("keyword", "title", "author")
     end
   end
 end
@@ -106,45 +112,6 @@ RSpec.describe Search::Presenters::BaseSearchOptions do
       expect(options[1].options.first.text).to include("Browse")
     end
   end
-
-  #   context "#datastore_search_options" do
-  #     it "lists search options specific to the datastore" do
-  #       expect(described_class.new.datastore_search_options).to include("...")
-  #     end
-  #     it "defaults to the first datastore if datastore is nil" do
-  #       expect(described_class.new.datastore_search_options).to include("...")
-  #     end
-  #   end
-
-  #   context "#datastore_search_tips" do
-  #     it "lists search tips specific to the datastore search options" do
-  #       expect(described_class.new.datastore_search_options).to include("...")
-  #     end
-  #   end
-
-  #   context "#show_optgroups?" do
-  #     it "checks if there is more than one group of search options" do
-  #       expect(described_class.new.datastore_search_options).to include("...")
-  #     end
-  #   end
-
-  #   context "#default_option" do
-  #     it "gives the first search option specific to the datastore" do
-  #       expect(described_class.new.datastore_search_options).to include("...")
-  #     end
-  #   end
-
-  #   context "#queried_option" do
-  #     it "lists search options specific to the datastore" do
-  #       expect(described_class.new.datastore_search_options).to include("...")
-  #     end
-  #     it "defaults to the first option if queried option does not exist" do
-  #       expect(described_class.new.datastore_search_options).to include("...")
-  #     end
-  #     it "defaults to the first option if the query contains operators" do
-  #       expect(described_class.new.datastore_search_options).to include("...")
-  #     end
-  #   end
 end
 
 RSpec.describe Search::Presenters::SearchOption do

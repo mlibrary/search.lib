@@ -45,7 +45,7 @@ module Search
       end
 
       def options
-        base_options.chunk_while do |elt_before, elt_after|
+        flat_list.chunk_while do |elt_before, elt_after|
           elt_before.group == elt_after.group
         end.to_a.map do |group|
           OpenStruct.new(
@@ -55,7 +55,7 @@ module Search
         end
       end
 
-      def base_options
+      def flat_list
         # filtered options
         @datastore["search_options"].map do |id|
           SEARCH_OPTIONS.find { |x| x.id == id }
@@ -64,7 +64,15 @@ module Search
 
       def default_option
         # get first option
-        base_options.first
+        flat_list.first
+      end
+
+      def no_optgroups?
+        options.count == 1
+      end
+
+      def optgroups?
+        options.count > 1
       end
     end
 
@@ -73,18 +81,22 @@ module Search
         BaseSearchOptions.new(datastore["slug"])
       end
 
+      include Enumerable
+      extend Forwardable
+
+      def_delegators :@base_search_options, :flat_list, :default_option
+
+      attr_reader :base_search_options
+
       def initialize(datastore_slug:, uri:)
         @uri = uri
         @datastore_slug = datastore_slug
-      end
-
-      def base_search_options
-        ALL_BASE_SEARCH_OPTIONS.find { |x| x.datastore == @datastore_slug }
+        @base_search_options = ALL_BASE_SEARCH_OPTIONS.find { |x| x.datastore == @datastore_slug }
       end
 
       def options
-        if search_only?
-          [base_search_options.options.first]
+        if no_optgroups?
+          base_search_options.options.first.options
         else
           base_search_options.options
         end
@@ -96,25 +108,33 @@ module Search
         end
       end
 
+      def no_optgroups?
+        base_search_options.no_optgroups? || search_only?
+      end
+
       def show_optgroups?
         # check if more than one group
-        options.count > 1
+        base_search_options.optgroups? && !search_only?
+      end
+
+      def selected_attribute(value)
+        (value == selected_option_value) ? "selected" : ""
       end
 
       # TODO: Needs to account for Booleans and return default when there's a boolean
       # select option on load
-      def selected_option
-        my_option = base_search_options.default_option
-        base_options = base_search_options.base_options
+      def selected_option_value
+        my_option = default_option
 
-        full_option_value_from_query = params["query"]
-        return my_option.value if ["AND", "OR", "NOT"].any? { |x| full_option_value_from_query&.match?(x) }
+        query_string = params["query"]
 
-        option_value_from_query = full_option_value_from_query&.split(":(")&.first
+        return my_option.value if ["AND", "OR", "NOT"].any? { |x| query_string&.match?(x) }
 
-        if !option_value_from_query.nil?
-          found_option = base_options.find { |option| option.value == option_value_from_query }
-          my_option = found_option unless found_option.nil?
+        option_value_from_query = query_string&.split(":(")&.first
+
+        if option_value_from_query
+          found_option = flat_list.find { |option| option.value == option_value_from_query }
+          my_option = found_option if found_option
         end
         my_option.value
       end

@@ -113,6 +113,7 @@ module Search::Presenters
 
     OpenStruct.new(
       title: datastore[:title],
+      current_datastore: slug,
       description: datastore[:description],
       icons: Icons.new,
       styles: ["styles.css", "datastores/styles.css"],
@@ -126,6 +127,7 @@ module Search::Presenters
 
     OpenStruct.new(
       title: page[:title],
+      current_datastore: "everything",
       description: page[:description],
       icons: Icons.new,
       styles: ["styles.css", "pages/styles.css"],
