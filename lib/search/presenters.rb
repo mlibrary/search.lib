@@ -3,43 +3,9 @@ module Search
   end
 end
 require "search/presenters/icons"
+require "search/presenters/search_options"
 
 module Search::Presenters
-  def self.datastores
-    [
-      {
-        description: "Explore the University of Michigan Library Search for comprehensive results across catalogs, articles, databases, online journals, and more. Begin your search now for detailed records and specific resources.",
-        slug: "everything",
-        title: "Everything"
-      },
-      {
-        description: "Discover the University of Michigan Library Catalog to access an extensive collection of physical and online materials, including books, audio, video, maps, musical scores, and more. Find everything you need in one place.",
-        slug: "catalog",
-        title: "Catalog"
-      },
-      {
-        description: "Utilize the Articles gateway at the University of Michigan Library to access scholarly journal articles, newspaper articles, book chapters, and conference proceedings. For subject-specific searches, explore our comprehensive databases.",
-        slug: "articles",
-        title: "Articles"
-      },
-      {
-        description: "Explore University of Michigan Library's databases, tailored to specific subjects and formats. Access subscription databases, locally created collections, and open-access resources. Browse by alphabetical order or academic discipline to find what you need.",
-        slug: "databases",
-        title: "Databases"
-      },
-      {
-        description: "Access University of Michigan Library's Online Journals, including scholarly journals, newspapers, trade publications, and magazines. Find subscription and open-access journals, with detailed access and date information. Browse by title or discipline.",
-        slug: "onlinejournals",
-        title: "Online Journals"
-      },
-      {
-        description: "Discover University of Michigan Library's Guides and More section for research guides, specialty sites, blogs, and online exhibits. Explore services, spaces, and collections, and visit lib.umich.edu for staff info, news, events, and physical exhibits.",
-        slug: "guidesandmore",
-        title: "Guides and More"
-      }
-    ]
-  end
-
   def self.static_pages
     [
       {
@@ -55,27 +21,33 @@ module Search::Presenters
     ]
   end
 
-  def self.for_datastore(slug)
-    datastore = datastores.find { |x| x[:slug] == slug }
+  def self.for_datastore(slug:, uri:)
+    datastore = Search::Datastores.find(slug)
 
     OpenStruct.new(
-      title: datastore[:title],
-      description: datastore[:description],
+      title: datastore.title,
+      current_datastore: slug,
+      description: datastore.description,
       icons: Icons.new,
+      slug: datastore.slug,
       styles: ["styles.css", "datastores/styles.css"],
-      scripts: ["scripts.js", "partials/scripts.js", "datastores/partials/scripts.js"]
+      scripts: ["scripts.js", "partials/scripts.js"],
+      search_options: SearchOptions.new(datastore_slug: slug, uri: uri)
     )
   end
 
-  def self.for_static_page(slug)
+  def self.for_static_page(slug:, uri:)
     page = static_pages.find { |x| x[:slug] == slug }
 
     OpenStruct.new(
       title: page[:title],
+      current_datastore: "everything",
       description: page[:description],
       icons: Icons.new,
+      slug: page[:slug],
       styles: ["styles.css", "pages/styles.css"],
-      scripts: ["scripts.js", "partials/scripts.js"]
+      scripts: ["scripts.js", "partials/scripts.js"],
+      search_options: SearchOptions.new(datastore_slug: "everything", uri: uri)
     )
   end
 

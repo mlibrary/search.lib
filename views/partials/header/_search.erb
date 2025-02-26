@@ -1,0 +1,38 @@
+<% search_options = @presenter.search_options %>
+
+<form class="search-form" role="search" method="get" action="">
+  <div class="search-form__inputs viewport-container">
+    <select aria-label="Select an option" class="search-form__inputs--select" autocomplete="off">
+      <% if search_options.no_optgroups? %>
+        <% search_options.each do |search_option| %>
+          <option value="<%= search_option.value %>" <%= search_options.selected_attribute(search_option.value) %>>
+            <%= search_option.text %>
+          </option>
+        <% end %>
+      <% else %>
+        <% search_options.each do |optgroup|%>
+          <optgroup label="<%= optgroup.optgroup.capitalize %> by">
+            <% optgroup.options.each do |option| %>
+              <option value="<%= option.value %>" <%=  search_options.selected_attribute(option) %>>
+                <%= option.text %>
+              </option>
+            <% end %>
+          </optgroup>
+        <% end %>
+      <% end %>
+    </select>
+    <input type="search" aria-label="Search for" class="search-form__inputs--text" autocomplete="on" name="query" value="">
+    <button type="submit" class="search-form__inputs--submit button__primary">
+      <span class="material-symbols-rounded" aria-hidden="true">search</span>
+      <span class="visually-hidden">Search</span>
+    </button>
+    <%= link_to(body: "Advanced", url: "/#{@presenter.current_datastore}/advanced", classes: ["underline__none", "strong"]) %>
+  </div>
+  <% search_options.flat_list.each do |option| %>
+    <p class="viewport-container search-form__tip" data-value="<%= option.value %>">
+      <span class="search-form__tip--content">
+        <span class="strong"><%= option.group.capitalize %> Tip:</span> <%= option.tip %>
+      </span>
+    </p>
+  <% end %>
+</form>

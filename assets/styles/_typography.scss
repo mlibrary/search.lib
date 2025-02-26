@@ -1,16 +1,18 @@
+@use './messages';
+@use 'sass:map';
+
 // --------------------------------------------------
 //
 // # Typography
 //   Styling for common text elements and classes.
 //
-// ## Table of Contents
 //   1. Headings
 //   2. Sizes
 //   3. Weight
-//   4. Material Icons
-//     4.1 Filled
 //
 // --------------------------------------------------
+
+
 
 
 
@@ -64,27 +66,4 @@ h6 {
 
 .strong {
   font-weight: 700;
-}
-
-
-
-
-
-// ************************* //
-// *** 4. MATERIAL ICONS *** //
-// ************************* //
-
-[class^="material-symbols-"] {
-  font-size: 1em;
-  vertical-align: middle;
-}
-
-
-
-// *            * //
-// * 4.1 FILLED * //
-// *            * //
-
-.material-symbols-filled {
-  font-variation-settings: "FILL" 1;
 }

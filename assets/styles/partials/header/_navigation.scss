@@ -1,5 +1,6 @@
 @use '../../colors';
 @use '../../media';
+@use '../../icons';
 @use '../../utilities';
 
 // --------------------------------------------------
@@ -11,6 +12,7 @@
 //   1. Variables
 //   2. Navigation
 //     2.1 Anchors
+//       2.1.1 Everything
 //
 // --------------------------------------------------
 
@@ -62,6 +64,7 @@ $class: 'primary-navigation';
   border: 0 solid transparent;
   border-width: 0 0 0 3px;
   display: block;
+  gap: 0.25rem;
   height: 100%;
   padding: .5rem 1rem;
   @include media.breakpoint($breakpoint) {
@@ -72,12 +75,21 @@ $class: 'primary-navigation';
   }
   &:not([aria-current="page"]) {
     color: colors.$color-text;
-    .material-symbols-rounded {
-      color: var(--search-color-grey-400);
+  }
+}
+
+// * 2.1.1 EVERYTHING  * //
+
+.#{$class} a.#{$class}__everything {
+  &:before {
+    @include icons.icon($fill: true, $icon: 'dashboard');
+    & {
+      font-size: 1.25rem;
+      line-height: 1;
+      margin-right: 0.25rem;
     }
   }
-  .material-symbols-rounded {
-    font-size: 1.25rem;
-    margin-right: 0.25rem;
+  &:not([aria-current="page"]):before {
+    color: var(--search-color-grey-400);
   }
 }
