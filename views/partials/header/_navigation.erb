@@ -1,24 +1,12 @@
 <nav aria-label="Primary" class="primary-navigation">
   <ul>
     <% @datastores.each do |datastore| %>
-      <%
-        # Destructure properties
-        slug, title = [datastore[:slug], datastore[:title]]
-        # Set baseline classes
-        classes = ["underline__none"]
-        # Add extra class if datastore slug is "everything"
-        if slug == "everything"
-          classes << "primary-navigation__everything"
-        end
-        # Add extra attributes if current page matches the datastore slug
-        rest = slug == request.path_info.split("/")[1] ? "aria-current=\"page\"" : nil
-      %>
       <li>
         <%= link_to(
-          body: title,
-          url: "/#{slug}",
-          classes: classes,
-          rest: rest
+          body: datastore["title"],
+          url: "/#{datastore["slug"]}",
+          classes: ["underline__none", "primary-navigation__#{datastore["slug"]}"],
+          # rest: "aria-current=\"#{datastore.aria_current_attribute(@presenter.slug)}\""
         ) %>
       </li>
     <% end %>

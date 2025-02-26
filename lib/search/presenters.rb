@@ -7,90 +7,10 @@ require "search/presenters/icons"
 require "search/presenters/search_options"
 
 module Search::Presenters
+  DATASTORES = YAML.load_file(File.join(S.config_path, "datastores.yaml"))
+
   def self.datastores
-    [
-      {
-        description: "Explore the University of Michigan Library Search for comprehensive results across catalogs, articles, databases, online journals, and more. Begin your search now for detailed records and specific resources.",
-        slug: "everything",
-        title: "Everything",
-        search_options: [
-          "keyword",
-          "title",
-          "author"
-        ]
-      },
-      {
-        description: "Discover the University of Michigan Library Catalog to access an extensive collection of physical and online materials, including books, audio, video, maps, musical scores, and more. Find everything you need in one place.",
-        slug: "catalog",
-        title: "Catalog",
-        search_options: [
-          "keyword",
-          "title",
-          "title_starts_with",
-          "author",
-          "journal_title",
-          "subject",
-          "lc_subject_starts_with",
-          "call_number_starts_with",
-          "series",
-          "isn",
-          "browse_by_callnumber",
-          "browse_by_author",
-          "browse_by_subject"
-        ]
-      },
-      {
-        description: "Utilize the Articles gateway at the University of Michigan Library to access scholarly journal articles, newspaper articles, book chapters, and conference proceedings. For subject-specific searches, explore our comprehensive databases.",
-        slug: "articles",
-        title: "Articles",
-        search_options: [
-          "keyword_contains",
-          "exact",
-          "title",
-          "author",
-          "subject",
-          "publication_date",
-          "issn",
-          "isbn"
-        ]
-      },
-      {
-        description: "Explore University of Michigan Library's databases, tailored to specific subjects and formats. Access subscription databases, locally created collections, and open-access resources. Browse by alphabetical order or academic discipline to find what you need.",
-        slug: "databases",
-        title: "Databases",
-        search_options: [
-          "keyword",
-          "title",
-          "title_starts_with",
-          "academic_discipline",
-          "publisher"
-        ]
-      },
-      {
-        description: "Access University of Michigan Library's Online Journals, including scholarly journals, newspapers, trade publications, and magazines. Find subscription and open-access journals, with detailed access and date information. Browse by title or discipline.",
-        slug: "onlinejournals",
-        title: "Online Journals",
-        search_options: [
-          "keyword",
-          "title",
-          "title_starts_with",
-          "subject",
-          "lc_subject_starts_with",
-          "academic_discipline",
-          "call_number_starts_with",
-          "isn"
-        ]
-      },
-      {
-        description: "Discover University of Michigan Library's Guides and More section for research guides, specialty sites, blogs, and online exhibits. Explore services, spaces, and collections, and visit lib.umich.edu for staff info, news, events, and physical exhibits.",
-        slug: "guidesandmore",
-        title: "Guides and More",
-        search_options: [
-          "keyword",
-          "title"
-        ]
-      }
-    ]
+    DATASTORES
   end
 
   def self.static_pages
@@ -109,13 +29,14 @@ module Search::Presenters
   end
 
   def self.for_datastore(slug:, uri:)
-    datastore = datastores.find { |x| x[:slug] == slug }
+    datastore = datastores.find { |x| x["slug"] == slug }
 
     OpenStruct.new(
-      title: datastore[:title],
+      title: datastore["title"],
       current_datastore: slug,
-      description: datastore[:description],
+      description: datastore["description"],
       icons: Icons.new,
+      slug: datastore["slug"],
       styles: ["styles.css", "datastores/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
       search_options: SearchOptions.new(datastore_slug: slug, uri: uri)
@@ -130,6 +51,7 @@ module Search::Presenters
       current_datastore: "everything",
       description: page[:description],
       icons: Icons.new,
+      slug: page[:slug],
       styles: ["styles.css", "pages/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
       search_options: SearchOptions.new(datastore_slug: "everything", uri: uri)
