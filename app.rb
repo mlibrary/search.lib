@@ -9,7 +9,7 @@ set :session_secret, S.session_secret
 S.logger.info("App Environment: #{settings.environment}")
 S.logger.info("Log level: #{S.log_level}")
 
-datastores = Search::Presenters.datastores
+datastores = Search::Datastores.all
 before do
   subdirectory = request.path_info.split("/")[1]
 
@@ -26,7 +26,7 @@ before do
   session[:path_before_login] = request.url
 
   S.logger.debug("here's the session", session.to_h)
-  @current_datastore = datastores.find { |datastore| datastore["slug"] == subdirectory } || datastores.first
+  @current_datastore = datastores.find { |datastore| datastore.slug == subdirectory } || datastores.first
   @datastores = datastores
 end
 
@@ -117,10 +117,10 @@ helpers do
 end
 
 datastores.each do |datastore|
-  get "/#{datastore["slug"]}" do
-    @presenter = Search::Presenters.for_datastore(slug: datastore["slug"], uri: URI.parse(request.fullpath))
+  get "/#{datastore.slug}" do
+    @presenter = Search::Presenters.for_datastore(slug: datastore.slug, uri: URI.parse(request.fullpath))
     erb :"datastores/layout", layout: :layout do
-      erb :"datastores/#{datastore["slug"]}"
+      erb :"datastores/#{datastore.slug}"
     end
   end
 end

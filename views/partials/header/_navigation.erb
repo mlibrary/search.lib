@@ -3,10 +3,10 @@
     <% @datastores.each do |datastore| %>
       <li>
         <%= link_to(
-          body: datastore["title"],
-          url: "/#{datastore["slug"]}",
-          classes: ["underline__none", "primary-navigation__#{datastore["slug"]}"],
-          # rest: "aria-current=\"#{datastore.aria_current_attribute(@presenter.slug)}\""
+          body: datastore.title,
+          url: "/#{datastore.slug}",
+          classes: ["underline__none", "primary-navigation__#{datastore.slug}"],
+          rest: "aria-current=\"#{datastore.aria_current_attribute(@presenter.slug)}\""
         ) %>
       </li>
     <% end %>

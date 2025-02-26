@@ -7,6 +7,7 @@ require "yaml"
 module Search
 end
 
+require "search/datastores"
 require "search/patron"
 require "search/presenters"
 require "search/routes"

@@ -34,14 +34,13 @@ module Search
       SEARCH_OPTIONS = YAML.load_file(File.join(S.config_path, "search_options.yaml")).map do |data|
         SearchOption.new(data)
       end
-      DATASTORES = YAML.load_file(File.join(S.config_path, "datastores.yaml"))
 
       def initialize(slug)
-        @datastore = DATASTORES.find { |x| x["slug"] == slug }
+        @datastore = Search::Datastores.all.find { |x| x.slug == slug }
       end
 
       def datastore
-        @datastore["slug"]
+        @datastore.slug
       end
 
       def options
@@ -57,7 +56,7 @@ module Search
 
       def flat_list
         # filtered options
-        @datastore["search_options"].map do |id|
+        @datastore.search_options.map do |id|
           SEARCH_OPTIONS.find { |x| x.id == id }
         end
       end
@@ -77,8 +76,8 @@ module Search
     end
 
     class SearchOptions
-      ALL_BASE_SEARCH_OPTIONS = YAML.load_file(File.join(S.config_path, "datastores.yaml")).map do |datastore|
-        BaseSearchOptions.new(datastore["slug"])
+      ALL_BASE_SEARCH_OPTIONS = Search::Datastores.all.map do |datastore|
+        BaseSearchOptions.new(datastore.slug)
       end
 
       include Enumerable

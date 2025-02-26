@@ -2,17 +2,10 @@ module Search
   module Presenters
   end
 end
-require "search/presenters/datastores"
 require "search/presenters/icons"
 require "search/presenters/search_options"
 
 module Search::Presenters
-  DATASTORES = YAML.load_file(File.join(S.config_path, "datastores.yaml"))
-
-  def self.datastores
-    DATASTORES
-  end
-
   def self.static_pages
     [
       {
@@ -29,14 +22,14 @@ module Search::Presenters
   end
 
   def self.for_datastore(slug:, uri:)
-    datastore = datastores.find { |x| x["slug"] == slug }
+    datastore = Search::Datastores.all.find { |x| x.slug == slug }
 
     OpenStruct.new(
-      title: datastore["title"],
+      title: datastore.title,
       current_datastore: slug,
-      description: datastore["description"],
+      description: datastore.description,
       icons: Icons.new,
-      slug: datastore["slug"],
+      slug: datastore.slug,
       styles: ["styles.css", "datastores/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
       search_options: SearchOptions.new(datastore_slug: slug, uri: uri)

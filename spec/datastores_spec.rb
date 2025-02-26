@@ -6,7 +6,7 @@
 #   end
 # end
 
-RSpec.describe Search::Presenters::Datastore do
+RSpec.describe Search::Datastore do
   before(:each) do
     @datastore = {
       "slug" => "everything",
