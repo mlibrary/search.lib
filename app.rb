@@ -9,7 +9,6 @@ set :session_secret, S.session_secret
 S.logger.info("App Environment: #{settings.environment}")
 S.logger.info("Log level: #{S.log_level}")
 
-datastores = Search::Datastores.all
 before do
   subdirectory = request.path_info.split("/")[1]
 
@@ -26,8 +25,7 @@ before do
   session[:path_before_login] = request.url
 
   S.logger.debug("here's the session", session.to_h)
-  @current_datastore = datastores.find { |datastore| datastore.slug == subdirectory } || datastores.first
-  @datastores = datastores
+  @datastores = Search::Datastores.all
 end
 
 if S.dev_login?
@@ -116,7 +114,7 @@ helpers do
   end
 end
 
-datastores.each do |datastore|
+Search::Datastores.each do |datastore|
   get "/#{datastore.slug}" do
     @presenter = Search::Presenters.for_datastore(slug: datastore.slug, uri: URI.parse(request.fullpath))
     erb :"datastores/layout", layout: :layout do

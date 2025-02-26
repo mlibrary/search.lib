@@ -36,7 +36,7 @@ module Search
       end
 
       def initialize(slug)
-        @datastore = Search::Datastores.all.find { |x| x.slug == slug }
+        @datastore = Search::Datastores.find(slug)
       end
 
       def datastore
@@ -76,7 +76,7 @@ module Search
     end
 
     class SearchOptions
-      ALL_BASE_SEARCH_OPTIONS = Search::Datastores.all.map do |datastore|
+      ALL_BASE_SEARCH_OPTIONS = Search::Datastores.map do |datastore|
         BaseSearchOptions.new(datastore.slug)
       end
 

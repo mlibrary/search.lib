@@ -22,7 +22,7 @@ module Search::Presenters
   end
 
   def self.for_datastore(slug:, uri:)
-    datastore = Search::Datastores.all.find { |x| x.slug == slug }
+    datastore = Search::Datastores.find(slug)
 
     OpenStruct.new(
       title: datastore.title,

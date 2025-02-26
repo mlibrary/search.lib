@@ -30,8 +30,26 @@ module Search
       Datastore.new(data)
     end
 
-    def self.all
-      DATASTORES
+    class << self
+      include Enumerable
+
+      def all
+        DATASTORES
+      end
+  
+      def each(&block)
+        all.each do |datastore|
+          block.call(datastore)
+        end
+      end
+  
+      def find(slug)
+        all.find { |x| x.slug == slug }
+      end
+  
+      def default
+        find("everything")
+      end
     end
   end
 end
