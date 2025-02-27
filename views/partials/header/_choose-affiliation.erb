@@ -1,23 +1,17 @@
 <%
-  affiliations = [
-    {active: current_affiliation == "aa", name: "Ann Arbor", uid: "aa"},
-    {active: current_affiliation == "flint", name: "Flint", uid: "flint"}
-  ]
-  inactive_affiliation = affiliations.find { |affiliation| !affiliation[:active] }
-  request.params["affiliation"] = inactive_affiliation[:uid]
-  change_affiliation_url = "#{request.path}?#{URI.encode_www_form(request.params)}"
+  affiliations = @presenter.affiliations
 %>
 
 <%= link_to(
   body: affiliations.map do |affiliation| 
     <<-HTML
-      <span class="#{"affiliation__active" if affiliation[:active]}">
-        <span class="visually-hidden">#{affiliation[:active] ? "Current" : "Choose"} campus affiliation:</span>
-        <span>#{affiliation[:name]}</span>
+      <span class="#{affiliation.class}">
+        <span class="visually-hidden">#{affiliation.screen_reader_text}"</span>
+        <span>#{affiliation.name}</span>
       </span>
     HTML
   end.join,
-  url: change_affiliation_url,
+  url: affiliations.url,
   classes: ["affiliation__change"]
 ) %>
 
@@ -27,10 +21,10 @@
     <p>Selecting an affiliation helps us connect you to available online materials licensed for your campus.</p>
     <div class="affiliation__dialog--buttons">
       <button class="button__primary affiliation__dialog--dismiss">
-        Continue as <%= affiliations.find { |affiliation| affiliation[:active] }[:name] %>
+        Continue as <%= affiliations.active_affiliation %>
       </button>
       or
-      <%= link_to(body: "Change to #{inactive_affiliation[:name]}", url: change_affiliation_url, classes: ["button__ghost"]) %>
+      <%= link_to(body: "Change to #{affiliations.inactive_affiliation}", url: affiliations.url, classes: ["button__ghost"]) %>
     </div>
     <p><small>You can still use Library Search if you're not affiliated with either campus.</small></p>
   </section>

@@ -2,7 +2,7 @@ require "json"
 module Fakes
   class PatronFake < Search::Patron::Base
     include Search::Patron::SessionHelper
-    [:email, :sms, :campus, :logged_in?].each do |method|
+    [:affiliation, :email, :sms, :campus, :logged_in?].each do |method|
       define_method method do
         method.to_s
       end
@@ -15,6 +15,7 @@ RSpec.describe Search::Patron::SessionHelper do
       expected = {
         email: "email",
         sms: "sms",
+        affiliation: "affiliation",
         campus: "campus",
         logged_in: "logged_in?"
       }
@@ -50,9 +51,10 @@ end
 RSpec.describe Search::Patron::Alma do
   before(:each) do
     @data = JSON.parse(fixture("alma_user.json"))
+    @session_affiliation = nil
   end
   subject do
-    described_class.new(@data)
+    described_class.new(@data, @session_affiliation)
   end
   context "#email" do
     it "returns the preferred email address from Alma" do
@@ -76,14 +78,39 @@ RSpec.describe Search::Patron::Alma do
     it "returns aa for Ann Arbor campus" do
       expect(subject.campus).to eq("aa")
     end
-    it "returns flint for flint campus" do
+    it "returns flint for Flint campus" do
       @data["campus_code"]["value"] = "UMFL"
       expect(subject.campus).to eq("flint")
+    end
+    it "returns nil for neither Flint or Ann Arbor campus" do
+      @data["campus_code"]["value"] = "UMDB"
+      expect(subject.campus).to eq(nil)
     end
   end
   context "#logged_in?" do
     it "returns true" do
       expect(subject.logged_in?).to eq(true)
+    end
+  end
+  context "#affiliation" do
+    context "session_affiliation is nil" do
+      it "returns campus when it is aa" do
+        expect(subject.affiliation).to eq("aa")
+      end
+      it "returns the campus when it is flint " do
+        @data["campus_code"]["value"] = "UMFL"
+        expect(subject.affiliation).to eq("flint")
+      end
+      it "returns nil when the campus is invalid" do
+        @data["campus_code"]["value"] = "UMDB"
+        expect(subject.affiliation).to be_nil
+      end
+      it "returns flint if the the IP address in the FLINT Range"
+    end
+    it "returns the session_affiliation if it is not nil" do
+      @session_affiliation = "aa"
+      @data["campus_code"]["value"] = "UMFL"
+      expect(subject.affiliation).to eq("aa")
     end
   end
 end

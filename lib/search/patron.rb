@@ -1,6 +1,6 @@
 module Search
   module Patron
-    def self.for(uniqname)
+    def self.for(uniqname, session_affiliation = nil)
       alma_response = AlmaRestClient.client.get("users/#{uniqname}")
       if alma_response.status == 200
         Alma.new(alma_response.body)
@@ -13,8 +13,8 @@ module Search
       not_logged_in
     end
 
-    def self.from_session(session)
-      FromSession.new(session)
+    def self.from_session(session, affiliation_param)
+      FromSession.new(session, affiliation_param)
     end
 
     def self.not_logged_in
@@ -31,8 +31,8 @@ module Search
           email: email,
           sms: sms,
           campus: campus,
-          logged_in: logged_in?,
-          affiliation: affiliation || "aa"
+          affiliation: affiliation,
+          logged_in: logged_in?
         }
       end
     end
@@ -57,6 +57,10 @@ module Search
       def logged_in?
         raise NotImplementedError
       end
+
+      def affiliation
+        raise NotImplementedError
+      end
     end
   end
 end
@@ -65,8 +69,9 @@ module Search
   module Patron
     class Alma < Base
       include SessionHelper
-      def initialize(data)
+      def initialize(data, session_affiliation = nil)
         @data = data
+        @session_affiliation = session_affiliation
       end
 
       def email
@@ -83,7 +88,17 @@ module Search
 
       def campus
         campus_code = @data.dig("campus_code", "value")
-        (campus_code == "UMFL") ? "flint" : "aa"
+        case campus_code
+        when "UMFL"
+          "flint"
+        when "UMAA"
+          "aa"
+        end
+      end
+
+      def affiliation
+        return @session_affiliation if @session_affiliation
+        ["flint", "aa"].find { |x| x == campus }
       end
 
       def logged_in?

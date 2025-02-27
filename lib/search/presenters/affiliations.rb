@@ -1,76 +1,65 @@
 module Search
   module Presenters
     class Affiliation
-      def initialize(affiliation)
-        @affiliation = affiliation
+      def initialize(data:, current_affiliation:)
+        @data = data
+        @current_affiliation = current_affiliation
       end
 
       def id
-        @affiliation["id"]
+        @data["id"]
       end
 
       def name
-        @affiliation["name"]
+        @data["name"]
       end
 
-      def active
-        @affiliation["active"]
+      def to_s
+        name
       end
 
-      def affiliation_text
-        (active ? "Current" : "Choose") + " campus affiliation:"
+      def active?
+        @current_affiliation == id
       end
 
-      def affiliation_class
-        active ? "affiliation_active" : nil
+      def screen_reader_text
+        (active? ? "Current" : "Choose") + " campus affiliation:"
+      end
+
+      def class
+        active? ? "affiliation_active" : nil
+      end
+
+      def url
+        "http://localhost:4567"
       end
     end
 
     class Affiliations
-      AFFILIATIONS = YAML.load_file(File.join(S.config_path, "affiliations.yaml")).map do |data|
-        Affiliation.new(data)
-      end
-
+      AFFILIATIONS = YAML.load_file(File.join(S.config_path, "affiliations.yaml"))
       include Enumerable
 
-      def initialize(uri:)
+      def initialize(uri:, current_affiliation:)
         @uri = uri
-        @affiliations = AFFILIATIONS
+        @affiliations = AFFILIATIONS.map { |x| Affiliation.new(data: x, current_affiliation: current_affiliation) }
       end
 
       def each(&block)
-        affiliations.each do |affiliation|
+        all.each do |affiliation|
           block.call(affiliation)
         end
       end
 
-      def find(active)
-        affiliations.find { |x| x.active == active }
-      end
-
-      def default
-        # first or patron affiliation
-        @patron.affiliation || all.first
-      end
-
-      def set_active
-        # (params || default).active = true
-      end
-
       def active_affiliation
-        find(true)
+        @affiliations.find { |x| x.active? }
       end
 
       def inactive_affiliation
-        find(false)
+        @affiliations.find { |x| !x.active? }
       end
 
-      def set_default_library
-        Search::Libraries.default(active_affiliation.id)
-      end
-
-      def search_only?
-        @uri.path.split("/").last == "advanced"
+      def all
+        @affiliations
       end
 
       def params
@@ -81,8 +70,13 @@ module Search
         end
       end
 
+      def url
+        "http://localhost:4567"
+      end
+
+      # I think this should link to a route that can update the session.
       def change_affiliation_url
-        URI.encode_www_form("affiliation" => inactive_affiliation.id)
+        "http://localhost:4567"
       end
     end
   end

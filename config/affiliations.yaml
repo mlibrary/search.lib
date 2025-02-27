@@ -2,7 +2,5 @@
 # Ann Arbor is set as the default active affiliation.
 - id: aa
   name: Ann Arbor
-  active: true
 - id: flint
   name: Flint
-  active: false
