@@ -47,6 +47,17 @@ RSpec.describe Search::Libraries do
     end
   end
 
+  context "#each" do
+    it "loops through each library" do
+      libraries = []
+      described_class.each do |library|
+        libraries << library.to_s
+      end
+
+      expect(libraries).to eq(["All libraries", "U-M Ann Arbor Libraries", "Flint Thompson Library", "Bentley Historical Library", "William L. Clements Library"])
+    end
+  end
+
   context "#default" do
     it "returns the default library" do
       expect(described_class.default.to_s).to eq(library)
