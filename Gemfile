@@ -13,6 +13,7 @@ gem "semantic_logger"
 
 gem "yabeda"
 gem "yabeda-prometheus"
+gem "yabeda-puma-plugin"
 gem "webrick"
 
 group :development, :test do
