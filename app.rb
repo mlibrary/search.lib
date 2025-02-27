@@ -1,8 +1,23 @@
 require "sinatra"
 require "puma"
+require "yabeda"
 require "ostruct"
 require_relative "lib/services"
 require_relative "lib/search"
+
+Yabeda.configure do
+  group :search_app do
+    counter :datastore_request_count, comment: "Total number of requests to a datastore", tags: %i[datastore]
+    # gauge :whistles_active, comment: "Number of whistles ready to whistle"
+    # histogram :whistle_runtime do
+    #   comment "How long whistles are being active"
+    #   unit :seconds
+    # end
+    #  summary :bells_ringing_duration, unit: :seconds, comment: "How long bells are ringing"
+  end
+end
+
+Yabeda.configure!
 
 enable :sessions
 set :session_secret, S.session_secret
@@ -116,6 +131,7 @@ end
 
 Search::Datastores.each do |datastore|
   get "/#{datastore.slug}" do
+    Yabeda.search_app.datastore_request_count.increment({datastore: datastore.slug}, by: 1)
     @presenter = Search::Presenters.for_datastore(slug: datastore.slug, uri: URI.parse(request.fullpath))
     erb :"datastores/layout", layout: :layout do
       erb :"datastores/#{datastore.slug}"
@@ -133,7 +149,7 @@ Search::Presenters.static_pages.each do |page|
 end
 
 not_found do
-  @presenter = Search::Presenters.for_404_page
+  @presenter = Search::Presenters.for_404_page(uri: URI.parse(request.fullpath))
   status 404
   erb :"errors/404"
 end

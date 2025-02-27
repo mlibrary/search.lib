@@ -11,6 +11,10 @@ gem "alma_rest_client",
   tag: "v2.0.0"
 gem "semantic_logger"
 
+gem "yabeda"
+gem "yabeda-prometheus"
+gem "webrick"
+
 group :development, :test do
   gem "debug"
 end
