@@ -120,8 +120,6 @@ module Search
         (value == selected_option_value) ? "selected" : ""
       end
 
-      # TODO: Needs to account for Booleans and return default when there's a boolean
-      # select option on load
       def selected_option_value
         my_option = default_option
 

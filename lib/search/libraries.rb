@@ -35,8 +35,8 @@ module Search
         end
       end
 
-      def default
-        all.first
+      def default(affiliation)
+        affiliation && affiliation == "flint" ? "Flint Thompson Library" : all.first
       end
     end
   end

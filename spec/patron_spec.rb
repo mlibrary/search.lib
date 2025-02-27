@@ -91,9 +91,10 @@ end
 RSpec.describe Search::Patron::FromSession do
   before(:each) do
     @data = {email: "email", logged_in: true, sms: "sms", campus: "campus"}
+    @affiliation_param = nil
   end
   subject do
-    described_class.new(@data)
+    described_class.new(@data, @affiliation_param)
   end
   context "#email" do
     it "returns what is in the :email field" do
@@ -121,13 +122,21 @@ RSpec.describe Search::Patron::FromSession do
     end
   end
   context "#affiliation" do
-    it "returns nil when there's no affiliation set" do
-      expect(subject.affiliation).to be_nil
-    end
-    it "returns the value of whatever is in affiliation" do
-      # this will either be aa or flint, but we aren't doing any checking here
-      @data[:affiliation] = "aa"
+    it "returns the default value when there's no session affiliation or affiliation parameter" do
       expect(subject.affiliation).to eq("aa")
+    end
+    it "returns the default value if the affiliation parameter value is not valid" do
+      @affiliation_param = "dearborn"
+      expect(subject.affiliation).to eq("aa")
+    end
+    it "returns valid affiliation parameter and not the session affiliation value" do
+      @affiliation_param = "flint"
+      @data[:affiliation] = "aa"
+      expect(subject.affiliation).to eq("flint")
+    end
+    it "returns the session affiliation when the affiliation parameter is not defined" do
+      @data[:affiliation] = "flint"
+      expect(subject.affiliation).to eq("flint")
     end
   end
 end

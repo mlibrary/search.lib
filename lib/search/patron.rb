@@ -31,7 +31,8 @@ module Search
           email: email,
           sms: sms,
           campus: campus,
-          logged_in: logged_in?
+          logged_in: logged_in?,
+          affiliation: affiliation || "aa"
         }
       end
     end
@@ -118,8 +119,9 @@ end
 module Search
   module Patron
     class FromSession < Base
-      def initialize(session_data)
+      def initialize(session_data, affiliation_param = nil)
         @session = session_data
+        @affiliation_param = affiliation_param
       end
 
       def email
@@ -139,14 +141,16 @@ module Search
       end
 
       #
-      # What the current status of the user's affiliation is. Nil means we don't
-      # know. aa or flint means the user has selected Ann Arbor or Flint or we
-      # have set their affiliation on login.
+      # What the current status of the user's affiliation is.
+      # aa or flint means the affiliation parameter has been set or
+      # the user has selected Ann Arbor or Flint or
+      # we have set their affiliation on login.
       #
-      # @return [Nil or String] Options are [Nil || aa || flint ]
+      # @return [String] Options are [ aa || flint ]
       #
       def affiliation
-        @session[:affiliation]
+        valid_param = ["aa", "flint"].find { |x| x == @affiliation_param }
+        valid_param || @session[:affiliation] || "aa"
       end
     end
   end

@@ -12,7 +12,7 @@ S.logger.info("Log level: #{S.log_level}")
 before do
   subdirectory = request.path_info.split("/")[1]
 
-  pass if ["auth", "logout", "login", "-"].include?(subdirectory)
+  pass if ["auth", "logout", "-"].include?(subdirectory)
   pass if subdirectory == "session_switcher" && S.dev_login?
 
   if new_user? || expired_user_session?
@@ -20,7 +20,7 @@ before do
     patron.to_h.each { |k, v| session[k] = v }
     session.delete(:expires_at)
   end
-  @patron = Search::Patron.from_session(session)
+  @patron = Search::Patron.from_session(session, request.params["affiliation"])
 
   session[:path_before_login] = request.url
 
