@@ -12,7 +12,7 @@ S.logger.info("Log level: #{S.log_level}")
 before do
   subdirectory = request.path_info.split("/")[1]
 
-  pass if ["auth", "logout", "login", "-"].include?(subdirectory)
+  pass if ["auth", "logout", "-"].include?(subdirectory)
   pass if subdirectory == "session_switcher" && S.dev_login?
 
   if new_user? || expired_user_session?
@@ -20,12 +20,13 @@ before do
     patron.to_h.each { |k, v| session[k] = v }
     session.delete(:expires_at)
   end
-  @patron = Search::Patron.from_session(session)
+  @patron = Search::Patron.from_session(session, request.params["affiliation"])
 
   session[:path_before_login] = request.url
 
   S.logger.debug("here's the session", session.to_h)
   @datastores = Search::Datastores.all
+  @libraries = Search::Libraries
 end
 
 if S.dev_login?
@@ -116,7 +117,7 @@ end
 
 Search::Datastores.each do |datastore|
   get "/#{datastore.slug}" do
-    @presenter = Search::Presenters.for_datastore(slug: datastore.slug, uri: URI.parse(request.fullpath))
+    @presenter = Search::Presenters.for_datastore(slug: datastore.slug, uri: URI.parse(request.fullpath), patron: @patron)
     erb :"datastores/layout", layout: :layout do
       erb :"datastores/#{datastore.slug}"
     end
@@ -125,7 +126,7 @@ end
 
 Search::Presenters.static_pages.each do |page|
   get "/#{page[:slug]}" do
-    @presenter = Search::Presenters.for_static_page(slug: page[:slug], uri: URI.parse(request.fullpath))
+    @presenter = Search::Presenters.for_static_page(slug: page[:slug], uri: URI.parse(request.fullpath), patron: @patron)
     erb :"pages/layout", layout: :layout do
       erb :"pages/#{page[:slug]}"
     end
@@ -133,7 +134,7 @@ Search::Presenters.static_pages.each do |page|
 end
 
 not_found do
-  @presenter = Search::Presenters.for_404_page
+  @presenter = Search::Presenters.for_404_page(uri: URI.parse(request.fullpath), patron: @patron)
   status 404
   erb :"errors/404"
 end

@@ -1,11 +1,3 @@
-# RSpec.describe Search::Presenters::Datastores do
-#   context "#sdatastores" do
-#     it "lists datastores in the config file" do
-#       expect(described_class.new.datastores).to include("...")
-#     end
-#   end
-# end
-
 RSpec.describe Search::Datastore do
   before(:each) do
     @datastore = {

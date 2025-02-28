@@ -1,6 +1,6 @@
 module Search
   module Patron
-    def self.for(uniqname)
+    def self.for(uniqname, session_affiliation = nil)
       alma_response = AlmaRestClient.client.get("users/#{uniqname}")
       if alma_response.status == 200
         Alma.new(alma_response.body)
@@ -13,8 +13,8 @@ module Search
       not_logged_in
     end
 
-    def self.from_session(session)
-      FromSession.new(session)
+    def self.from_session(session, affiliation_param)
+      FromSession.new(session, affiliation_param)
     end
 
     def self.not_logged_in
@@ -31,6 +31,7 @@ module Search
           email: email,
           sms: sms,
           campus: campus,
+          affiliation: affiliation,
           logged_in: logged_in?
         }
       end
@@ -56,6 +57,10 @@ module Search
       def logged_in?
         raise NotImplementedError
       end
+
+      def affiliation
+        raise NotImplementedError
+      end
     end
   end
 end
@@ -64,8 +69,9 @@ module Search
   module Patron
     class Alma < Base
       include SessionHelper
-      def initialize(data)
+      def initialize(data, session_affiliation = nil)
         @data = data
+        @session_affiliation = session_affiliation
       end
 
       def email
@@ -82,7 +88,17 @@ module Search
 
       def campus
         campus_code = @data.dig("campus_code", "value")
-        (campus_code == "UMFL") ? "flint" : "aa"
+        case campus_code
+        when "UMFL"
+          "flint"
+        when "UMAA"
+          "aa"
+        end
+      end
+
+      def affiliation
+        return @session_affiliation if @session_affiliation
+        ["flint", "aa"].find { |x| x == campus }
       end
 
       def logged_in?
@@ -118,8 +134,9 @@ end
 module Search
   module Patron
     class FromSession < Base
-      def initialize(session_data)
+      def initialize(session_data, affiliation_param = nil)
         @session = session_data
+        @affiliation_param = affiliation_param
       end
 
       def email
@@ -139,14 +156,16 @@ module Search
       end
 
       #
-      # What the current status of the user's affiliation is. Nil means we don't
-      # know. aa or flint means the user has selected Ann Arbor or Flint or we
-      # have set their affiliation on login.
+      # What the current status of the user's affiliation is.
+      # aa or flint means the affiliation parameter has been set or
+      # the user has selected Ann Arbor or Flint or
+      # we have set their affiliation on login.
       #
-      # @return [Nil or String] Options are [Nil || aa || flint ]
+      # @return [String] Options are [ aa || flint ]
       #
       def affiliation
-        @session[:affiliation]
+        valid_param = ["aa", "flint"].find { |x| x == @affiliation_param }
+        valid_param || @session[:affiliation] || "aa"
       end
     end
   end
