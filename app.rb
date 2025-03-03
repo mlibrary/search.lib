@@ -3,6 +3,7 @@ require "puma"
 require "ostruct"
 require_relative "lib/services"
 require_relative "lib/search"
+require "debug" if S.app_env == "development"
 
 enable :sessions
 set :session_secret, S.session_secret

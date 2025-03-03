@@ -87,7 +87,7 @@ RSpec.describe Search::Presenters::Affiliation do
     end
     context "#class" do
       it "is 'affiliation_active'" do
-        expect(subject.class).to eq("affiliation_active")
+        expect(subject.class).to eq("affiliation__active")
       end
     end
   end

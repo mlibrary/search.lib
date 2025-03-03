@@ -18,7 +18,7 @@ module Search
 
       def active?
         not_flint? && @current_affiliation.nil? ||
-        @current_affiliation == name.downcase
+          @current_affiliation == name.downcase
       end
 
       def screen_reader_text
@@ -26,7 +26,7 @@ module Search
       end
 
       def class
-        active? ? "affiliation_active" : nil
+        active? ? "affiliation__active" : nil
       end
 
       def url
