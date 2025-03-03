@@ -2,7 +2,7 @@ RSpec.describe Search::Presenters::Affiliations do
   before(:each) do
     @params = {
       uri: URI.parse("/page"),
-      current_affiliation: "aa"
+      current_affiliation: nil
     }
   end
 
@@ -21,30 +21,30 @@ RSpec.describe Search::Presenters::Affiliations do
     end
   end
 
-  context "aa is current_affiliation" do
+  context "current_affiliation is nil" do
     context "#active_affiliation" do
-      it "returns ann arbor" do
-        expect(subject.active_affiliation.id).to eq("aa")
+      it "returns Ann Arbor" do
+        expect(subject.active_affiliation.name).to eq("Ann Arbor")
       end
     end
     context "#inactive_affiliation" do
-      it "returns flint" do
-        expect(subject.inactive_affiliation.id).to eq("flint")
+      it "returns Flint" do
+        expect(subject.inactive_affiliation.name).to eq("Flint")
       end
     end
   end
-  context "flint is current_affiliation" do
+  context "current_affiliation is flint" do
     before(:each) do
       @params[:current_affiliation] = "flint"
     end
     context "#active_affiliation" do
-      it "returns flint" do
-        expect(subject.active_affiliation.id).to eq("flint")
+      it "returns Flint" do
+        expect(subject.active_affiliation.name).to eq("Flint")
       end
     end
     context "#inactive_affiliation" do
-      it "returns aa" do
-        expect(subject.inactive_affiliation.id).to eq("aa")
+      it "returns Ann Arbor" do
+        expect(subject.inactive_affiliation.name).to eq("Ann Arbor")
       end
     end
   end
@@ -53,11 +53,8 @@ end
 RSpec.describe Search::Presenters::Affiliation do
   before(:each) do
     @params = {
-      data: {
-        "id" => "aa",
-        "name" => "Ann Arbor"
-      },
-      current_affiliation: "aa"
+      name: "Ann Arbor",
+      current_affiliation: nil
 
     }
   end
@@ -66,25 +63,19 @@ RSpec.describe Search::Presenters::Affiliation do
     described_class.new(**@params)
   end
 
-  context "#id" do
-    it "has an id" do
-      expect(subject.id).to eq(@params[:data]["id"])
-    end
-  end
-
   context "#name" do
     it "has a name" do
-      expect(subject.name).to eq(@params[:data]["name"])
+      expect(subject.name).to eq(@params[:name])
     end
   end
 
   context "#to_s" do
     it "returns the name" do
-      expect(subject.to_s).to eq(@params[:data]["name"])
+      expect(subject.to_s).to eq(@params[:name])
     end
   end
 
-  context "current afilliation matches the id" do
+  context "Ann Arbor when current affiliation is nil" do
     context "#active?" do
       it "is true" do
         expect(subject.active?).to eq(true)
@@ -101,7 +92,7 @@ RSpec.describe Search::Presenters::Affiliation do
       end
     end
   end
-  context "current afilliation does not match the id" do
+  context "Ann Arbor when current affiliation is Flint" do
     before(:each) do
       @params[:current_affiliation] = "flint"
     end

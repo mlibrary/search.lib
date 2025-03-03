@@ -1,25 +1,24 @@
 module Search
   module Presenters
     class Affiliation
-      def initialize(data:, current_affiliation:)
-        @data = data
+      attr_reader :name
+
+      def initialize(name:, current_affiliation:)
+        @name = name
         @current_affiliation = current_affiliation
-      end
-
-      def id
-        @data["id"]
-      end
-
-      def name
-        @data["name"]
       end
 
       def to_s
         name
       end
 
+      def not_flint?
+        name != "Flint"
+      end
+
       def active?
-        @current_affiliation == id
+        not_flint? && @current_affiliation.nil? ||
+        @current_affiliation == name.downcase
       end
 
       def screen_reader_text
@@ -36,12 +35,11 @@ module Search
     end
 
     class Affiliations
-      AFFILIATIONS = YAML.load_file(File.join(S.config_path, "affiliations.yaml"))
+      AFFILIATIONS = ["Ann Arbor", "Flint"]
       include Enumerable
 
-      def initialize(uri:, current_affiliation:)
-        @uri = uri
-        @affiliations = AFFILIATIONS.map { |x| Affiliation.new(data: x, current_affiliation: current_affiliation) }
+      def initialize(current_affiliation:)
+        @affiliations = AFFILIATIONS.map { |x| Affiliation.new(name: x, current_affiliation: current_affiliation) }
       end
 
       def each(&block)
