@@ -29,7 +29,6 @@ module Search
       def to_h
         {
           email: email,
-          sms: sms,
           campus: campus,
           affiliation: affiliation,
           logged_in: logged_in?
@@ -43,10 +42,6 @@ module Search
   module Patron
     class Base
       def email
-        raise NotImplementedError
-      end
-
-      def sms
         raise NotImplementedError
       end
 
@@ -78,12 +73,6 @@ module Search
         @data.dig("contact_info", "email")&.find do |email_entry|
           email_entry["preferred"]
         end&.dig("email_address")
-      end
-
-      def sms
-        @data.dig("contact_info", "phone")&.find do |phone_entry|
-          phone_entry["preferred_sms"]
-        end&.dig("phone_number")
       end
 
       def campus
@@ -122,10 +111,6 @@ module Search
         ""
       end
 
-      def sms
-        ""
-      end
-
       def campus
         ""
       end
@@ -147,10 +132,6 @@ module Search
 
       def email
         @session[:email]
-      end
-
-      def sms
-        @session[:sms]
       end
 
       def campus

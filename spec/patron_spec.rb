@@ -14,7 +14,6 @@ RSpec.describe Search::Patron::SessionHelper do
     it "outputs an appropriate hash" do
       expected = {
         email: "email",
-        sms: "sms",
         affiliation: "affiliation",
         campus: "campus",
         logged_in: "logged_in?"
@@ -65,15 +64,6 @@ RSpec.describe Search::Patron::Alma do
       expect(subject.email).to be_nil
     end
   end
-  context "#sms" do
-    it "returns properly formatted preferred_sms phone number if there is one" do
-      expect(subject.sms).to eq("(888) 222-2222")
-    end
-    it "returns nil if there is not preferred_sms a phone number" do
-      @data["contact_info"]["phone"][0]["preferred_sms"] = false
-      expect(subject.sms).to be_nil
-    end
-  end
   context "#campus" do
     it "returns aa for Ann Arbor campus" do
       expect(subject.campus).to eq("aa")
@@ -117,7 +107,7 @@ end
 
 RSpec.describe Search::Patron::FromSession do
   before(:each) do
-    @data = {email: "email", logged_in: true, sms: "sms", campus: "campus"}
+    @data = {email: "email", logged_in: true, campus: "campus"}
     @affiliation_param = nil
   end
   subject do
@@ -126,11 +116,6 @@ RSpec.describe Search::Patron::FromSession do
   context "#email" do
     it "returns what is in the :email field" do
       expect(subject.email).to eq("email")
-    end
-  end
-  context "#sms" do
-    it "returns what is in the :sms field" do
-      expect(subject.sms).to eq("sms")
     end
   end
   context "#campus" do
@@ -178,11 +163,6 @@ RSpec.describe Search::Patron::NotLoggedIn do
   context "#email" do
     it "returns empty string" do
       expect(subject.email).to eq("")
-    end
-  end
-  context "#sms" do
-    it "returns empty string" do
-      expect(subject.sms).to eq("")
     end
   end
   context "#campus" do
