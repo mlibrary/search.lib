@@ -1,7 +1,6 @@
 RSpec.describe Search::Presenters::Affiliations do
   before(:each) do
     @params = {
-      uri: URI.parse("/page"),
       current_affiliation: nil
     }
   end

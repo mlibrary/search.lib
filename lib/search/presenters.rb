@@ -34,7 +34,7 @@ module Search::Presenters
       styles: ["styles.css", "datastores/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
       search_options: SearchOptions.new(datastore_slug: slug, uri: uri),
-      affiliations: Affiliations.new(uri: uri, current_affiliation: patron.affiliation)
+      affiliations: Affiliations.new(current_affiliation: patron.affiliation)
     )
   end
 
@@ -50,7 +50,7 @@ module Search::Presenters
       styles: ["styles.css", "pages/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
       search_options: SearchOptions.new(datastore_slug: "everything", uri: uri),
-      affiliations: Affiliations.new(uri: uri, current_affiliation: patron.affiliation)
+      affiliations: Affiliations.new(current_affiliation: patron.affiliation)
     )
   end
 
@@ -62,7 +62,7 @@ module Search::Presenters
       styles: ["styles.css", "pages/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
       search_options: SearchOptions.new(datastore_slug: "everything", uri: uri),
-      affiliations: Affiliations.new(uri: uri, current_affiliation: patron.affiliation)
+      affiliations: Affiliations.new(current_affiliation: patron.affiliation)
     )
   end
 end
