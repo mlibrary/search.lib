@@ -13,7 +13,7 @@ S.logger.info("Log level: #{S.log_level}")
 before do
   subdirectory = request.path_info.split("/")[1]
 
-  pass if ["auth", "logout", "-"].include?(subdirectory)
+  pass if ["auth", "change-affiliation", "logout", "-"].include?(subdirectory)
   pass if subdirectory == "session_switcher" && S.dev_login?
   if expired_user_session?
     patron = Search::Patron.not_logged_in
@@ -137,4 +137,11 @@ not_found do
   @presenter = Search::Presenters.for_404_page(uri: URI.parse(request.fullpath), patron: @patron)
   status 404
   erb :"errors/404"
+end
+
+post "/change-affiliation" do
+  session[:affiliation] = if session[:affiliation].nil?
+    "flint"
+  end
+  redirect session.delete(:path_before_form) || "/"
 end
