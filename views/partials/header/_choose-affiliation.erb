@@ -24,7 +24,9 @@
         Continue as <%= affiliations.active_affiliation %>
       </button>
       or
-      <%= link_to(body: "Change to #{affiliations.inactive_affiliation}", url: affiliations.url, classes: ["button__ghost"]) %>
+      <form id="change_affiliation_form" method="post" action="/change-affiliation">
+        <button class="button__ghost" type="submit">Change to <%= affiliations.inactive_affiliation%></button>
+      </form>
     </div>
     <p><small>You can still use Library Search if you're not affiliated with either campus.</small></p>
   </section>
