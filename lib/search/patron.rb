@@ -3,7 +3,7 @@ module Search
     def self.for(uniqname:, session_affiliation:)
       alma_response = AlmaRestClient.client.get("users/#{uniqname}")
       if alma_response.status == 200
-        Alma.new(alma_response.body)
+        Alma.new(alma_response.body, session_affiliation)
       else
         S.logger.error(alma_response.body)
         not_logged_in

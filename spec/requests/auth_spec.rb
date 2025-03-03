@@ -29,7 +29,7 @@ RSpec.describe "authentication requests" do
       expect(session[:logged_in]).to eq(true)
       expect(session[:email]).to eq("fakeuser@umich.edu")
       expect(session[:campus]).to be_nil
-      expect(session[:affiliation]).to be_nil
+      expect(session[:affiliation]).to eq("flint")
       expect(last_response.status).to eq(302)
       expect(last_response.location).to eq(@session[:path_before_form])
     end

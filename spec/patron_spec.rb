@@ -26,14 +26,21 @@ end
 RSpec.describe Search::Patron do
   before(:each) do
     @data = JSON.parse(fixture("alma_user.json"))
+    @session_affiliation = nil
   end
   subject do
-    described_class.for(uniqname: "fakeuser", session_affiliation: nil)
+    described_class.for(uniqname: "fakeuser", session_affiliation: @session_affiliation)
   end
   context ".for" do
     it "returns an Alma Patron object on a succesful request" do
       stub_alma_get_request(url: "users/fakeuser", output: @data.to_json)
       expect(subject.email).to eq("fakeuser@umich.edu")
+      expect(subject.affiliation).to be_nil
+    end
+    it "passes the existing session affiliation to the Alma Patron" do
+      @session_affiliation = "flint"
+      stub_alma_get_request(url: "users/fakeuser", output: @data.to_json)
+      expect(subject.affiliation).to eq("flint")
     end
 
     it "returns not logged in patron for non-200 response" do
