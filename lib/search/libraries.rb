@@ -5,7 +5,7 @@ module Search
     end
 
     def active_class(param)
-      "button__ghost--active" if (@library == param || (param.nil? && self.to_s == Search::Libraries.default.to_s))
+      "button__ghost--active" if @library == param || (param.nil? && to_s == Search::Libraries.default.to_s)
     end
 
     def slug

@@ -39,7 +39,7 @@ RSpec.describe Search::Library do
 end
 
 RSpec.describe Search::Libraries do
-  let(:library) {"All libraries"}
+  let(:library) { "All libraries" }
 
   context "#all" do
     it "lists all libraries in the config file" do

@@ -14,7 +14,6 @@ before do
 
   pass if ["auth", "logout", "-"].include?(subdirectory)
   pass if subdirectory == "session_switcher" && S.dev_login?
-
   if new_user? || expired_user_session?
     patron = Search::Patron.not_logged_in
     patron.to_h.each { |k, v| session[k] = v }

@@ -124,6 +124,10 @@ module Search
         ""
       end
 
+      def affiliation
+        "aa"
+      end
+
       def logged_in?
         false
       end
