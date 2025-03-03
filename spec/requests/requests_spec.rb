@@ -28,14 +28,14 @@ RSpec.describe "requests" do
         expect(last_request.session[:logged_in]).to eq(false)
         expect(last_request.session[:expires_at]).not_to be_nil
         expect(last_request.session[:affiliation]).to be_nil
-        expect(last_request.session[:path_before_login]).to include("/accessibility?something=other")
+        expect(last_request.session[:path_before_form]).to include("/accessibility?something=other")
       end
       it "does not change the affiliation when unexpired" do
         @session[:affiliation] = "flint"
         get_static_page
         expect(last_request.session[:expires_at]).not_to be_nil
         expect(last_request.session[:affiliation]).to eq("flint")
-        expect(last_request.session[:path_before_login]).to include("/accessibility?something=other")
+        expect(last_request.session[:path_before_form]).to include("/accessibility?something=other")
       end
       it "resets the affiliation when expired" do
         @session[:affiliation] = "flint"
@@ -43,7 +43,7 @@ RSpec.describe "requests" do
         get_static_page
         expect(last_request.session[:expires_at]).not_to be_nil
         expect(last_request.session[:affiliation]).to be_nil
-        expect(last_request.session[:path_before_login]).to include("/accessibility?something=other")
+        expect(last_request.session[:path_before_form]).to include("/accessibility?something=other")
       end
     end
   end

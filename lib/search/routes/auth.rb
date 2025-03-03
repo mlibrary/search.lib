@@ -23,7 +23,7 @@ get "/auth/openid_connect/callback" do
   session[:expires_at] = (Time.now + 24.hour).to_i
   S.logger.debug("oidc info", info)
   patron.to_h.each { |k, v| session[k] = v }
-  redirect session.delete(:path_before_login) || "/"
+  redirect session.delete(:path_before_form) || "/"
 end
 
 get "/logout" do

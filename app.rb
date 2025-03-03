@@ -22,7 +22,7 @@ before do
   end
   @patron = Search::Patron.from_session(session)
 
-  session[:path_before_login] = request.url
+  session[:path_before_form] = request.url
 
   S.logger.debug("here's the session", session.to_h)
   @datastores = Search::Datastores.all

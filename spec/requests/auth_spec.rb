@@ -15,7 +15,7 @@ RSpec.describe "authentication requests" do
       expires_at: (Time.now - 1.hour).to_i,
       campus: "flint",
       affiliation: "flint",
-      path_before_login: "http://example.com/accessibility?something=other"
+      path_before_form: "http://example.com/accessibility?something=other"
     }
     OmniAuth.config.add_mock(:openid_connect, omniauth_auth)
     env "rack.session", @session
@@ -31,7 +31,7 @@ RSpec.describe "authentication requests" do
       expect(session[:campus]).to be_nil
       expect(session[:affiliation]).to be_nil
       expect(last_response.status).to eq(302)
-      expect(last_response.location).to eq(@session[:path_before_login])
+      expect(last_response.location).to eq(@session[:path_before_form])
     end
     it "handles user not found in alma"
   end
