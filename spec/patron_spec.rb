@@ -65,16 +65,12 @@ RSpec.describe Search::Patron::Alma do
     end
   end
   context "#campus" do
-    it "returns aa for Ann Arbor campus" do
-      expect(subject.campus).to eq("aa")
+    it "returns nil for non-flint campus" do
+      expect(subject.campus).to be_nil
     end
     it "returns flint for Flint campus" do
       @data["campus_code"]["value"] = "UMFL"
       expect(subject.campus).to eq("flint")
-    end
-    it "returns nil for neither Flint or Ann Arbor campus" do
-      @data["campus_code"]["value"] = "UMDB"
-      expect(subject.campus).to eq(nil)
     end
   end
   context "#logged_in?" do
@@ -84,18 +80,13 @@ RSpec.describe Search::Patron::Alma do
   end
   context "#affiliation" do
     context "session_affiliation is nil" do
-      it "returns campus when it is aa" do
-        expect(subject.affiliation).to eq("aa")
+      it "returns nil when not flint" do
+        expect(subject.affiliation).to be_nil
       end
       it "returns the campus when it is flint " do
         @data["campus_code"]["value"] = "UMFL"
         expect(subject.affiliation).to eq("flint")
       end
-      it "returns nil when the campus is invalid" do
-        @data["campus_code"]["value"] = "UMDB"
-        expect(subject.affiliation).to be_nil
-      end
-      it "returns flint if the the IP address in the FLINT Range"
     end
     it "returns the session_affiliation if it is not nil" do
       @session_affiliation = "aa"
@@ -108,10 +99,9 @@ end
 RSpec.describe Search::Patron::FromSession do
   before(:each) do
     @data = {email: "email", logged_in: true, campus: "campus"}
-    @affiliation_param = nil
   end
   subject do
-    described_class.new(@data, @affiliation_param)
+    described_class.new(@data)
   end
   context "#email" do
     it "returns what is in the :email field" do
@@ -134,19 +124,10 @@ RSpec.describe Search::Patron::FromSession do
     end
   end
   context "#affiliation" do
-    it "returns the default value when there's no session affiliation or affiliation parameter" do
-      expect(subject.affiliation).to eq("aa")
+    it "returns nil if not in the session" do
+      expect(subject.affiliation).to eq(nil)
     end
-    it "returns the default value if the affiliation parameter value is not valid" do
-      @affiliation_param = "dearborn"
-      expect(subject.affiliation).to eq("aa")
-    end
-    it "returns valid affiliation parameter and not the session affiliation value" do
-      @affiliation_param = "flint"
-      @data[:affiliation] = "aa"
-      expect(subject.affiliation).to eq("flint")
-    end
-    it "returns the session affiliation when the affiliation parameter is not defined" do
+    it "returns the session value when it is there" do
       @data[:affiliation] = "flint"
       expect(subject.affiliation).to eq("flint")
     end
@@ -154,11 +135,8 @@ RSpec.describe Search::Patron::FromSession do
 end
 
 RSpec.describe Search::Patron::NotLoggedIn do
-  before(:each) do
-    @affiliation_parm = nil
-  end
   subject do
-    described_class.new(@affiliation_param)
+    described_class.new
   end
   context "#email" do
     it "returns empty string" do
@@ -176,12 +154,9 @@ RSpec.describe Search::Patron::NotLoggedIn do
     end
   end
   context "#affiliation" do
-    it "returns whatever affilation is in the session already" do
-      @affiliation_param = "flint"
-      expect(subject.affiliation).to eq("flint")
-    end
-    it "returns nil if nil" do
+    it "returns nil if if not in the IP range" do
       expect(subject.affiliation).to be_nil
     end
+    it "returns 'flint' if in the IP range"
   end
 end

@@ -4,40 +4,47 @@ RSpec.describe "requests" do
       @session = {
         email: "email",
         sms: "sms",
-        logged_in: true,
+        logged_in: false,
         expires_at: (Time.now + 1.hour).to_i,
-        campus: "aa"
+        campus: nil
       }
     end
     let(:get_static_page) {
       env "rack.session", @session
       get "/accessibility?something=other"
     }
-    it "sets the session to NotLoggedIn user when it's a new user" do
-      @session = {}
-      get_static_page
-      expect(last_request.session[:logged_in]).to eq(false)
-      expect(last_request.session[:expires_at]).to be_nil
-      expect(last_request.session[:path_before_login]).to include("/accessibility?something=other")
+    context "Logged in User" do
+      it "does not touch the session when unexpired" do
+        @session[:logged_in] = true
+        get_static_page
+        expect(last_request.session[:logged_in]).to eq(true)
+        expect(last_request.session[:expires_at]).not_to be_nil
+      end
     end
-    it "does not touch the session of unexpired logged in user" do
-      get_static_page
-      expect(last_request.session[:logged_in]).to eq(true)
-      expect(last_request.session[:expires_at]).not_to be_nil
-    end
-    it "does not touch the session of a not logged in user who has had a session" do
-      @session.delete(:expires_at)
-      @session[:logged_in] = false
-      @session[:affiliation] = "flint"
-      get_static_page
-      expect(last_request.session[:affiliation]).to eq("flint")
-      expect(last_request.session[:expires_at]).to be_nil
-    end
-    it "sets the session to NotLoggedIn for an expired logged in user" do
-      @session[:expires_at] = (Time.now - 1.hour).to_i
-      get_static_page
-      expect(last_request.session[:logged_in]).to eq(false)
-      expect(last_request.session[:expires_at]).to be_nil
+    context "Not Logged In User" do
+      it "sets the session correctly for a new user" do
+        @session = {}
+        get_static_page
+        expect(last_request.session[:logged_in]).to eq(false)
+        expect(last_request.session[:expires_at]).not_to be_nil
+        expect(last_request.session[:affiliation]).to be_nil
+        expect(last_request.session[:path_before_login]).to include("/accessibility?something=other")
+      end
+      it "does not change the affiliation when unexpired" do
+        @session[:affiliation] = "flint"
+        get_static_page
+        expect(last_request.session[:expires_at]).not_to be_nil
+        expect(last_request.session[:affiliation]).to eq("flint")
+        expect(last_request.session[:path_before_login]).to include("/accessibility?something=other")
+      end
+      it "resets the affiliation when expired" do
+        @session[:affiliation] = "flint"
+        @session[:expires_at] = (Time.now - 1.hour).to_i
+        get_static_page
+        expect(last_request.session[:expires_at]).not_to be_nil
+        expect(last_request.session[:affiliation]).to be_nil
+        expect(last_request.session[:path_before_login]).to include("/accessibility?something=other")
+      end
     end
   end
   context "/" do

@@ -6,19 +6,19 @@ module Search
         Alma.new(alma_response.body)
       else
         S.logger.error(alma_response.body)
-        not_logged_in(session_affiliation)
+        not_logged_in
       end
     rescue Faraday::Error => e
       S.logger.error(e.detailed_message)
-      not_logged_in(session_affiliation)
+      not_logged_in
     end
 
-    def self.from_session(session, affiliation_param)
-      FromSession.new(session, affiliation_param)
+    def self.from_session(session)
+      FromSession.new(session)
     end
 
-    def self.not_logged_in(affiliation_param)
-      NotLoggedIn.new(affiliation_param)
+    def self.not_logged_in
+      NotLoggedIn.new
     end
   end
 end
@@ -77,17 +77,11 @@ module Search
 
       def campus
         campus_code = @data.dig("campus_code", "value")
-        case campus_code
-        when "UMFL"
-          "flint"
-        when "UMAA"
-          "aa"
-        end
+        "flint" if campus_code == "UMFL"
       end
 
       def affiliation
-        return @session_affiliation if @session_affiliation
-        ["flint", "aa"].find { |x| x == campus }
+        @session_affiliation || campus
       end
 
       def logged_in?
@@ -101,11 +95,6 @@ module Search
   module Patron
     class NotLoggedIn < Base
       include SessionHelper
-      attr_reader :affiliation
-
-      def initialize(session_affiliation)
-        @affiliation = session_affiliation
-      end
 
       def email
         ""
@@ -113,6 +102,11 @@ module Search
 
       def campus
         ""
+      end
+
+      # Ultimately needs to return based on IP address if in Flint Range
+      def affiliation
+        nil
       end
 
       def logged_in?
@@ -125,9 +119,8 @@ end
 module Search
   module Patron
     class FromSession < Base
-      def initialize(session_data, affiliation_param = nil)
+      def initialize(session_data)
         @session = session_data
-        @affiliation_param = affiliation_param
       end
 
       def email
@@ -143,16 +136,14 @@ module Search
       end
 
       #
-      # What the current status of the user's affiliation is.
-      # aa or flint means the affiliation parameter has been set or
-      # the user has selected Ann Arbor or Flint or
-      # we have set their affiliation on login.
+      # What the current status of the user's affiliation is.  flint means the
+      # affiliation had been set in the ui or the user logged in, had not set a
+      # session in the ui and their campus is flint
       #
-      # @return [String] Options are [ aa || flint ]
+      # @return [String || Nil] could be "flint" or Nil
       #
       def affiliation
-        valid_param = ["aa", "flint"].find { |x| x == @affiliation_param }
-        valid_param || @session[:affiliation] || "aa"
+        @session[:affiliation]
       end
     end
   end

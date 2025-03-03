@@ -14,12 +14,12 @@ before do
 
   pass if ["auth", "logout", "-"].include?(subdirectory)
   pass if subdirectory == "session_switcher" && S.dev_login?
-  if new_user? || expired_user_session?
-    patron = Search::Patron.not_logged_in(session[:affiliation])
+  if expired_user_session?
+    patron = Search::Patron.not_logged_in
     patron.to_h.each { |k, v| session[k] = v }
-    session.delete(:expires_at)
+    session[:expires_at] = (Time.now + 1.hour).to_i
   end
-  @patron = Search::Patron.from_session(session, request.params["affiliation"])
+  @patron = Search::Patron.from_session(session)
 
   session[:path_before_login] = request.url
 
@@ -43,7 +43,7 @@ helpers do
   #
   # @return [Boolean]
   #
-  def new_user?
+  def not_logged_in_user?
     session[:logged_in].nil?
   end
 
@@ -53,7 +53,7 @@ helpers do
   # @return [Boolean] <description>
   #
   def expired_user_session?
-    session[:logged_in] && session[:expires_at] < Time.now.to_i
+    session[:expires_at].nil? || session[:expires_at] < Time.now.to_i
   end
 end
 
