@@ -6,8 +6,7 @@ RSpec.describe "requests" do
         sms: "sms",
         logged_in: true,
         expires_at: (Time.now + 1.hour).to_i,
-        campus: "aa",
-        affiliation: "aa"
+        campus: "aa"
       }
     end
     let(:get_static_page) {
@@ -29,8 +28,9 @@ RSpec.describe "requests" do
     it "does not touch the session of a not logged in user who has had a session" do
       @session.delete(:expires_at)
       @session[:logged_in] = false
+      @session[:affiliation] = "flint"
       get_static_page
-      expect(last_request.session[:affiliation]).to eq("aa")
+      expect(last_request.session[:affiliation]).to eq("flint")
       expect(last_request.session[:expires_at]).to be_nil
     end
     it "sets the session to NotLoggedIn for an expired logged in user" do

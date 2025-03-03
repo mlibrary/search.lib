@@ -1,24 +1,24 @@
 module Search
   module Patron
-    def self.for(uniqname, session_affiliation = nil)
+    def self.for(uniqname:, session_affiliation:)
       alma_response = AlmaRestClient.client.get("users/#{uniqname}")
       if alma_response.status == 200
         Alma.new(alma_response.body)
       else
         S.logger.error(alma_response.body)
-        not_logged_in
+        not_logged_in(session_affiliation)
       end
     rescue Faraday::Error => e
       S.logger.error(e.detailed_message)
-      not_logged_in
+      not_logged_in(session_affiliation)
     end
 
     def self.from_session(session, affiliation_param)
       FromSession.new(session, affiliation_param)
     end
 
-    def self.not_logged_in
-      NotLoggedIn.new
+    def self.not_logged_in(affiliation_param)
+      NotLoggedIn.new(affiliation_param)
     end
   end
 end
@@ -112,6 +112,12 @@ module Search
   module Patron
     class NotLoggedIn < Base
       include SessionHelper
+      attr_reader :affiliation
+
+      def initialize(session_affiliation)
+        @affiliation = session_affiliation
+      end
+
       def email
         ""
       end
@@ -122,10 +128,6 @@ module Search
 
       def campus
         ""
-      end
-
-      def affiliation
-        "aa"
       end
 
       def logged_in?

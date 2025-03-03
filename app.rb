@@ -15,7 +15,7 @@ before do
   pass if ["auth", "logout", "-"].include?(subdirectory)
   pass if subdirectory == "session_switcher" && S.dev_login?
   if new_user? || expired_user_session?
-    patron = Search::Patron.not_logged_in
+    patron = Search::Patron.not_logged_in(session[:affiliation])
     patron.to_h.each { |k, v| session[k] = v }
     session.delete(:expires_at)
   end
@@ -30,7 +30,7 @@ end
 
 if S.dev_login?
   get "/session_switcher" do
-    patron = Search::Patron.for(params[:uniqname])
+    patron = Search::Patron.for(uniqname: params[:uniqname], session_affiliation: nil)
     patron.to_h.each { |k, v| session[k] = v }
     session[:expires_at] = (Time.now + 1.day).to_i
     redirect back
