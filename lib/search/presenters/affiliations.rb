@@ -12,12 +12,8 @@ module Search
         name
       end
 
-      def not_flint?
-        name != "Flint"
-      end
-
       def active?
-        not_flint? && @current_affiliation.nil? ||
+        (@current_affiliation.nil? && name != "Flint") ||
           @current_affiliation == name.downcase
       end
 
