@@ -4,7 +4,7 @@ module Search
       @library = library
     end
 
-    def active_class(param)
+    def active_class(param:)
       "button__ghost--active" if @library == param || (param.nil? && to_s == Search::Libraries.default.to_s)
     end
 

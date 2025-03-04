@@ -9,18 +9,18 @@ RSpec.describe Search::Library do
 
   context "#active_class" do
     it "will return a class if the `library` query params matches the library" do
-      expect(subject.active_class(@library)).to eq("button__ghost--active")
+      expect(subject.active_class(param: @library)).to eq("button__ghost--active")
     end
     it "will not return a class if the `library` query params does not match the library" do
-      expect(subject.active_class("library")).to be_nil
+      expect(subject.active_class(param: "library")).to be_nil
     end
     context "when param is nil" do
       it "will return a class for the default library" do
         @library = "All libraries"
-        expect(subject.active_class(nil)).to eq("button__ghost--active")
+        expect(subject.active_class(param: nil)).to eq("button__ghost--active")
       end
       it "will return nil for anything else" do
-        expect(subject.active_class(nil)).to be_nil
+        expect(subject.active_class(param: nil)).to be_nil
       end
     end
   end
