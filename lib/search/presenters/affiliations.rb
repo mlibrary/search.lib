@@ -24,10 +24,6 @@ module Search
       def class
         active? ? "affiliation__active" : nil
       end
-
-      def url
-        "http://localhost:4567"
-      end
     end
 
     class Affiliations
@@ -36,6 +32,10 @@ module Search
 
       def initialize(current_affiliation:)
         @affiliations = AFFILIATIONS.map { |x| Affiliation.new(name: x, current_affiliation: current_affiliation) }
+      end
+
+      def all
+        @affiliations
       end
 
       def each(&block)
@@ -50,18 +50,6 @@ module Search
 
       def inactive_affiliation
         @affiliations.find { |x| !x.active? }
-      end
-
-      def all
-        @affiliations
-      end
-
-      def params
-        if !@uri.query.nil?
-          URI.decode_www_form(@uri.query)&.to_h || {}
-        else
-          {}
-        end
       end
 
       def url

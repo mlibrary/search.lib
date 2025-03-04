@@ -1,6 +1,0 @@
-# This is the list of campus affiliations a user is able to choose from.
-# Ann Arbor is set as the default active affiliation.
-- id: aa
-  name: Ann Arbor
-- id: flint
-  name: Flint
