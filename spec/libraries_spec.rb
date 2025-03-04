@@ -11,16 +11,27 @@ RSpec.describe Search::Library do
     it "will return a class if the `library` query params matches the library" do
       expect(subject.active_class(param: @library)).to eq("button__ghost--active")
     end
-    it "will not return a class if the `library` query params does not match the library" do
+    it "will not return a class if the `library` query params does not match the library nor does the current_affiliation" do
       expect(subject.active_class(param: "library")).to be_nil
     end
     context "when param is nil" do
-      it "will return a class for the default library" do
-        @library = "All libraries"
-        expect(subject.active_class(param: nil)).to eq("button__ghost--active")
+      context "when current_affiliation is nil" do
+        it "will return a class for the default library" do
+          @library = "All libraries"
+          expect(subject.active_class(param: nil)).to eq("button__ghost--active")
+        end
+        it "will return nil for anything else" do
+          expect(subject.active_class(param: nil)).to be_nil
+        end
       end
-      it "will return nil for anything else" do
-        expect(subject.active_class(param: nil)).to be_nil
+      context "when current_affiliation is flint" do
+        it "will return a class for the Flint library when the current_affiliation is flint" do
+          expect(subject.active_class(param: nil, current_affiliation: "flint")).to eq("button__ghost--active")
+        end
+        it "will not return a class for the default library" do
+          @library = "All libraries"
+          expect(subject.active_class(param: nil, current_affiliation: "flint")).to be_nil
+        end
       end
     end
   end

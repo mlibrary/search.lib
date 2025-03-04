@@ -4,8 +4,14 @@ module Search
       @library = library
     end
 
-    def active_class(param:)
-      "button__ghost--active" if @library == param || (param.nil? && to_s == Search::Libraries.default.to_s)
+    def active_class(param:, current_affiliation: nil)
+      if matches_param?(param) ||
+          (
+            param.nil? &&
+            (matches_current_affiliation?(current_affiliation) || matches_default?(current_affiliation))
+          )
+        "button__ghost--active"
+      end
     end
 
     def slug
@@ -14,6 +20,22 @@ module Search
 
     def to_s
       @library
+    end
+
+    def name
+      @library
+    end
+
+    def matches_param?(param)
+      @library == param
+    end
+
+    def matches_current_affiliation?(current_affiliation)
+      current_affiliation == "flint" && name == "Flint Thompson Library"
+    end
+
+    def matches_default?(current_affiliation)
+      current_affiliation.nil? && @library == Search::Libraries.default.name
     end
   end
 
