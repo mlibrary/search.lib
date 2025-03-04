@@ -5,10 +5,10 @@ const chooseAffiliation = () => {
     return;
   }
 
-  // Check if the anchor and dialog exist
-  const anchorChangeAffiliation = websiteHeader.querySelector('.affiliation__change');
+  // Check if the choose affiliation button and dialog exist
+  const buttonChangeAffiliation = websiteHeader.querySelector('.affiliation__change');
   const dialog = websiteHeader.querySelector('.affiliation__dialog');
-  if (!anchorChangeAffiliation || !dialog) {
+  if (!buttonChangeAffiliation || !dialog) {
     return;
   }
 
@@ -18,20 +18,16 @@ const chooseAffiliation = () => {
     return;
   }
 
-  // Convert the anchor tag into a button
-  const buttonChangeAffiliation = document.createElement('button');
-  buttonChangeAffiliation.innerHTML = anchorChangeAffiliation.innerHTML;
-  buttonChangeAffiliation.classList = [...anchorChangeAffiliation.classList];
-  anchorChangeAffiliation.replaceWith(buttonChangeAffiliation);
-
   // Event listener to open dialog on button click
-  buttonChangeAffiliation.addEventListener('click', () => {
+  buttonChangeAffiliation.addEventListener('click', (event) => {
+    event.preventDefault();
     dialog.showModal();
   });
 
   // Event listeners to close dialog on each dismiss button click
   buttonDismiss.forEach((dismissButton) => {
-    dismissButton.addEventListener('click', () => {
+    dismissButton.addEventListener('click', (event) => {
+      event.preventDefault();
       dialog.close();
     });
   });
