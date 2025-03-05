@@ -88,4 +88,38 @@ RSpec.describe "requests" do
       end
     end
   end
+  context "/articles" do
+    before(:each) do
+      @session = {
+        email: nil,
+        logged_in: false,
+        expires_at: (Time.now + 1.hour).to_i,
+        campus: "flint",
+        affiliation: nil
+      }
+    end
+    context "flint messages" do
+      it "shows the flint message for someone with a flint campus" do
+        env "rack.session", @session
+        get "/articles"
+        expect(last_response.body).to include("For the best results")
+      end
+      it "shows the flint message for someone on the first page of results" do
+        env "rack.session", @session
+        get "/articles?page=1"
+        expect(last_response.body).to include("For the best results")
+      end
+      it "does not show the message for someone on the second page of results" do
+        env "rack.session", @session
+        get "/articles?page=2"
+        expect(last_response.body).not_to include("For the best results")
+      end
+      it "does not show the message for someone not with flint campus" do
+        @session[:campus] = nil
+        env "rack.session", @session
+        get "/articles"
+        expect(last_response.body).not_to include("For the best results")
+      end
+    end
+  end
 end
