@@ -41,6 +41,11 @@ describe('chooseAffiliation', function () {
       return getDialog().querySelector('button[type="submit"]');
     };
 
+    // Prevent the form from submitting in the tests
+    getForm().addEventListener('submit', (event) => {
+      event.preventDefault();
+    });
+
     // Mock HTMLDialogElement as it does not exist in JSDOM
     global.HTMLDialogElement = class {
       constructor () {
