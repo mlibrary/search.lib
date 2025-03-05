@@ -22,6 +22,7 @@
   all: unset;
   @include utilities.flex();
   border-radius: forms.$radius;
+  color: white;
   cursor: pointer;
   font-size: 0.8em;
   font-weight: 600;

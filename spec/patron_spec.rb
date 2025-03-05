@@ -2,7 +2,7 @@ require "json"
 module Fakes
   class PatronFake < Search::Patron::Base
     include Search::Patron::SessionHelper
-    [:email, :sms, :campus, :logged_in?].each do |method|
+    [:affiliation, :email, :sms, :campus, :logged_in?].each do |method|
       define_method method do
         method.to_s
       end
@@ -14,7 +14,7 @@ RSpec.describe Search::Patron::SessionHelper do
     it "outputs an appropriate hash" do
       expected = {
         email: "email",
-        sms: "sms",
+        affiliation: "affiliation",
         campus: "campus",
         logged_in: "logged_in?"
       }
@@ -26,23 +26,30 @@ end
 RSpec.describe Search::Patron do
   before(:each) do
     @data = JSON.parse(fixture("alma_user.json"))
+    @session_affiliation = nil
+  end
+  subject do
+    described_class.for(uniqname: "fakeuser", session_affiliation: @session_affiliation)
   end
   context ".for" do
     it "returns an Alma Patron object on a succesful request" do
       stub_alma_get_request(url: "users/fakeuser", output: @data.to_json)
-      patron = described_class.for("fakeuser")
-      expect(patron.email).to eq("fakeuser@umich.edu")
+      expect(subject.email).to eq("fakeuser@umich.edu")
+      expect(subject.affiliation).to be_nil
+    end
+    it "passes the existing session affiliation to the Alma Patron" do
+      @session_affiliation = "flint"
+      stub_alma_get_request(url: "users/fakeuser", output: @data.to_json)
+      expect(subject.affiliation).to eq("flint")
     end
 
     it "returns not logged in patron for non-200 response" do
       stub_alma_get_request(url: "users/fakeuser", status: 500, output: "some output string")
-      patron = described_class.for("fakeuser")
-      expect(patron.email).to eq("")
+      expect(subject.email).to eq("")
     end
     it "returns not logged in patron for timedout request" do
       stub_alma_get_request(url: "users/fakeuser", no_return: true).to_timeout
-      patron = described_class.for("fakeuser")
-      expect(patron.email).to eq("")
+      expect(subject.email).to eq("")
     end
   end
 end
@@ -50,9 +57,10 @@ end
 RSpec.describe Search::Patron::Alma do
   before(:each) do
     @data = JSON.parse(fixture("alma_user.json"))
+    @session_affiliation = nil
   end
   subject do
-    described_class.new(@data)
+    described_class.new(@data, @session_affiliation)
   end
   context "#email" do
     it "returns the preferred email address from Alma" do
@@ -63,20 +71,11 @@ RSpec.describe Search::Patron::Alma do
       expect(subject.email).to be_nil
     end
   end
-  context "#sms" do
-    it "returns properly formatted preferred_sms phone number if there is one" do
-      expect(subject.sms).to eq("(888) 222-2222")
-    end
-    it "returns nil if there is not preferred_sms a phone number" do
-      @data["contact_info"]["phone"][0]["preferred_sms"] = false
-      expect(subject.sms).to be_nil
-    end
-  end
   context "#campus" do
-    it "returns aa for Ann Arbor campus" do
-      expect(subject.campus).to eq("aa")
+    it "returns nil for non-flint campus" do
+      expect(subject.campus).to be_nil
     end
-    it "returns flint for flint campus" do
+    it "returns flint for Flint campus" do
       @data["campus_code"]["value"] = "UMFL"
       expect(subject.campus).to eq("flint")
     end
@@ -86,11 +85,27 @@ RSpec.describe Search::Patron::Alma do
       expect(subject.logged_in?).to eq(true)
     end
   end
+  context "#affiliation" do
+    context "session_affiliation is nil" do
+      it "returns nil when not flint" do
+        expect(subject.affiliation).to be_nil
+      end
+      it "returns the campus when it is flint " do
+        @data["campus_code"]["value"] = "UMFL"
+        expect(subject.affiliation).to eq("flint")
+      end
+    end
+    it "returns the session_affiliation if it is not nil" do
+      @session_affiliation = "aa"
+      @data["campus_code"]["value"] = "UMFL"
+      expect(subject.affiliation).to eq("aa")
+    end
+  end
 end
 
 RSpec.describe Search::Patron::FromSession do
   before(:each) do
-    @data = {email: "email", logged_in: true, sms: "sms", campus: "campus"}
+    @data = {email: "email", logged_in: true, campus: "campus"}
   end
   subject do
     described_class.new(@data)
@@ -98,11 +113,6 @@ RSpec.describe Search::Patron::FromSession do
   context "#email" do
     it "returns what is in the :email field" do
       expect(subject.email).to eq("email")
-    end
-  end
-  context "#sms" do
-    it "returns what is in the :sms field" do
-      expect(subject.sms).to eq("sms")
     end
   end
   context "#campus" do
@@ -121,13 +131,12 @@ RSpec.describe Search::Patron::FromSession do
     end
   end
   context "#affiliation" do
-    it "returns nil when there's no affiliation set" do
-      expect(subject.affiliation).to be_nil
+    it "returns nil if not in the session" do
+      expect(subject.affiliation).to eq(nil)
     end
-    it "returns the value of whatever is in affiliation" do
-      # this will either be aa or flint, but we aren't doing any checking here
-      @data[:affiliation] = "aa"
-      expect(subject.affiliation).to eq("aa")
+    it "returns the session value when it is there" do
+      @data[:affiliation] = "flint"
+      expect(subject.affiliation).to eq("flint")
     end
   end
 end
@@ -141,11 +150,6 @@ RSpec.describe Search::Patron::NotLoggedIn do
       expect(subject.email).to eq("")
     end
   end
-  context "#sms" do
-    it "returns empty string" do
-      expect(subject.sms).to eq("")
-    end
-  end
   context "#campus" do
     it "returns empty string" do
       expect(subject.campus).to eq("")
@@ -155,5 +159,11 @@ RSpec.describe Search::Patron::NotLoggedIn do
     it "returns false" do
       expect(subject.logged_in?).to eq(false)
     end
+  end
+  context "#affiliation" do
+    it "returns nil if if not in the IP range" do
+      expect(subject.affiliation).to be_nil
+    end
+    it "returns 'flint' if in the IP range"
   end
 end

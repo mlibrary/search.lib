@@ -2,6 +2,7 @@ module Search
   module Presenters
   end
 end
+require "search/presenters/affiliations"
 require "search/presenters/icons"
 require "search/presenters/search_options"
 
@@ -21,7 +22,7 @@ module Search::Presenters
     ]
   end
 
-  def self.for_datastore(slug:, uri:)
+  def self.for_datastore(slug:, uri:, patron: nil)
     datastore = Search::Datastores.find(slug)
 
     OpenStruct.new(
@@ -32,11 +33,12 @@ module Search::Presenters
       slug: datastore.slug,
       styles: ["styles.css", "datastores/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
-      search_options: SearchOptions.new(datastore_slug: slug, uri: uri)
+      search_options: SearchOptions.new(datastore_slug: slug, uri: uri),
+      affiliations: Affiliations.new(current_affiliation: patron.affiliation)
     )
   end
 
-  def self.for_static_page(slug:, uri:)
+  def self.for_static_page(slug:, uri:, patron:)
     page = static_pages.find { |x| x[:slug] == slug }
 
     OpenStruct.new(
@@ -47,17 +49,20 @@ module Search::Presenters
       slug: page[:slug],
       styles: ["styles.css", "pages/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
-      search_options: SearchOptions.new(datastore_slug: "everything", uri: uri)
+      search_options: SearchOptions.new(datastore_slug: "everything", uri: uri),
+      affiliations: Affiliations.new(current_affiliation: patron.affiliation)
     )
   end
 
-  def self.for_404_page
+  def self.for_404_page(uri:, patron:)
     OpenStruct.new(
       title: "404 - Page not found",
       description: "Page not found (404) at University of Michigan Library. Return to the homepage, search by title/keyword, browse all Databases or Online Journals, or ask a librarian for assistance in locating resources.",
       icons: Icons.new,
       styles: ["styles.css", "pages/styles.css"],
-      scripts: ["scripts.js", "partials/scripts.js"]
+      scripts: ["scripts.js", "partials/scripts.js"],
+      search_options: SearchOptions.new(datastore_slug: "everything", uri: uri),
+      affiliations: Affiliations.new(current_affiliation: patron.affiliation)
     )
   end
 end
