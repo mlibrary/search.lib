@@ -1,13 +1,13 @@
 const chooseAffiliation = () => {
-  // Check if the website header navigation exists
-  const websiteHeader = document.querySelector('m-website-header > nav > ul');
-  if (!websiteHeader) {
+  // Check if the change affiliation form exists
+  const chooseAffiliationForm = document.getElementById('affiliation__form');
+  if (!chooseAffiliationForm) {
     return;
   }
 
-  // Check if the choose affiliation button and dialog exist
-  const buttonChangeAffiliation = websiteHeader.querySelector('.affiliation__change');
-  const dialog = websiteHeader.querySelector('.affiliation__dialog');
+  // Check if the choose affiliation button and dialog exist, or else the button cannot open the dialog
+  const buttonChangeAffiliation = chooseAffiliationForm.querySelector('.affiliation__change');
+  const dialog = chooseAffiliationForm.querySelector('.affiliation__dialog');
   if (!buttonChangeAffiliation || !dialog) {
     return;
   }
@@ -15,6 +15,12 @@ const chooseAffiliation = () => {
   // Check if the dialog has dismiss buttons, or else the dialog cannot be closed
   const buttonDismiss = dialog.querySelectorAll('.affiliation__dialog--dismiss');
   if (!buttonDismiss.length) {
+    return;
+  }
+
+  // Check if the dialog has a submit button, or else the action cannot be posted
+  const buttonSubmit = dialog.querySelector('button[type="submit"]');
+  if (!buttonSubmit) {
     return;
   }
 
