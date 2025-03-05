@@ -1,8 +1,8 @@
 <% search_options = @presenter.search_options %>
 
-<form class="search-form" role="search" method="get" action="">
+<form class="search-form" role="search" method="post" action="/search">
   <div class="search-form__inputs viewport-container">
-    <select aria-label="Select an option" class="search-form__inputs--select" autocomplete="off">
+    <select aria-label="Select an option" class="search-form__inputs--select" name="search_option" autocomplete="off">
       <% if search_options.no_optgroups? %>
         <% search_options.each do |search_option| %>
           <option value="<%= search_option.value %>" <%= search_options.selected_attribute(search_option.value) %>>
@@ -21,7 +21,8 @@
         <% end %>
       <% end %>
     </select>
-    <input type="search" aria-label="Search for" class="search-form__inputs--text" autocomplete="on" name="query" value="">
+    <input type="search" aria-label="Search for" class="search-form__inputs--text" name="search_text" autocomplete="on" name="query" value="">
+    <input type="hidden" name="search_datastore" value="<%= @presenter.current_datastore %>" />
     <button type="submit" class="search-form__inputs--submit button__primary">
       <span class="material-symbols-rounded" aria-hidden="true">search</span>
       <span class="visually-hidden">Search</span>

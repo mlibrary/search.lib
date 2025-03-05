@@ -145,3 +145,7 @@ post "/change-affiliation" do
   end
   redirect session.delete(:path_before_form) || "/"
 end
+
+post "/search" do
+  redirect "https://search.lib.umich.edu/#{params[:search_datastore]}?query=#{params[:search_option]}:(#{URI.encode_www_form_component(params[:search_text])})"
+end
