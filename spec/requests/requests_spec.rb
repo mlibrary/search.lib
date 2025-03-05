@@ -62,6 +62,13 @@ RSpec.describe "requests" do
       expect(last_response.body).to include("open_in_new")
     end
   end
+  context "404" do
+    it "is successfull and says not found" do
+      get "/this-page-does-not-exist"
+      expect(last_response.status).to eq(404)
+      expect(last_response.body).to include("Page not found")
+    end
+  end
   context "post /change-affiliation" do
     context "has nil affiliation in sesssion" do
       it "sets session affiliation to flint and redirects to the last visited page" do
