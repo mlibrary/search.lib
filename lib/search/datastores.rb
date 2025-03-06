@@ -20,6 +20,10 @@ module Search
       @datastore["search_options"]
     end
 
+    def flint_message(campus:, page_param:)
+      @datastore["flint_message"] if campus == "flint" && (page_param.to_i <= 1)
+    end
+
     def aria_current_attribute(presenter_slug)
       (slug == presenter_slug) ? "page" : "false"
     end

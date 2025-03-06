@@ -5,7 +5,6 @@ end
 require "search/presenters/affiliations"
 require "search/presenters/icons"
 require "search/presenters/search_options"
-require "search/presenters/flint_messages"
 
 module Search::Presenters
   def self.static_pages
@@ -25,6 +24,7 @@ module Search::Presenters
 
   def self.for_datastore(slug:, uri:, patron: nil)
     datastore = Search::Datastores.find(slug)
+    params = URI.decode_www_form(uri.query.to_s)&.to_h
 
     OpenStruct.new(
       title: datastore.title,
@@ -35,7 +35,8 @@ module Search::Presenters
       styles: ["styles.css", "datastores/styles.css"],
       scripts: ["scripts.js", "partials/scripts.js"],
       search_options: SearchOptions.new(datastore_slug: slug, uri: uri),
-      affiliations: Affiliations.new(current_affiliation: patron.affiliation)
+      affiliations: Affiliations.new(current_affiliation: patron.affiliation),
+      flint_message: datastore.flint_message(campus: patron.campus, page_param: params["page"])
     )
   end
 
