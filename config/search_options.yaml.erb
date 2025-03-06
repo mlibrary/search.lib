@@ -3,8 +3,8 @@
   text: "Academic Discipline"
   tip: |
     Search academic disciplines (e.g., International business; Latin american
-    and caribbean studies). <a href="/databases/browse">Browse all Databases</a>
-    alphabetically or by academic discipline.
+    and caribbean studies). <%= link_to( url: "/databases/browse", body: "Browse
+    all Databases") %> alphabetically or by academic discipline.
   group: "search"
 - value: "author"
   text: "Author"
@@ -25,11 +25,9 @@
   text: "Browse by call number (LC and Dewey)"
   tip: |
     Browse by Library of Congress (LC) or Dewey call number, sorted
-    alphanumerically (e.g., RC662.4 .H38 2016; QH 105, 880 J375re). <a
-    href="https://www.loc.gov/catdir/cpso/lcco/?utm_source=library-search"
-    class="open-in-new" target="_blank" rel="noopener noreferrer"
-    aria-label="Learn about the meaning of call numbers - opens in new
-    window">Learn about the meaning of call numbers</a>.
+    alphanumerically (e.g., RC662.4 .H38 2016; QH 105, 880 J375re).  <%=
+    link_to( url:"https://www.loc.gov/catdir/cpso/lcco/", body: "Learn about the
+    meaning of call numbers", open_in_new: true) %> 
   group: "browse"
 - value: "browse_by_subject"
   text: "Browse by subject"
@@ -41,22 +39,17 @@
   text: "Call Number starts with"
   tip: |
     Search the first few letters and numbers of a call number (e.g., RC662.4.H38
-    2016; QH 105). <a
-    href="https://www.loc.gov/catdir/cpso/lcco/?utm_source=library-search"
-    class="open-in-new" target="_blank" rel="noopener noreferrer"
-    aria-label="Learn about the meaning of call numbers - opens in new
-    window">Learn about the meaning of call numbers</a>.
+    2016; QH 105). <%= link_to( url:"https://www.loc.gov/catdir/cpso/lcco/",
+    body: "Learn about the meaning of call numbers", open_in_new: true) %> 
   group: "search"
 - value: "exact"
   text: "Keyword (is exact)"
   tip: |
     Enter an exact phrase to search (e.g., solar power). Use AND to separate
     concepts or phrases (e.g., Black Women Scientists AND Chanda Prescod). See
-    tips about <a
-    href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011?utm_source=library-search"
-    class="open-in-new" target="_blank" rel="noopener noreferrer"
-    aria-label="Basic Keyword Searching - opens in new window">Basic Keyword
-    Searching</a>.
+    tips about <%= link_to( url:
+    "https://guides.lib.umich.edu/c.php?g=914690&p=6590011", body: "Basic
+    Keyword Searching", open_in_new: true) %> 
   group: "search"
 - value: "isbn"
   text: "ISBN"
@@ -84,11 +77,9 @@
   text: "Keyword"
   tip: |
     Enter one or more keywords. Use quotes to search for a phrase (e.g., solar
-    power; polar bears; “systems of oppression”). See tips about <a
-    href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011?utm_source=library-search"
-    class="open-in-new" target="_blank" rel="noopener noreferrer"
-    aria-label="Basic Keyword Searching - opens in new window">Basic Keyword
-    Searching</a>.
+    power; polar bears; “systems of oppression”). See tips about <%= link_to( url:
+    "https://guides.lib.umich.edu/c.php?g=914690&p=6590011", body: "Basic
+    Keyword Searching", open_in_new: true) %>
   group: "search"
 - id: "keyword_contains"
   value: "keyword"
@@ -96,11 +87,9 @@
   tip: |
     Enter one or more keywords to search broadly (e.g., Black Women Scientists).
     Use quotes to search for a specific phrase (e.g., “systems of oppression”).
-    See tips about <a
-    href="https://guides.lib.umich.edu/c.php?g=914690&p=6590011?utm_source=library-search"
-    class="open-in-new" target="_blank" rel="noopener noreferrer"
-    aria-label="Basic Keyword Searching - opens in new window">Basic Keyword
-    Searching</a>.
+    See tips about <%= link_to( url:
+    "https://guides.lib.umich.edu/c.php?g=914690&p=6590011", body: "Basic
+    Keyword Searching", open_in_new: true) %>
   group: "search"
 - value: "lc_subject_starts_with"
   text: "LC Subject starts with"
