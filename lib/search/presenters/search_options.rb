@@ -31,7 +31,7 @@ module Search
     end
 
     class BaseSearchOptions
-      SEARCH_OPTIONS = YAML.load_file(File.join(S.config_path, "search_options.yaml")).map do |data|
+      SEARCH_OPTIONS = Search::YamlErb.load_file(File.join(S.config_path, "search_options.yaml.erb")).map do |data|
         SearchOption.new(data)
       end
 
