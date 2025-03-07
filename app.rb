@@ -149,9 +149,12 @@ end
 post "/search" do
   option = params[:search_option]
   query = URI.encode_www_form_component(params[:search_text])
-  # The query gets wrapped if the selected search option is not `keyword`
   if option != "keyword"
+    # The query gets wrapped if the selected search option is not `keyword`
     query = "#{option}:(#{query})"
+  elsif query.empty?
+    # Redirect to landing page if query is empty and search option is `keyword`
+    redirect "/#{params[:search_datastore]}"
   end
   # Make a search in the current site
   redirect "https://search.lib.umich.edu/#{params[:search_datastore]}?query=#{query}"
