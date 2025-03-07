@@ -1,6 +1,6 @@
 # This is the list of Material icons that are explicitly rendered in templates
 # and partials. See ADR 001 for more context
-- open_in_new
-- search
-- info
-- dashboard
+- "open_in_new"
+- "search"
+- "info"
+- "dashboard"

@@ -10,10 +10,10 @@ There are many potential formats for config files. We only considered `YAML` and
 `JSON` is easy for programming languages to work with and is not too bad to work
 with when the data strucutre is complicated.
 
-The big advantage of `YAML` over `JSON` is that `YAML` can have comments. 
+The big advantage of `YAML` over `JSON` is that `YAML` can have comments.
 
 For this project we do not intend to have complex configuration files and these
-configuration files will be generated manually. 
+configuration files will be generated manually.
 
 ## Decision
 
