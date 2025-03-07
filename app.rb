@@ -4,6 +4,7 @@ require "ostruct"
 require_relative "lib/services"
 require_relative "lib/search"
 require "debug" if S.app_env == "development"
+require_relative "lib/sinatra_helpers"
 
 enable :sessions
 set :session_secret, S.session_secret
@@ -63,44 +64,6 @@ get "/" do
 end
 
 helpers do
-  def h1(body:, classes: [], rest: nil)
-    attributes = [
-      "id=\"maincontent\"",
-      "tabindex=\"-1\"",
-      rest
-    ].compact
-
-    if !classes.empty?
-      attributes << "class=\"#{classes.compact.join(" ")}\""
-    end
-
-    "<h1 #{attributes.join(" ")}>#{body}</h1>"
-  end
-
-  def link_to(body:, url:, classes: [], open_in_new: false, utm_source: "library-search", rest: nil)
-    uri = URI.parse(url)
-
-    if ["http", "https"].include?(uri.scheme) && !uri.host.nil? && uri.host != request.host
-      params = URI.decode_www_form(uri.query || "") + {utm_source: utm_source}.to_a
-      uri.query = URI.encode_www_form(params)
-    end
-
-    attributes = [
-      "href=\"#{uri}\"",
-      rest
-    ].compact
-
-    if open_in_new
-      attributes << "target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"#{body} - opens in new window\""
-      classes << "open-in-new"
-    end
-    if !classes.empty?
-      attributes << "class=\"#{classes.compact.join(" ")}\""
-    end
-
-    "<a #{attributes.join(" ")}>#{body}</a>"
-  end
-
   def login
     if @patron.logged_in?
       link_to(body: "Log out", url: "/logout", classes: ["underline__none"])

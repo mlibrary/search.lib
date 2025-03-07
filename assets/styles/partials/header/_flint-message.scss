@@ -1,0 +1,44 @@
+@use '../../colors';
+@use '../../utilities';
+
+// --------------------------------------------------
+//
+// # Flint Messages
+//   Styles to apply directly to `views/partials/header/_flint-message.erb`.
+//
+// ## Table of Contents
+//   1. Variables
+//   2. Message
+//
+// --------------------------------------------------
+
+// ******************** //
+// *** 1. VARIABLES *** //
+// ******************** //
+
+$class: 'flint-message';
+
+
+
+
+
+// ****************** //
+// *** 2. MESSAGE *** //
+// ****************** //
+
+.#{$class} {
+  background: var(--search-color-orange-100);
+  border-bottom: 1px solid var(--search-color-orange-200);
+  padding: 0.75rem 0;
+  @media print {
+    display: none;
+  }
+  &,
+  & * {
+    color: var(--search-color-orange-300);
+  }
+  & > .viewport-container {
+    display: block;
+    max-width: max-content;
+  }
+}
