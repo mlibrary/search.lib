@@ -7,6 +7,11 @@ RSpec.describe "requests" do
       expires_at: (Time.now + 1.hour).to_i,
       campus: nil
     }
+    @params = {
+      search_datastore: "everything",
+      search_option: "keyword",
+      search_text: ""
+    }
   end
   let(:get_static_page) {
     env "rack.session", @session
@@ -85,6 +90,43 @@ RSpec.describe "requests" do
         post "/change-affiliation"
         expect(last_request.session[:affiliation]).to be_nil
         expect(last_response.location).to include("accessibility")
+      end
+    end
+  end
+  context "post /search" do
+    context "searching with `keyword` selected" do
+      it "redirects to the default datastore landing page" do
+        get_static_page
+        post "/search", @params
+        expect(last_response.location).to end_with("/everything")
+      end
+      it "redirects to the current datastore's landing page" do
+        get "/catalog?query=title:(test)"
+        post "/search", @params.merge(search_datastore: "catalog")
+        expect(last_response.location).to end_with("/catalog")
+      end
+      it "redirects to `search.lib.umich.edu` with the query not wrapped" do
+        search_text = "search text"
+        search_datastore = "catalog"
+        get "/#{search_datastore}"
+        post "/search", @params.merge(search_text: search_text, search_datastore: search_datastore)
+        location = last_response.location
+        uri = URI.parse(location)
+        query_params = URI.decode_www_form(uri.query).to_h
+        expect(location).to start_with("https://search.lib.umich.edu/#{search_datastore}")
+        expect(query_params["query"]).to eq(search_text)
+      end
+    end
+    context "searching with a different option selected" do
+      it "redirects to `search.lib.umich.edu` with the query wrapped" do
+        search_option = "title"
+        get "/articles"
+        post "/search", @params.merge(search_option: search_option)
+        location = last_response.location
+        uri = URI.parse(location)
+        query_params = URI.decode_www_form(uri.query).to_h
+        expect(query_params["query"]).to start_with("#{search_option}:(")
+        expect(query_params["query"]).to end_with(")")
       end
     end
   end

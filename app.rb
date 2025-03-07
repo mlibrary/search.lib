@@ -108,3 +108,19 @@ post "/change-affiliation" do
   end
   redirect session.delete(:path_before_form) || "/"
 end
+
+post "/search" do
+  # TODO: Keep `library` query parameter on `catalog` datastore when making a search.
+  # Sending both parameters to current site erases the `library` parameter.
+  option = params[:search_option]
+  query = URI.encode_www_form_component(params[:search_text])
+  if option != "keyword"
+    # The query gets wrapped if the selected search option is not `keyword`
+    query = "#{option}:(#{query})"
+  elsif query.empty?
+    # Redirect to landing page if query is empty and search option is `keyword`
+    redirect "/#{params[:search_datastore]}"
+  end
+  # Make a search in the current site
+  redirect "https://search.lib.umich.edu/#{params[:search_datastore]}?query=#{query}"
+end
