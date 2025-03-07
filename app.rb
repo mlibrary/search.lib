@@ -85,6 +85,32 @@ Search::Datastores.each do |datastore|
       erb :"datastores/#{datastore.slug}"
     end
   end
+  if datastore.slug == "catalog"
+    get "/#{datastore.slug}/record/:mms_id" do
+      @presenter = Search::Presenters.for_datastore(slug: datastore.slug, uri: URI.parse(request.fullpath), patron: @patron)
+      @record = OpenStruct.new(
+        title: "This is a title",
+        metadata: [
+          OpenStruct.new(
+            field: "Contributors",
+            data: [
+              OpenStruct.new(
+                partial: "browse",
+                locals: OpenStruct.new(
+                  text: "This is a contributor",
+                  url: 'http://search.lib.umich.edu/catalog/author:("This is a contributor")',
+                  browse_url: "http://search.lib.umich.edu/catalog/browse/author/This+is+a+contributor",
+                  kind: "author"
+                )
+              )
+            ]
+          )
+        ]
+      )
+      content_type :json
+      @record.to_json
+    end
+  end
 end
 
 Search::Presenters.static_pages.each do |page|
