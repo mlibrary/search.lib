@@ -106,15 +106,14 @@ RSpec.describe "requests" do
         expect(last_response.location).to end_with("/catalog")
       end
       it "redirects to `search.lib.umich.edu` with the query not wrapped" do
-        search_text = "search text"
         search_datastore = "catalog"
         get "/#{search_datastore}"
-        post "/search", @params.merge(search_text: search_text, search_datastore: search_datastore)
+        post "/search", @params.merge(search_text: "search text", search_datastore: search_datastore)
         location = last_response.location
         uri = URI.parse(location)
         query_params = URI.decode_www_form(uri.query).to_h
         expect(location).to start_with("https://search.lib.umich.edu/#{search_datastore}")
-        expect(query_params["query"]).to eq(search_text)
+        expect(query_params["query"]).to eq("search+text")
       end
     end
     context "searching with a different option selected" do

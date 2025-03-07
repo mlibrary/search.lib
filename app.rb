@@ -110,6 +110,8 @@ post "/change-affiliation" do
 end
 
 post "/search" do
+  # TODO: Keep `library` query parameter on `catalog` datastore when making a search.
+  # Sending both parameters to current site erases the `library` parameter.
   option = params[:search_option]
   query = URI.encode_www_form_component(params[:search_text])
   if option != "keyword"
