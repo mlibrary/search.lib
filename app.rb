@@ -147,5 +147,12 @@ post "/change-affiliation" do
 end
 
 post "/search" do
-  redirect "https://search.lib.umich.edu/#{params[:search_datastore]}?query=#{params[:search_option]}:(#{URI.encode_www_form_component(params[:search_text])})"
+  option = params[:search_option]
+  query = URI.encode_www_form_component(params[:search_text])
+  # The query gets wrapped if the selected search option is not `keyword`
+  if option != "keyword"
+    query = "#{option}:(#{query})"
+  end
+  # Make a search in the current site
+  redirect "https://search.lib.umich.edu/#{params[:search_datastore]}?query=#{query}"
 end
