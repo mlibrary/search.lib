@@ -18,12 +18,12 @@ end
 get "/auth/openid_connect/callback" do
   auth = request.env["omniauth.auth"]
   info = auth[:info]
-  patron = Search::Patron.for(info[:nickname])
+  patron = Search::Patron.for(uniqname: info[:nickname], session_affiliation: session[:affiliation])
   session[:logged_in] = true
   session[:expires_at] = (Time.now + 24.hour).to_i
   S.logger.debug("oidc info", info)
   patron.to_h.each { |k, v| session[k] = v }
-  redirect session.delete(:path_before_login) || "/"
+  redirect session.delete(:path_before_form) || "/"
 end
 
 get "/logout" do

@@ -31,7 +31,7 @@ module Search
     end
 
     class BaseSearchOptions
-      SEARCH_OPTIONS = YAML.load_file(File.join(S.config_path, "search_options.yaml")).map do |data|
+      SEARCH_OPTIONS = Search::YamlErb.load_file(File.join(S.config_path, "search_options.yaml.erb")).map do |data|
         SearchOption.new(data)
       end
 
@@ -120,8 +120,6 @@ module Search
         (value == selected_option_value) ? "selected" : ""
       end
 
-      # TODO: Needs to account for Booleans and return default when there's a boolean
-      # select option on load
       def selected_option_value
         my_option = default_option
 

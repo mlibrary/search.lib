@@ -1,9 +1,9 @@
 module Search
   module Patron
-    def self.for(uniqname)
+    def self.for(uniqname:, session_affiliation:)
       alma_response = AlmaRestClient.client.get("users/#{uniqname}")
       if alma_response.status == 200
-        Alma.new(alma_response.body)
+        Alma.new(alma_response.body, session_affiliation)
       else
         S.logger.error(alma_response.body)
         not_logged_in
@@ -29,8 +29,8 @@ module Search
       def to_h
         {
           email: email,
-          sms: sms,
           campus: campus,
+          affiliation: affiliation,
           logged_in: logged_in?
         }
       end
@@ -45,15 +45,15 @@ module Search
         raise NotImplementedError
       end
 
-      def sms
-        raise NotImplementedError
-      end
-
       def campus
         raise NotImplementedError
       end
 
       def logged_in?
+        raise NotImplementedError
+      end
+
+      def affiliation
         raise NotImplementedError
       end
     end
@@ -64,8 +64,9 @@ module Search
   module Patron
     class Alma < Base
       include SessionHelper
-      def initialize(data)
+      def initialize(data, session_affiliation = nil)
         @data = data
+        @session_affiliation = session_affiliation
       end
 
       def email
@@ -74,15 +75,13 @@ module Search
         end&.dig("email_address")
       end
 
-      def sms
-        @data.dig("contact_info", "phone")&.find do |phone_entry|
-          phone_entry["preferred_sms"]
-        end&.dig("phone_number")
-      end
-
       def campus
         campus_code = @data.dig("campus_code", "value")
-        (campus_code == "UMFL") ? "flint" : "aa"
+        "flint" if campus_code == "UMFL"
+      end
+
+      def affiliation
+        @session_affiliation || campus
       end
 
       def logged_in?
@@ -96,16 +95,18 @@ module Search
   module Patron
     class NotLoggedIn < Base
       include SessionHelper
-      def email
-        ""
-      end
 
-      def sms
+      def email
         ""
       end
 
       def campus
         ""
+      end
+
+      # Ultimately needs to return based on IP address if in Flint Range
+      def affiliation
+        nil
       end
 
       def logged_in?
@@ -126,10 +127,6 @@ module Search
         @session[:email]
       end
 
-      def sms
-        @session[:sms]
-      end
-
       def campus
         @session[:campus]
       end
@@ -139,11 +136,11 @@ module Search
       end
 
       #
-      # What the current status of the user's affiliation is. Nil means we don't
-      # know. aa or flint means the user has selected Ann Arbor or Flint or we
-      # have set their affiliation on login.
+      # What the current status of the user's affiliation is.  flint means the
+      # affiliation had been set in the ui or the user logged in, had not set a
+      # session in the ui and their campus is flint
       #
-      # @return [Nil or String] Options are [Nil || aa || flint ]
+      # @return [String || Nil] could be "flint" or Nil
       #
       def affiliation
         @session[:affiliation]

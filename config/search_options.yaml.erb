@@ -1,0 +1,130 @@
+# This is the list of search options for the search bar at `views/datastores/partials/_search.erb`.
+- value: "academic_discipline"
+  text: "Academic Discipline"
+  tip: |
+    Search academic disciplines (e.g., International business; Latin american
+    and caribbean studies). <%= link_to( url: "/databases/browse", body: "Browse
+    all Databases") %> alphabetically or by academic discipline.
+  group: "search"
+- value: "author"
+  text: "Author"
+  tip: |
+    Search for items by author or contributor (e.g., Kimmerer, Robin Wall). Also
+    search organizations or corporate authors (e.g., American Medical
+    Association). Search for items by author using original scripts (e.g., 小川
+    洋子).
+  group: "search"
+- value: "browse_by_author"
+  text: "Browse by author"
+  tip: |
+    Browse an alphabetical list of authors. Authors can be people (put last
+    names first), organizations, or events (e.g., Kingston, Maxine Hong; United
+    Nations Development Programme; Pong, Chun-ho).
+  group: "browse"
+- value: "browse_by_callnumber"
+  text: "Browse by call number (LC and Dewey)"
+  tip: |
+    Browse by Library of Congress (LC) or Dewey call number, sorted
+    alphanumerically (e.g., RC662.4 .H38 2016; QH 105, 880 J375re).  <%=
+    link_to( url:"https://www.loc.gov/catdir/cpso/lcco/", body: "Learn about the
+    meaning of call numbers", open_in_new: true) %> 
+  group: "browse"
+- value: "browse_by_subject"
+  text: "Browse by subject"
+  tip: |
+    Browse an A-Z list of subjects (e.g., motion pictures; history--United
+    States; Eliot, George).
+  group: "browse"
+- value: "call_number_starts_with"
+  text: "Call Number starts with"
+  tip: |
+    Search the first few letters and numbers of a call number (e.g., RC662.4.H38
+    2016; QH 105). <%= link_to( url:"https://www.loc.gov/catdir/cpso/lcco/",
+    body: "Learn about the meaning of call numbers", open_in_new: true) %> 
+  group: "search"
+- value: "exact"
+  text: "Keyword (is exact)"
+  tip: |
+    Enter an exact phrase to search (e.g., solar power). Use AND to separate
+    concepts or phrases (e.g., Black Women Scientists AND Chanda Prescod). See
+    tips about <%= link_to( url:
+    "https://guides.lib.umich.edu/c.php?g=914690&p=6590011", body: "Basic
+    Keyword Searching", open_in_new: true) %> 
+  group: "search"
+- value: "isbn"
+  text: "ISBN"
+  tip: |
+    Search by ISBN (13 or 10-digit code) (e.g., 0747581088).
+  group: "search"
+- value: "isn"
+  text: "ISBN/ISSN/OCLC/etc"
+  tip: |
+    Search by ISSN (8-digit code), ISBN (13 or 10-digit code), or OCLC number
+    (e.g., 0040-781X; 0747581088; 921446069).
+  group: "search"
+- value: "issn"
+  text: "ISSN"
+  tip: "Search by ISSN (8-digit code) (e.g., 0040-781X)."
+  group: "search"
+- value: "journal_title"
+  text: "Journal/Serial Title"
+  tip: |
+    Search the title of a journal or serial publication (e.g., Detroit Free
+    Press; “journal of the american medical association”; African-American
+    newspapers).
+  group: "search"
+- value: "keyword"
+  text: "Keyword"
+  tip: |
+    Enter one or more keywords. Use quotes to search for a phrase (e.g., solar
+    power; polar bears; “systems of oppression”). See tips about <%= link_to( url:
+    "https://guides.lib.umich.edu/c.php?g=914690&p=6590011", body: "Basic
+    Keyword Searching", open_in_new: true) %>
+  group: "search"
+- id: "keyword_contains"
+  value: "keyword"
+  text: "Keyword (contains)"
+  tip: |
+    Enter one or more keywords to search broadly (e.g., Black Women Scientists).
+    Use quotes to search for a specific phrase (e.g., “systems of oppression”).
+    See tips about <%= link_to( url:
+    "https://guides.lib.umich.edu/c.php?g=914690&p=6590011", body: "Basic
+    Keyword Searching", open_in_new: true) %>
+  group: "search"
+- value: "lc_subject_starts_with"
+  text: "LC Subject starts with"
+  tip: |
+    Enter words or phrases to see subjects that start with them (e.g., Baldwin,
+    James; sociology dictionaries).
+  group: "search"
+- value: "publication_date"
+  text: "Date"
+  tip: "Search by year (YYYY) (e.g., 2021; 1942)."
+  group: "search"
+- value: "publisher"
+  text: "Publisher"
+  tip: "Search names of publishers of databases."
+  group: "search"
+- value: "series"
+  text: "Series (transcribed)"
+  tip: |
+    Search the series title of a group of thematically-related books. Use
+    "title"; search to find unique titles within a series (e.g., Politics of
+    Race and Ethnicity, Brill's Annotated Bibliographies, Oxford Choral Music).
+  group: "search"
+- value: "subject"
+  text: "Subject"
+  tip: "Use words or phrases to search subjects (e.g., plant physiology, Baldwin, James)."
+  group: "search"
+- value: "title"
+  text: "Title"
+  tip: |
+    Enter the first words in a title. Use quotes to search for a phrase (e.g.,
+    One Hundred Years of Solitude; “The Fourth World”; Disability Visibility).
+  group: "search"
+- value: "title_starts_with"
+  text: "Title starts with"
+  tip: |
+    Search for titles that begin with a word or phrase (e.g., introduction to
+    chemistry; history of Mexico; Asian art).
+  group: "search"

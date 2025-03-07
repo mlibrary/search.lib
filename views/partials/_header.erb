@@ -20,7 +20,7 @@
         <%= login %>
       </li>
       <li>
-        <%= erb :'partials/header/_choose-affiliation', locals: { current_affiliation: request.params["affiliation"] || @patron.affiliation || "aa" } %>
+        <%= erb :'partials/header/_choose-affiliation', locals: { current_affiliation: @patron.affiliation } %>
       </li>
     </ul>
   </nav>

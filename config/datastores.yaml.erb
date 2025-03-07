@@ -1,0 +1,103 @@
+- slug: "everything"
+  title: "Everything"
+  description: |
+    Explore the University of Michigan Library Search for comprehensive results
+    across catalogs, articles, databases, online journals, and more. Begin your
+    search now for detailed records and specific resources.
+  search_options:
+    - "keyword"
+    - "title"
+    - "author"
+- slug: "catalog"
+  title: "Catalog"
+  description: | 
+    Discover the University of Michigan Library Catalog to access an extensive
+    collection of physical and online materials, including books, audio, video,
+    maps, musical scores, and more. Find everything you need in one place.
+  search_options:
+    - "keyword"
+    - "title"
+    - "title_starts_with"
+    - "author"
+    - "journal_title"
+    - "subject"
+    - "lc_subject_starts_with"
+    - "call_number_starts_with"
+    - "series"
+    - "isn"
+    - "browse_by_callnumber"
+    - "browse_by_author"
+    - "browse_by_subject"
+- slug: "articles"
+  title: "Articles"
+  description: | 
+    Utilize the Articles gateway at the University of Michigan Library to access
+    scholarly journal articles, newspaper articles, book chapters, and
+    conference proceedings. For subject-specific searches, explore our
+    comprehensive databases.
+  search_options:
+    - "keyword_contains"
+    - "exact"
+    - "title"
+    - "author"
+    - "subject"
+    - "publication_date"
+    - "issn"
+    - "isbn"
+  flint_message: |
+    U-M Flint users: You may not be able to access U-M Ann Arbor resources. For
+    the best results use <%= link_to(body: "Thompson Library's Search All", url:
+    "https://umich.primo.exlibrisgroup.com/discovery/search?vid=01UMICH_INST:FLINT")
+    %> to search for articles.
+- slug: "databases"
+  title: "Databases"
+  description: |
+    Explore University of Michigan Library's databases, tailored to specific
+    subjects and formats. Access subscription databases, locally created
+    collections, and open-access resources. Browse by alphabetical order or
+    academic discipline to find what you need.
+  search_options:
+    - "keyword"
+    - "title"
+    - "title_starts_with"
+    - "academic_discipline"
+    - "publisher"
+  flint_message: |
+    We noticed you are affiliated with U-M Flint. For the best results use the
+    <%= link_to(body: "Thompson Library's database listing", url:
+    "https://libguides.umflint.edu/az.php?a=all") %>.
+- slug: "onlinejournals"
+  title: "Online Journals"
+  description: |
+    Access University of Michigan Library's Online Journals, including scholarly
+    journals, newspapers, trade publications, and magazines. Find subscription
+    and open-access journals, with detailed access and date information. Browse
+    by title or discipline.
+  search_options:
+    - "keyword"
+    - "title"
+    - "title_starts_with"
+    - "subject"
+    - "lc_subject_starts_with"
+    - "academic_discipline"
+    - "call_number_starts_with"
+    - "isn"
+  flint_message: |
+    We noticed you are affiliated with U-M Flint. For the best results use the
+    <%= link_to(body: "Thompson Library's Search All", url:
+    "https://umich.primo.exlibrisgroup.com/discovery/jsearch?vid=01UMICH_INST:FLINT")
+    %> to search for articles.
+- slug: "guidesandmore"
+  title: "Guides and More"
+  description: |
+    Discover University of Michigan Library's Guides and More section for
+    research guides, specialty sites, blogs, and online exhibits. Explore
+    services, spaces, and collections, and visit lib.umich.edu for staff info,
+    news, events, and physical exhibits.
+  search_options:
+    - "keyword"
+    - "title"
+  flint_message: |
+    We noticed you are affiliated with U-M Flint. For the best results use the
+    <%= link_to(body: "Thompson Library website", url:
+    "https://libguides.umflint.edu/library") %>.

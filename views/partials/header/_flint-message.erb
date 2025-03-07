@@ -1,16 +1,7 @@
-<%
-  messages = {
-    databases: "We noticed you are affiliated with U-M Flint. For the best results use the #{link_to(body: "Thompson Library's database listing", url: "https://libguides.umflint.edu/az.php?a=all")}.",
-    onlinejournals: "We noticed you are affiliated with U-M Flint. For the best results use the #{link_to(body: "Thompson Library's Search All", url: "https://umich.primo.exlibrisgroup.com/discovery/jsearch?vid=01UMICH_INST:FLINT")} to search for articles.",
-    articles: "U-M Flint users: You may not be able to access U-M Ann Arbor resources. For the best results use #{link_to(body: "Thompson Library's Search All", url: "https://umich.primo.exlibrisgroup.com/discovery/search?vid=01UMICH_INST:FLINT")} to search for articles.",
-    guidesandmore: "We noticed you are affiliated with U-M Flint. For the best results use the #{link_to(body: "Thompson Library website", url: "https://libguides.umflint.edu/library")}."
-  }
-  property = @presenter.slug.to_sym
-%>
-<% if @patron.campus == "flint" && messages[property] %>
+<% if @presenter.flint_message %>
   <div class="flint-message">
     <small class="viewport-container">
-      <%= messages[property] %>
+      <%= @presenter.flint_message %>
     </small>
   </div>
 <% end %>

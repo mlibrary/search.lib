@@ -9,18 +9,9 @@
     To find materials closest to you, please choose a library
   </h2>
   <ul class="list__no-style">
-    <% 
-      [
-        "All libraries",
-        "U-M Ann Arbor Libraries",
-        "Flint Thompson Library",
-        "Bentley Historical Library",
-        "William L. Clements Library"
-      ].each do |library|
-      is_active = params[:library] == library ? "button__ghost--active" : nil
-    %>
+    <% @libraries.each do |library| %>
       <li>
-        <%= link_to(body: library, url: "?library=#{library.tr(" ", "+")}", classes: ["button__ghost", is_active]) %>
+        <%= link_to(body: library, url: "?library=#{library.slug}", classes: ["button__ghost", library.active_class(param: params[:library], current_affiliation: @patron.affiliation)]) %>
       </li>
     <% end %>
   </ul>
